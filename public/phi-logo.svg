@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" xmlns:bx="https://boxy-svg.com" width="64px" height="64px">
+  <ellipse style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" cx="209.768" cy="216.2" rx="20" ry="20" transform="matrix(0, 0, 0, 1, 189.7679901123047, 0)"/>
+  <defs>
+    <bx:grid x="0" y="0" width="8" height="8"/>
+    <path d="M 18.603 24 L 21.206 72 L 16 72 L 18.603 24 Z" bx:shape="triangle 16 24 5.206 48 0.5 0 1@d89e7093" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+    <path d="M 48 32 L 72 80 L 24 80 L 48 32 Z" bx:shape="triangle 24 32 48 48 0.5 0 1@34191907" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+    <linearGradient gradientUnits="userSpaceOnUse" bx:pinned="true" id="color-1">
+      <title>Color 1</title>
+      <stop style="stop-color: #222831;"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" bx:pinned="true" id="color-2">
+      <title>Color 2</title>
+      <stop style="stop-color: #393e46;"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" bx:pinned="true" id="color-3">
+      <title>Color 3</title>
+      <stop style="stop-color: #00adb5;"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" bx:pinned="true" id="color-4">
+      <title>Color 4</title>
+      <stop style="stop-color: #eeeeee;"/>
+    </linearGradient>
+    <linearGradient id="color-grey" bx:pinned="true" gradientUnits="userSpaceOnUse">
+      <title>Color Grey</title>
+      <stop style="stop-color: rgb(128, 128, 128);"/>
+    </linearGradient>
+  </defs>
+  <polygon style="fill: url(&quot;#color-1&quot;); stroke-width: 4px; stroke: url(&quot;#color-grey&quot;);" points="16 16 16 240 72 16"/>
+  <polygon style="fill: url(&quot;#color-4&quot;); stroke-width: 4px; stroke: url(&quot;#color-grey&quot;);" points="240 16 240 240 184 240"/>
+  <polygon style="stroke: url(&quot;#color-grey&quot;); stroke-width: 4px; fill: url(&quot;#color-3&quot;);" points="96 16 40 240 88 240 144 16"/>
+  <polygon style="stroke-width: 4px; stroke: url(&quot;#color-grey&quot;); fill: url(&quot;#color-2&quot;);" points="168 16 112 240 160 240 216 16"/>
+</svg>

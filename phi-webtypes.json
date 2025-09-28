@@ -1,0 +1,128 @@
+{
+    "$schema": "http://json.schemastore.org/web-types",
+    "name": "phi-client3",
+    "version": "0.0.1",
+    "framework": "lit",
+    "description-markup": "markdown",
+    "contributions": {
+        "html": {
+            "elements": [
+                {
+                    "name": "phi-application",
+                    "description": "Top-level PHI application element used in `index.html`.  Displays a splash-screen during startup\r\nand then shows the main application page",
+                    "source": {
+                        "module": "./src/components/phi-application.ts",
+                        "symbol": "PhiApplication"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.splash-screen {\\r\\n            text-align: center;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiApplication.styles"
+                                }
+                            },
+                            {
+                                "name": "tickCount",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "1"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiApplication.tickCount"
+                                }
+                            },
+                            {
+                                "name": "startupTasks",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "Task<readonly unknown[], void>",
+                                    "required": true,
+                                    "default": "\"new Task(this, {\\r\\n            task: async() => {\\r\\n                const t1 = this.startupTimerTask();\\r\\n                const t2 = this.startupFundsTask();\\r\\n                await Promise.all([t1, t2]);\\r\\n            }\\r\\n        })\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiApplication.startupTasks"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-splash-screen",
+                    "description": "PHI Application splash screen",
+                    "source": {
+                        "module": "./src/components/phi-application.ts",
+                        "symbol": "PhiSplashScreen"
+                    },
+                    "attributes": [
+                        {
+                            "name": "ticks",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "number",
+                                "required": true,
+                                "default": "1"
+                            },
+                            "description": "The number of progress tick counts to display",
+                            "source": {
+                                "module": "./src/components/phi-application.ts",
+                                "symbol": "PhiSplashScreen.tickCount"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n            width: 100%;\\r\\n            text-align: center;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiSplashScreen.styles"
+                                }
+                            },
+                            {
+                                "name": "tickCount",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "1"
+                                },
+                                "description": "The number of progress tick counts to display",
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiSplashScreen.tickCount"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "css": {
+            "properties": []
+        }
+    }
+}

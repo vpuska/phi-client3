@@ -1,0 +1,32 @@
+{
+  "name": "phi-client3",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "web-types": [
+    "./phi-webtypes.json"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "webtypes": "wca-webtypes analyse src --format webtypes --outFile phi-webtypes.json"
+  },
+  "dependencies": {
+    "@lit/task": "^1.0.3",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "lit": "^3.3.1"
+  },
+  "devDependencies": {
+    "lit-web-types": "^0.1.5",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.7"
+  },
+  "wca": {
+    "webtypesConfig": {
+      "framework": "lit",
+      "description-markup": "markdown"
+    }
+  }
+}
+
