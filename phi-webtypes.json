@@ -14,6 +14,23 @@
                         "module": "./src/components/phi-application.ts",
                         "symbol": "PhiApplication"
                     },
+                    "attributes": [
+                        {
+                            "name": "min-ticks",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "number",
+                                "required": true,
+                                "default": "6"
+                            },
+                            "description": "Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.",
+                            "source": {
+                                "module": "./src/components/phi-application.ts",
+                                "symbol": "PhiApplication.minTicks"
+                            }
+                        }
+                    ],
                     "js": {
                         "properties": [
                             {
@@ -23,11 +40,26 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.splash-screen {\\r\\n            text-align: center;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            width: 100%;\\r\\n            height: 100%;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-application.ts",
                                     "symbol": "PhiApplication.styles"
+                                }
+                            },
+                            {
+                                "name": "minTicks",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "6"
+                                },
+                                "description": "Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.",
+                                "source": {
+                                    "module": "./src/components/phi-application.ts",
+                                    "symbol": "PhiApplication.minTicks"
                                 }
                             },
                             {
@@ -51,7 +83,7 @@
                                 "value": {
                                     "type": "Task<readonly unknown[], void>",
                                     "required": true,
-                                    "default": "\"new Task(this, {\\r\\n            task: async() => {\\r\\n                const t1 = this.startupTimerTask();\\r\\n                const t2 = this.startupFundsTask();\\r\\n                await Promise.all([t1, t2]);\\r\\n            }\\r\\n        })\""
+                                    "default": "\"new Task(this, {\\r\\n        task: async() => {\\r\\n            const t1 = this.startupTimerTask();\\r\\n            const t2 = this.startupFundsTask();\\r\\n            await Promise.all([t1, t2]);\\r\\n        }\\r\\n    })\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-application.ts",
@@ -94,7 +126,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n            width: 100%;\\r\\n            text-align: center;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            width: 100%;\\r\\n            height: 100%;\\r\\n        }\\r\\n        div {\\r\\n            width: 100%;\\r\\n            text-align: center;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-application.ts",
@@ -114,6 +146,86 @@
                                 "source": {
                                     "module": "./src/components/phi-application.ts",
                                     "symbol": "PhiSplashScreen.tickCount"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-main-header",
+                    "description": "Main application header",
+                    "source": {
+                        "module": "./src/components/phi-main-header.ts",
+                        "symbol": "PhiMainHeader"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        \\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main-header.ts",
+                                    "symbol": "PhiMainHeader.styles"
+                                }
+                            },
+                            {
+                                "name": "theme",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"light\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main-header.ts",
+                                    "symbol": "PhiMainHeader.theme"
+                                }
+                            },
+                            {
+                                "name": "icons",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "{ light: string; dark: string; system: string; }",
+                                    "required": true,
+                                    "default": "{\"light\":\"sun-fill\",\"dark\":\"moon-fill\",\"system\":\"circle-half\"}"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main-header.ts",
+                                    "symbol": "PhiMainHeader.icons"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-main",
+                    "description": "Main application screen containing header, navigation and body",
+                    "source": {
+                        "module": "./src/components/phi-main.ts",
+                        "symbol": "PhiMain"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            height: 100%;\\r\\n            width: 100%;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main.ts",
+                                    "symbol": "PhiMain.styles"
                                 }
                             }
                         ]

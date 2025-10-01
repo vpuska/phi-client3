@@ -11,6 +11,7 @@ import { customElement, state, property } from 'lit/decorators.js'
 import {Task} from "@lit/task";
 
 import {FundManager} from "../api-models/funds.ts";
+import {Theming} from "../modules/theming.ts";
 import logo from '/phi-logo.svg'
 
 
@@ -29,29 +30,36 @@ export class PhiApplication extends LitElement {
             height: 100%;
         }
     `
+    /**
+     * Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.
+     * */
+    @property({attribute: "min-ticks", type: Number}) minTicks = 6;
+    @state() tickCount = 1;
+
 
     constructor() {
         super();
-        //document.documentElement.classList.add("sl-theme-dark");
+        Theming.init();
+    }
+
+
+    connectedCallback() {
+        super.connectedCallback();
         this.startupTasks.run().then();
     }
 
 
-    // 'tick' counter used to indicate startup progress.
-    @state() tickCount: number = 1;
-
-
     private startupTasks = new Task(this, {
-            task: async() => {
-                const t1 = this.startupTimerTask();
-                const t2 = this.startupFundsTask();
-                await Promise.all([t1, t2]);
-            }
-        })
+        task: async() => {
+            const t1 = this.startupTimerTask();
+            const t2 = this.startupFundsTask();
+            await Promise.all([t1, t2]);
+        }
+    })
 
 
     private async startupTimerTask() {
-        for (let i = 0; i < 6; i++) {
+        while (this.tickCount <= this.minTicks) {
             await new Promise(resolve => setTimeout(resolve, 250));
             this.tickCount++;
         }
@@ -70,13 +78,7 @@ export class PhiApplication extends LitElement {
 
 
     render_main_screen() {
-        return html`
-            <div class="splash-screen">
-                <h2>Private Health Insurance Comparator</h2>
-                <img width="192px" height="192px" src=${logo} alt="PHI Logo" />
-                <div><sl-button>${FundManager.funds.size}</sl-button></div>
-            </div>
-        `
+        return html`<phi-main></phi-main>`;
     }
 
 
@@ -98,7 +100,12 @@ export class PhiApplication extends LitElement {
 class PhiSplashScreen extends LitElement {
     static styles = css`
         :host {
-            display: block;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        div {
             width: 100%;
             text-align: center;
         }
@@ -111,10 +118,12 @@ class PhiSplashScreen extends LitElement {
 
     render() {
         return html`
-            <h2>Private Health Insurance Comparator</h2>
-            <img width="192px" height="192px" src=${logo} alt="PHI Logo" />
-            <p>Please wait while loading</p>
-            <p>[ :${" :".repeat(this.tickCount)} ]</p>
+            <div>
+                <h2>Private Health Insurance Comparator</h2>
+                <img width="192px" height="192px" src=${logo} alt="PHI Logo" />
+                <p>Please wait while loading</p>
+                <p>[ :${" :".repeat(this.tickCount)} ]</p>
+            </div>
         `
     }
 }
