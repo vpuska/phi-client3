@@ -1,0 +1,33 @@
+:root,
+:host,
+.sl-theme-light {
+    color-scheme: light;
+    --phi-color-brown-50:  rgb(251 249 248);
+    --phi-color-brown-100: rgb(242 235 232);
+    --phi-color-brown-200: rgb(232 220 215);
+    --phi-color-brown-300: rgb(221 203 197);
+    --phi-color-brown-400: rgb(206 181 172);
+    --phi-color-brown-500: rgb(188 152 140);
+    --phi-color-brown-600: rgb(168 121 106);
+    --phi-color-brown-700: rgb(150 94 75);
+    --phi-color-brown-800: rgb(135 72 51);
+    --phi-color-brown-900: rgb(114 39 14);
+    --phi-color-brown-950: rgb(74 21 3);
+}
+
+
+:host,
+.sl-theme-dark {
+    color-scheme: dark;
+    --phi-color-brown-950: rgb(251 249 248);
+    --phi-color-brown-900: rgb(242 235 232);
+    --phi-color-brown-800: rgb(232 220 215);
+    --phi-color-brown-700: rgb(221 203 197);
+    --phi-color-brown-600: rgb(206 181 172);
+    --phi-color-brown-500: rgb(188 152 140);
+    --phi-color-brown-400: rgb(168 121 106);
+    --phi-color-brown-300: rgb(150 94 75);
+    --phi-color-brown-200: rgb(135 72 51);
+    --phi-color-brown-100: rgb(114 39 14);
+    --phi-color-brown-50:  rgb(74 21 3);
+}

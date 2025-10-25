@@ -24,7 +24,7 @@
                                 "required": true,
                                 "default": "6"
                             },
-                            "description": "Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.",
+                            "description": "Number of 1/4 second ticks to keep the splash screen displayed before moving to main application page.",
                             "source": {
                                 "module": "./src/components/phi-application.ts",
                                 "symbol": "PhiApplication.minTicks"
@@ -56,7 +56,7 @@
                                     "required": true,
                                     "default": "6"
                                 },
-                                "description": "Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.",
+                                "description": "Number of 1/4 second ticks to keep the splash screen displayed before moving to main application page.",
                                 "source": {
                                     "module": "./src/components/phi-application.ts",
                                     "symbol": "PhiApplication.minTicks"
@@ -152,6 +152,64 @@
                     }
                 },
                 {
+                    "name": "phi-color",
+                    "description": "Container to set the primary color: `--sl-color-primary-nnn` for child elements",
+                    "source": {
+                        "module": "./src/components/phi-color.ts",
+                        "symbol": "PhiColor"
+                    },
+                    "attributes": [
+                        {
+                            "name": "variant",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "\"primary\" | \"alternate\"",
+                                "required": true,
+                                "default": "\"primary\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-color.ts",
+                                "symbol": "PhiColor.variant"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            --sl-color-primary-50:  var(--phi-color-primary-50);\\r\\n            --sl-color-primary-100: var(--phi-color-primary-100);\\r\\n            --sl-color-primary-200: var(--phi-color-primary-200);\\r\\n            --sl-color-primary-300: var(--phi-color-primary-300);\\r\\n            --sl-color-primary-400: var(--phi-color-primary-400);\\r\\n            --sl-color-primary-500: var(--phi-color-primary-500);\\r\\n            --sl-color-primary-600: var(--phi-color-primary-600);\\r\\n            --sl-color-primary-700: var(--phi-color-primary-700);\\r\\n            --sl-color-primary-800: var(--phi-color-primary-800);\\r\\n            --sl-color-primary-900: var(--phi-color-primary-900);\\r\\n            --sl-color-primary-950: var(--phi-color-primary-950);\\r\\n        }\\r\\n        :host([variant=alternate]) {\\r\\n            --sl-color-primary-50:  var(--phi-color-alternate-50);\\r\\n            --sl-color-primary-100: var(--phi-color-alternate-100);\\r\\n            --sl-color-primary-200: var(--phi-color-alternate-200);\\r\\n            --sl-color-primary-300: var(--phi-color-alternate-300);\\r\\n            --sl-color-primary-400: var(--phi-color-alternate-400);\\r\\n            --sl-color-primary-500: var(--phi-color-alternate-500);\\r\\n            --sl-color-primary-600: var(--phi-color-alternate-600);\\r\\n            --sl-color-primary-700: var(--phi-color-alternate-700);\\r\\n            --sl-color-primary-800: var(--phi-color-alternate-800);\\r\\n            --sl-color-primary-900: var(--phi-color-alternate-900);\\r\\n            --sl-color-primary-950: var(--phi-color-alternate-950);            \\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-color.ts",
+                                    "symbol": "PhiColor.styles"
+                                }
+                            },
+                            {
+                                "name": "variant",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "kind": "plain",
+                                    "type": "\"primary\" | \"alternate\"",
+                                    "required": true,
+                                    "default": "\"primary\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-color.ts",
+                                    "symbol": "PhiColor.variant"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-main-header",
                     "description": "Main application header",
                     "source": {
@@ -167,7 +225,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        \\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        p {\\r\\n            color: var(--sl-color-primary-700);\\r\\n        }\\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main-header.ts",
@@ -181,11 +239,25 @@
                                 "value": {
                                     "type": "string",
                                     "required": true,
-                                    "default": "\"light\""
+                                    "default": "\"Theming.getTheme()\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main-header.ts",
                                     "symbol": "PhiMainHeader.theme"
+                                }
+                            },
+                            {
+                                "name": "themeColor",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Theming.getThemeColor()\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main-header.ts",
+                                    "symbol": "PhiMainHeader.themeColor"
                                 }
                             },
                             {

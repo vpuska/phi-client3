@@ -6,9 +6,8 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import { customElement} from 'lit/decorators.js'
-import {FundManager} from "../api-models/funds.ts";
-//import logo from '/phi-logo.svg'
+import {customElement} from 'lit/decorators.js'
+import {FundManager} from "../api-models/funds.ts"
 
 
 /**
@@ -30,10 +29,19 @@ export class PhiMain extends LitElement {
     render() {
         return html`
             <phi-main-header></phi-main-header>
-            <p>Item 1</p>
-            <p>Item 2</p>
-            <p>Item 3</p>
-            <sl-button>${FundManager.funds.size}</sl-button>
+            <div class="content">
+                ${FundManager.funds.size}
+                <p>Item 1</p>
+                <p>Item 2</p>
+                <p>Item 3</p>
+                <sl-button variant="primary">Click Me!</sl-button>
+                <phi-color variant="alternate">
+                    <sl-button variant="primary">Click Me 2!</sl-button>
+                    <phi-color>
+                        <sl-button variant="primary">Click Me 3!</sl-button>
+                    </phi-color>
+                </phi-color>
+            </div>
         `
     }
 }

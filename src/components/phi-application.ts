@@ -31,7 +31,7 @@ export class PhiApplication extends LitElement {
         }
     `
     /**
-     * Number of 1/4 section ticks to keep the splash screen displayed before moving to main application page.
+     * Number of 1/4 second ticks to keep the splash screen displayed before moving to main application page.
      * */
     @property({attribute: "min-ticks", type: Number}) minTicks = 6;
     @state() tickCount = 1;

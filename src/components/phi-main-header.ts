@@ -49,10 +49,15 @@ export class PhiMainHeader extends LitElement {
             gap: 0.5rem;
             padding-right: 1rem;
         }
+        p {
+            color: var(--sl-color-primary-700);
+        }
         
     `
     @state() theme: string = Theming.getTheme();
+    @state() themeColor: string = Theming.getThemeColor();
 
+    private colorThemes: string[] = [];
 
     private icons = {
         light: "sun-fill",
@@ -64,14 +69,26 @@ export class PhiMainHeader extends LitElement {
     constructor() {
         super();
 
+        // Build list of themes defined in stylesheet(s).
+        for (const key of document.documentElement.computedStyleMap().keys())
+            if (key.startsWith('--phi-theme-') && key.endsWith('name'))
+                this.colorThemes.push(key.substring(2, 14));
+
         this.addEventListener('sl-select', (event: Event) => {
-            this.theme = (event as SlSelectEvent).detail.item.value;
-            Theming.setTheme(this.theme as ThemingType)
+            const value = (event as SlSelectEvent).detail.item.value;
+            if (value.startsWith("phi-theme-"))
+                Theming.setThemeColor(value);
+            else
+                Theming.setTheme(value as ThemingType);
+            this.theme = Theming.getTheme();
+            this.themeColor = Theming.getThemeColor();
         })
     }
 
 
     render() {
+        const styles = document.documentElement.computedStyleMap();
+
         return html`
             
             <div class="title">
@@ -86,17 +103,29 @@ export class PhiMainHeader extends LitElement {
             </div>
             
             <div class="toolbar">
-                <sl-tooltip content="Change theme (${this.theme})">
                     <sl-dropdown>
-                        <sl-icon-button slot="trigger" name="${this.icons[this.theme as keyof typeof this.icons]}" label="Select display theme"></sl-icon-button>
+                        <sl-icon-button 
+                                slot="trigger" 
+                                name="${this.icons[this.theme as keyof typeof this.icons]}" 
+                                label="Select display theme">
+                        </sl-icon-button>
                         <sl-menu>
                             <sl-menu-item type="checkbox" value="light" ?checked=${this.theme==="light"}>Light mode</sl-menu-item>
                             <sl-menu-item type="checkbox" value="dark" ?checked=${this.theme==="dark"}>Dark mode</sl-menu-item>
                             <sl-divider></sl-divider>
                             <sl-menu-item type="checkbox" value="system" ?checked=${this.theme==="system"}>System</sl-menu-item>
+                            <sl-divider></sl-divider>
+                            ${this.colorThemes.map((theme) => html`
+                                <sl-menu-item type="checkbox" value="${theme}" ?checked="${this.themeColor===theme}">
+                                    <div style="display:flex; gap: 8px; align-items: center">
+                                        <sl-icon name="square-fill" style="color: ${styles.get(`--${theme}-primary`)}"></sl-icon>
+                                        <sl-icon name="square-fill" style="color: ${styles.get(`--${theme}-alternate`)}"></sl-icon>
+                                        ${styles.get(`--${theme}-name`)}
+                                    </div>
+                                </sl-menu-item>    
+                            `)}
                         </sl-menu>
                     </sl-dropdown>
-                </sl-tooltip>
             </div>
         `
     }

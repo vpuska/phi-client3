@@ -1,0 +1,90 @@
+
+
+:root {
+    /* The --phi-theme-nn variables are used by the application's theme menu to allow the user to change colors.
+     * Entries added here are automatically displayed in the menu, without the need to alter any code.
+     * See: phi-main-header.ts
+     */
+    --phi-theme-01-name: Blue + Gray default;
+    --phi-theme-01-primary: var(--sl-color-blue-500);
+    --phi-theme-01-alternate: var(--sl-color-gray-500);
+
+    --phi-theme-02-name: Purple + Yellow;
+    --phi-theme-02-primary: var(--sl-color-purple-500);
+    --phi-theme-02-alternate: var(--sl-color-yellow-500);
+
+    --phi-theme-03-name: Emerald + Brown;
+    --phi-theme-03-primary: var(--sl-color-emerald-500);
+    --phi-theme-03-alternate: var(--phi-color-brown-500);
+
+    --phi-theme-04-name: Brown + Emerald;
+    --phi-theme-04-primary: var(--phi-color-brown-500);
+    --phi-theme-04-alternate: var(--sl-color-emerald-500);
+
+    --phi-theme-05-name: Red + Gray;
+    --phi-theme-05-primary: var(--sl-color-red-500);
+    --phi-theme-05-alternate: var(--sl-color-gray-500);}
+
+:root, .phi-theme-01 {
+    /* Default Theme */
+    --phi-primary-color: sl-color-blue;
+    --phi-alternate-color: sl-color-gray;
+
+    --phi-color-primary-50:  var(--sl-color-blue-50);
+    --phi-color-primary-100: var(--sl-color-blue-100);
+    --phi-color-primary-200: var(--sl-color-blue-200);
+    --phi-color-primary-300: var(--sl-color-blue-300);
+    --phi-color-primary-400: var(--sl-color-blue-400);
+    --phi-color-primary-500: var(--sl-color-blue-500);
+    --phi-color-primary-600: var(--sl-color-blue-600);
+    --phi-color-primary-700: var(--sl-color-blue-700);
+    --phi-color-primary-800: var(--sl-color-blue-800);
+    --phi-color-primary-900: var(--sl-color-blue-900);
+    --phi-color-primary-950: var(--sl-color-blue-950);
+
+    --phi-color-alternate-50: var(--sl-color-gray-50);
+    --phi-color-alternate-100: var(--sl-color-gray-100);
+    --phi-color-alternate-200: var(--sl-color-gray-200);
+    --phi-color-alternate-300: var(--sl-color-gray-300);
+    --phi-color-alternate-400: var(--sl-color-gray-400);
+    --phi-color-alternate-500: var(--sl-color-gray-500);
+    --phi-color-alternate-600: var(--sl-color-gray-600);
+    --phi-color-alternate-700: var(--sl-color-gray-700);
+    --phi-color-alternate-800: var(--sl-color-gray-800);
+    --phi-color-alternate-900: var(--sl-color-gray-900);
+    --phi-color-alternate-950: var(--sl-color-gray-950);
+
+    --sl-color-primary-50:  var(--phi-color-primary-50);
+    --sl-color-primary-100: var(--phi-color-primary-100);
+    --sl-color-primary-200: var(--phi-color-primary-200);
+    --sl-color-primary-300: var(--phi-color-primary-300);
+    --sl-color-primary-400: var(--phi-color-primary-400);
+    --sl-color-primary-500: var(--phi-color-primary-500);
+    --sl-color-primary-600: var(--phi-color-primary-600);
+    --sl-color-primary-700: var(--phi-color-primary-700);
+    --sl-color-primary-800: var(--phi-color-primary-800);
+    --sl-color-primary-900: var(--phi-color-primary-900);
+    --sl-color-primary-950: var(--phi-color-primary-950);
+}
+
+.phi-theme-02 {
+    --phi-primary-color: sl-color-purple;
+    --phi-alternate-color: sl-color-yellow;
+}
+
+.phi-theme-03 {
+    --phi-primary-color: sl-color-emerald;
+    --phi-alternate-color:  phi-color-brown;
+}
+
+.phi-theme-04 {
+    --phi-primary-color: phi-color-brown;
+    --phi-alternate-color:  sl-color-emerald;
+}
+
+.phi-theme-05 {
+    --phi-primary-color: sl-color-red;
+    --phi-alternate-color: sl-color-gray;
+}
+
+

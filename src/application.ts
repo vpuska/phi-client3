@@ -14,6 +14,10 @@ setBasePath('/node_modules/@shoelace-style/shoelace/dist')
 
 
 // Application modules
+import "./themes.css"
+import "./colors.css"
+
 import "./components/phi-application"
 import "./components/phi-main"
 import "./components/phi-main-header"
+import "./components/phi-color"
