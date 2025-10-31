@@ -5,31 +5,41 @@
      * Entries added here are automatically displayed in the menu, without the need to alter any code.
      * See: phi-main-header.ts
      */
-    --phi-theme-01-name: Blue + Gray default;
+    --phi-theme-01-name: Blue+Gray default;
     --phi-theme-01-primary: var(--sl-color-blue-500);
     --phi-theme-01-alternate: var(--sl-color-gray-500);
 
-    --phi-theme-02-name: Purple + Yellow;
+    --phi-theme-02-name: Purple+Yellow;
     --phi-theme-02-primary: var(--sl-color-purple-500);
     --phi-theme-02-alternate: var(--sl-color-yellow-500);
 
-    --phi-theme-03-name: Emerald + Brown;
+    --phi-theme-03-name: Emerald+Brown;
     --phi-theme-03-primary: var(--sl-color-emerald-500);
     --phi-theme-03-alternate: var(--phi-color-brown-500);
 
-    --phi-theme-04-name: Brown + Emerald;
+    --phi-theme-04-name: Brown+Emerald;
     --phi-theme-04-primary: var(--phi-color-brown-500);
     --phi-theme-04-alternate: var(--sl-color-emerald-500);
 
-    --phi-theme-05-name: Red + Gray;
+    --phi-theme-05-name: Red+Gray;
     --phi-theme-05-primary: var(--sl-color-red-500);
-    --phi-theme-05-alternate: var(--sl-color-gray-500);}
+    --phi-theme-05-alternate: var(--sl-color-gray-500);
+
+    --phi-theme-06-name: Neutral;
+    --phi-theme-06-primary: var(--sl-color-gray-800);
+    --phi-theme-06-alternate: var(--sl-color-gray-200);
+}
 
 :root, .phi-theme-01 {
     /* Default Theme */
     --phi-primary-color: sl-color-blue;
     --phi-alternate-color: sl-color-gray;
+    /*noinspection CssUnknownTarget*/
+    --phi-home-background-image: url("/pexels-olly-3979198.jpg");
+    --phi-home-background-filter: sepia(20%) hue-rotate(170deg) saturate(50%) brightness(66%);
 
+    /* Set default colors and define phi color variables (not really needed, but helps
+     IDE) */
     --phi-color-primary-50:  var(--sl-color-blue-50);
     --phi-color-primary-100: var(--sl-color-blue-100);
     --phi-color-primary-200: var(--sl-color-blue-200);
@@ -54,6 +64,7 @@
     --phi-color-alternate-900: var(--sl-color-gray-900);
     --phi-color-alternate-950: var(--sl-color-gray-950);
 
+    /* Link primary color to phi primary color */
     --sl-color-primary-50:  var(--phi-color-primary-50);
     --sl-color-primary-100: var(--phi-color-primary-100);
     --sl-color-primary-200: var(--phi-color-primary-200);
@@ -70,21 +81,31 @@
 .phi-theme-02 {
     --phi-primary-color: sl-color-purple;
     --phi-alternate-color: sl-color-yellow;
+    --phi-home-background-filter: sepia(25%) hue-rotate(15deg) saturate(80%) brightness(50%);
 }
 
 .phi-theme-03 {
     --phi-primary-color: sl-color-emerald;
     --phi-alternate-color:  phi-color-brown;
+    --phi-home-background-filter: sepia(25%) hue-rotate(45deg) saturate(60%) brightness(50%);
 }
 
 .phi-theme-04 {
     --phi-primary-color: phi-color-brown;
     --phi-alternate-color:  sl-color-emerald;
+    --phi-home-background-filter: sepia(25%) hue-rotate(0deg) saturate(66%) brightness(66%);
 }
 
 .phi-theme-05 {
     --phi-primary-color: sl-color-red;
     --phi-alternate-color: sl-color-gray;
+    --phi-home-background-filter: sepia(25%) hue-rotate(-40deg) saturate(75%) brightness(66%);
+}
+
+.phi-theme-06 {
+    --phi-primary-color: sl-color-gray;
+    --phi-alternate-color: sl-color-gray;
+    --phi-home-background-filter: saturate(80%) brightness(66%);
 }
 
 
