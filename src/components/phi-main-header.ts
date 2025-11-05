@@ -12,10 +12,11 @@ import type {SlSelectEvent} from "@shoelace-style/shoelace";
 import logo from '/phi-logo.svg'
 
 import {Theming, type ThemingType} from "../modules/theming.ts";
+import {Globals} from "../modules/globals.ts";
 
 
 /**
- * Main application header
+ * Main application header.
  */
 @customElement('phi-main-header')
 export class PhiMainHeader extends LitElement {
@@ -99,9 +100,26 @@ export class PhiMainHeader extends LitElement {
             </div>
             
             <div class="menu">
-                <p>Funds</p>
-                <p>Product Search</p>
-                <p>Resources</p>
+                <sl-button variant="text" size="large"
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-home"))}}>
+                    <sl-icon slot="prefix" name="house"></sl-icon>
+                    Home
+                </sl-button>
+                <sl-button variant="text" size="large"
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
+                    <sl-icon slot="prefix" name="buildings"></sl-icon>
+                    Funds
+                </sl-button>
+                <sl-button variant="text" size="large"
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-home"))}}>
+                    <sl-icon slot="prefix" name="search"></sl-icon>
+                    Compare
+                </sl-button>
+                <sl-button variant="text" size="large"
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-home"))}}>
+                    <sl-icon slot="prefix" name="globe"></sl-icon>
+                    Resources
+                </sl-button>
             </div>
             
             <div class="toolbar">

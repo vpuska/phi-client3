@@ -36,7 +36,7 @@
     --phi-alternate-color: sl-color-gray;
     /*noinspection CssUnknownTarget*/
     --phi-home-background-image: url("/pexels-olly-3979198.jpg");
-    --phi-home-background-filter: sepia(20%) hue-rotate(170deg) saturate(50%) brightness(66%);
+    --phi-home-background-filter: sepia(20%) hue-rotate(170deg) saturate(20%) brightness(66%);
 
     /* Set default colors and define phi color variables (not really needed, but helps
      IDE) */
@@ -81,25 +81,25 @@
 .phi-theme-02 {
     --phi-primary-color: sl-color-purple;
     --phi-alternate-color: sl-color-yellow;
-    --phi-home-background-filter: sepia(25%) hue-rotate(15deg) saturate(80%) brightness(50%);
+    --phi-home-background-filter: saturate(80%) brightness(66%);
 }
 
 .phi-theme-03 {
     --phi-primary-color: sl-color-emerald;
     --phi-alternate-color:  phi-color-brown;
-    --phi-home-background-filter: sepia(25%) hue-rotate(45deg) saturate(60%) brightness(50%);
+    --phi-home-background-filter: sepia(25%) hue-rotate(45deg) saturate(20%) brightness(50%);
 }
 
 .phi-theme-04 {
     --phi-primary-color: phi-color-brown;
     --phi-alternate-color:  sl-color-emerald;
-    --phi-home-background-filter: sepia(25%) hue-rotate(0deg) saturate(66%) brightness(66%);
+    --phi-home-background-filter: sepia(25%) hue-rotate(0deg) saturate(20%) brightness(66%);
 }
 
 .phi-theme-05 {
     --phi-primary-color: sl-color-red;
     --phi-alternate-color: sl-color-gray;
-    --phi-home-background-filter: sepia(25%) hue-rotate(-40deg) saturate(75%) brightness(66%);
+    --phi-home-background-filter: sepia(25%) hue-rotate(-40deg) saturate(20%) brightness(66%);
 }
 
 .phi-theme-06 {

@@ -7,12 +7,11 @@
 
 import {LitElement, html, css} from 'lit'
 import { customElement} from 'lit/decorators.js'
-
-
+import {Globals} from "../modules/globals.ts";
 
 
 /**
- * Home Page.
+ * Application home page.
  */
 @customElement('phi-home')
 export class PhiHome extends LitElement {
@@ -53,16 +52,17 @@ export class PhiHome extends LitElement {
 
     }
 
-
     render() {
         return html`
             <div id="image"></div>
             <div id="buttons">
-                <sl-button variant="primary" size="large">
+                <sl-button variant="primary" size="large" 
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
                     <sl-icon slot="prefix" name="search"></sl-icon>
                     Compare policies...
                 </sl-button>
-                <sl-button variant="primary" size="large">
+                <sl-button variant="primary" size="large"
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
                     <sl-icon slot="prefix" name="book"></sl-icon>
                     Browse funds...</sl-button>
             </div>

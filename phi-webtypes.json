@@ -210,6 +210,40 @@
                     }
                 },
                 {
+                    "name": "phi-fund-browser",
+                    "description": "Fund browser page..",
+                    "source": {
+                        "module": "./src/components/phi-fund-browser.ts",
+                        "symbol": "PhiFundBrowser"
+                    }
+                },
+                {
+                    "name": "phi-home",
+                    "description": "Home Page.",
+                    "source": {
+                        "module": "./src/components/phi-home.ts",
+                        "symbol": "PhiHome"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            height: 100%;\\r\\n        } \\r\\n        div#image {\\r\\n            display: flex;\\r\\n            background-image: var(--phi-home-background-image);\\r\\n            filter: var(--phi-home-background-filter);\\r\\n            background-size: cover;\\r\\n            background-position: center;\\r\\n            width: 50%;\\r\\n            border-radius: 8px;\\r\\n            margin: 8px;\\r\\n        }\\r\\n        div#buttons {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            position: relative;\\r\\n            justify-content: center;\\r\\n            width: 33%;\\r\\n            left: -9%;\\r\\n            gap: 5%;\\r\\n        }\\r\\n       sl-button::part(base) {\\r\\n            border: 4px double var(--sl-color-primary-200);\\r\\n            margin: 8px;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-home.ts",
+                                    "symbol": "PhiHome.styles"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-main-header",
                     "description": "Main application header",
                     "source": {
@@ -225,7 +259,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            width: 100%;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        p {\\r\\n            color: var(--sl-color-primary-700);\\r\\n        }\\r\\n        \\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            background-color: var(--sl-color-gray-300);\\r\\n            border-radius: 8px;\\r\\n            margin: 8px 8px 0 8px;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        p {\\r\\n            color: var(--sl-color-primary-800);\\r\\n        }\\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main-header.ts",
@@ -261,6 +295,20 @@
                                 }
                             },
                             {
+                                "name": "colorThemes",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "string[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-main-header.ts",
+                                    "symbol": "PhiMainHeader.colorThemes"
+                                }
+                            },
+                            {
                                 "name": "icons",
                                 "required": false,
                                 "priority": "lowest",
@@ -293,11 +341,67 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            height: 100%;\\r\\n            width: 100%;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            height: 100%;\\r\\n            width: 100%;\\r\\n        }\\r\\n        phi-page-manager {\\r\\n            height: 100%;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main.ts",
                                     "symbol": "PhiMain.styles"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-page-manager",
+                    "description": "Page manager..",
+                    "source": {
+                        "module": "./src/components/phi-page-manager.ts",
+                        "symbol": "PhiPageManager"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        div {\\r\\n            height: 100%;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-page-manager.ts",
+                                    "symbol": "PhiPageManager.styles"
+                                }
+                            },
+                            {
+                                "name": "contentCreated",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-page-manager.ts",
+                                    "symbol": "PhiPageManager.contentCreated"
+                                }
+                            },
+                            {
+                                "name": "contentHolder",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "HTMLDivElement",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-page-manager.ts",
+                                    "symbol": "PhiPageManager.contentHolder"
                                 }
                             }
                         ]

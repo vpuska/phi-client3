@@ -23,7 +23,7 @@ export class PhiMain extends LitElement {
             height: 100%;
             width: 100%;
         }
-        .content {
+        phi-page-manager {
             height: 100%;
         }
     `
@@ -31,9 +31,7 @@ export class PhiMain extends LitElement {
     render() {
         return html`
             <phi-main-header></phi-main-header>
-            <div class="content">
-                <phi-home></phi-home>
-            </div>
+            <phi-page-manager></phi-page-manager>
         `
     }
 }
