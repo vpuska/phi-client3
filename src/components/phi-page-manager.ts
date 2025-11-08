@@ -11,7 +11,7 @@ import {Globals} from "../modules/globals.ts";
 
 
 /**
- * Page manager..
+ * Component to manage switching between application pages (Funds, Search, etc.).
  */
 @customElement('phi-page-manager')
 export class PhiPageManager extends LitElement {
@@ -22,9 +22,12 @@ export class PhiPageManager extends LitElement {
         }
     `
 
-    homePage: LitElement = document.createElement("phi-home");
+    // Initial/default page displayed.
+    private readonly homePage: LitElement = document.createElement("phi-home");
+    // Current page displayed.
     currentPage: LitElement = this.homePage;
 
+    // Container for content.
     @query("#page") contentHolder: HTMLDivElement | undefined;
 
     constructor() {
@@ -32,6 +35,7 @@ export class PhiPageManager extends LitElement {
         Globals.register.pageManager(this);
     }
 
+    // Set the currently displayed content.
     setPage(page: LitElement) {
         this.currentPage = page;
         this.contentHolder?.replaceChild(page, this.contentHolder!.firstChild!)
