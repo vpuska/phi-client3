@@ -5,7 +5,7 @@
  * @written 31-Oct-2025
  */
 
-import {LitElement, html, css, type PropertyValues} from 'lit'
+import {LitElement, html, css} from 'lit'
 import { customElement, queryAll} from 'lit/decorators.js'
 import { FundManager} from "../api-models/funds.ts";
 
@@ -46,38 +46,12 @@ export class PhiFundBrowser extends LitElement {
         super();
     }
 
-    async setFirstAvailableImage(img: HTMLImageElement): Promise<void> {
-        const extensions = ["svg", "png", "jpg", "webp"];
-        let src = img.src;
-
-        for (const ext of extensions) {
-            const url = `${src}.${ext}`;
-            const p = new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = url;
-            });
-            if (await p) {
-                img.src = url;
-                return;
-            }
-        }
-    }
-
-    protected firstUpdated(_changedProperties: PropertyValues) {
-        super.firstUpdated(_changedProperties);
-        for (const img of this.fundImages) {
-            this.setFirstAvailableImage(img).then();
-        }
-    }
-
     render() {
         return html`
             ${[...FundManager.funds.values()].map((fund) => html`
                 <sl-card>
                     <div slot="header">
-                        <img class="fund" src="/fund_logos/${fund.code}" alt="${fund.code}">
+                        <img class="fund" src="${fund.logo}" alt="${fund.code}">
                     </div>
                     <strong>${fund.name}</strong><br/>
                     <small>

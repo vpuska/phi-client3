@@ -64,6 +64,7 @@ export type FundDependantLimitsType = {
 export class Fund {
     private document : Document;
     private data: FundAPIResultRowType;
+    public logo: string = "";
 
     constructor(data: FundAPIResultRowType) {
         const parser = new DOMParser();
@@ -170,6 +171,26 @@ export class Fund {
                 this.document.querySelector("Fund > FundDependants > NonClassifiedDependantDescription")?.textContent || "",
         };
     }
+
+    // Determine the logo image file extension and save the image file name.
+    async findFundLogo(): Promise<void> {
+        const extensions = ["svg", "png", "jpg", "webp"];
+
+        for (const ext of extensions) {
+            const url = `/fund_logos/${this.code}.${ext}`;
+            const p = new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+            if (await p) {
+                this.logo = url;
+                return;
+            }
+        }
+    }
+
 }
 
 /**
@@ -219,6 +240,7 @@ async function downloadFundData() {
     funds.sort((a:FundAPIResultRowType, b:FundAPIResultRowType) => a.name.localeCompare(b.name));
     for (const f_raw of funds) {
         const f = new Fund(f_raw);
+        await f.findFundLogo();
         fundMap.set(f.code, f);
     }
 }
