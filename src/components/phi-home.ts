@@ -24,7 +24,6 @@ export class PhiHome extends LitElement {
             height: 100%;
         } 
         div#image {
-            display: flex;
             background-image: var(--phi-home-background-image);
             filter: var(--phi-home-background-filter);
             background-size: cover;

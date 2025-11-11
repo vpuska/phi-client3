@@ -80,7 +80,7 @@ export class Fund {
         return this.data.name;
     }
 
-    get type() {
+    get type() : FundType {
         return this.data.type;
     }
 

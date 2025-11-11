@@ -17,8 +17,14 @@ import {Globals} from "../modules/globals.ts";
 export class PhiPageManager extends LitElement {
 
     static styles = css`
+        :host {
+            display: flex;
+            flex-direction: column;
+        }
         div {
-            height: 100%;
+            display: flex;
+            flex-direction: column;
+            flex: 1 0 0;
         }
     `
 

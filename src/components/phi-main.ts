@@ -23,8 +23,11 @@ export class PhiMain extends LitElement {
             height: 100%;
             width: 100%;
         }
+        phi-main-header {
+            flex: 0 0 auto;     // height fixed to content           
+        }
         phi-page-manager {
-            height: 100%;
+            flex: 1 1 0;        // height floats with remaining screen space
         }
     `
 
