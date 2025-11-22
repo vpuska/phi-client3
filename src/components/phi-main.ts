@@ -20,14 +20,11 @@ export class PhiMain extends LitElement {
         :host {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            gap: 8px;
             width: 100%;
-        }
-        phi-main-header {
-            flex: 0 0 auto;     // height fixed to content           
-        }
-        phi-page-manager {
-            flex: 1 1 0;        // height floats with remaining screen space
+            margin: 0;
+            padding: 8px;
+            background-color: cornflowerblue;
         }
     `
 

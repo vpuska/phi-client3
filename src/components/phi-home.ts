@@ -21,7 +21,7 @@ export class PhiHome extends LitElement {
         :host {
             display: flex;
             flex-direction: row;
-            height: 100%;
+            flex: 1 0 0;
         } 
         div#image {
             background-image: var(--phi-home-background-image);
@@ -30,7 +30,6 @@ export class PhiHome extends LitElement {
             background-position: center;
             width: 50%;
             border-radius: 8px;
-            margin: 8px;
         }
         div#buttons {
             display: flex;

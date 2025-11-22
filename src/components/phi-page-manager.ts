@@ -20,6 +20,7 @@ export class PhiPageManager extends LitElement {
         :host {
             display: flex;
             flex-direction: column;
+            flex: 1 1 0;
         }
         div {
             display: flex;
@@ -28,13 +29,8 @@ export class PhiPageManager extends LitElement {
         }
     `
 
-    // Initial/default page displayed.
-    private readonly homePage: LitElement = document.createElement("phi-home");
-    // Current page displayed.
-    currentPage: LitElement = this.homePage;
-
-    // Container for content.
-    @query("#page") contentHolder: HTMLDivElement | undefined;
+    // Container for content pages.
+    @query("#pageHolder") pageHolder: HTMLDivElement | undefined;
 
     constructor() {
         super();
@@ -43,17 +39,32 @@ export class PhiPageManager extends LitElement {
 
     // Set the currently displayed content.
     setPage(page: LitElement) {
-        this.currentPage = page;
-        this.contentHolder?.replaceChild(page, this.contentHolder!.firstChild!)
+        const pageHolder = this.pageHolder!
+        while(pageHolder.children.length > 0)
+            pageHolder.removeChild(pageHolder.lastChild!);
+        pageHolder.appendChild(page);
+        page.style.display = 'flex'
     }
 
-    updated() {
-        if (!this.contentHolder?.hasChildNodes())
-            this.contentHolder?.appendChild(this.currentPage);
+    // Push page onto the stack and display it.
+    pushPage(page: LitElement) {
+        const pageHolder = this.pageHolder!;
+        (pageHolder.lastChild as LitElement).style.display = 'none';
+        pageHolder.appendChild(page);
+        page.style.display = 'flex';
+    }
+
+    // Pop page off the stack and display next page.
+    popPage() {
+        const pageHolder = this.pageHolder!;
+        pageHolder.removeChild(pageHolder.lastChild!);
+        (pageHolder.lastChild as LitElement).style.display = 'flex';
     }
 
     render() {
-        return html`<div id="page"></div>`
+        return html`<div id="pageHolder">
+            <phi-home></phi-home>
+        </div>`
     }
 
 }

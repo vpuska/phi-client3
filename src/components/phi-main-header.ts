@@ -26,12 +26,13 @@ export class PhiMainHeader extends LitElement {
         :host {
             display: flex;
             flex-direction: row;
+            flex: 0 0 auto;
             align-items: center;
             gap: 4rem;
             height: 64px;
             background-color: var(--sl-color-gray-300);
             border-radius: 8px;
-            margin: 8px 8px 0 8px;
+            //margin: 8px 8px 0 8px;
         }
         div.title {
             display: flex;

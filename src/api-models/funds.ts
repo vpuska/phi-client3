@@ -35,6 +35,7 @@ export type FundRestrictionsType = {
 export type FundBrandType = {
     code: string;
     name: string;
+    logo: string;
     communication: FundCommunicationType;
     websiteLinks: FundWebSiteLinkType[];
 }
@@ -65,11 +66,16 @@ export class Fund {
     private document : Document;
     private data: FundAPIResultRowType;
     public logo: string = "";
+    private brandLogos= new Map<string,string>;
 
     constructor(data: FundAPIResultRowType) {
         const parser = new DOMParser();
         this.data = data;
         this.document = parser.parseFromString(data.Fund, "text/xml");
+    }
+
+    get xml() {
+        return this.data.Fund;
     }
 
     get code() {
@@ -109,16 +115,18 @@ export class Fund {
 
     get brands() : FundBrandType[] {
         let list: FundBrandType[] = [];
-        for (const elem of this.document.querySelectorAll("Fund > RelatedBrandNames > FundBrandType")) {
+        for (const elem of this.document.querySelectorAll("Fund > RelatedBrandNames > Brand")) {
+            const brandCode = elem.querySelector("BrandCode")?.textContent || "";
             const b: FundBrandType = {
-                code: elem.querySelector("BrandCode")?.textContent || "",
+                code: brandCode,
                 name: elem.querySelector("BrandName")?.textContent || "",
                 communication: {
                     phone: elem.querySelector("BrandPhone")?.textContent || "",
                     email: elem.querySelector("BrandEmail")?.textContent || "",
                     website: elem.querySelector("BrandWebsite")?.textContent || ""
                 },
-                websiteLinks: []
+                websiteLinks: [],
+                logo: this.brandLogos.get(brandCode) || this.logo,
             }
             for (const linkElem of elem.querySelectorAll("BrandWebsiteLinks > Link")) {
                 b.websiteLinks.push( {
@@ -156,7 +164,7 @@ export class Fund {
 
     get dependantLimits() : FundDependantLimitsType {
         const map = new Map<FundDependantLimitTitleType,FundDependantLimitType>();
-        for (const elem of this.document.querySelectorAll("Fund > FundDependants > FundDependantLimitType > DependantLimit")) {
+        for (const elem of this.document.querySelectorAll("Fund > FundDependants > DependantLimits > DependantLimit")) {
             const title = elem.getAttribute("Title")! as FundDependantLimitTitleType;
             map.set(title, {
                 title: title,
@@ -172,25 +180,34 @@ export class Fund {
         };
     }
 
-    // Determine the logo image file extension and save the image file name.
-    async findFundLogo(): Promise<void> {
+    async determineLogoFileName(base : string) : Promise<string|null> {
         const extensions = ["svg", "png", "jpg", "webp"];
 
         for (const ext of extensions) {
-            const url = `/fund_logos/${this.code}.${ext}`;
+            const url = `${base}.${ext}`;
             const p = new Promise((resolve) => {
                 const img = new Image();
                 img.onload = () => resolve(true);
                 img.onerror = () => resolve(false);
                 img.src = url;
             });
-            if (await p) {
-                this.logo = url;
-                return;
-            }
+            if (await p)
+                return url;
         }
+        return null;
     }
 
+    async findFundLogo(): Promise<void> {
+        const logo = await this.determineLogoFileName(`/fund_logos/${this.code}`);
+        if (logo !== null)
+            this.logo = logo;
+
+        for(const brand of this.brands) {
+            const logo = await this.determineLogoFileName(`/fund_logos/${brand.code}`);
+            if (logo !== null)
+                this.brandLogos.set(brand.code, logo);
+        }
+    }
 }
 
 /**

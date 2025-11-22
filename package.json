@@ -15,7 +15,8 @@
   "dependencies": {
     "@lit/task": "^1.0.3",
     "@shoelace-style/shoelace": "^2.20.1",
-    "lit": "^3.3.1"
+    "lit": "^3.3.1",
+    "xml-formatter": "^3.6.7"
   },
   "devDependencies": {
     "lit-web-types": "^0.1.5",
@@ -29,4 +30,3 @@
     }
   }
 }
-
