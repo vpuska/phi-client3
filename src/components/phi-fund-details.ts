@@ -9,7 +9,7 @@ import {LitElement, html, css, nothing, type TemplateResult, type PropertyValues
 import {customElement, property, query, state} from 'lit/decorators.js'
 import {Fund, FundManager} from "../api-models/funds.ts";
 import {Globals} from "../modules/globals.ts";
-import {properCaseToWords} from "../modules/utilities.ts"
+import {constructTableRow, properCaseToWords} from "../modules/utilities.ts"
 import xmlFormat from 'xml-formatter';
 
 /**
@@ -147,12 +147,11 @@ export class PhiFundDetails extends LitElement {
                 html`
                     <table>
                         ${fund.websiteLinks.map((link) => {
-                            return html`
-                                <tr>
-                                    <td>${properCaseToWords(link.title)}:</td>
-                                    <td><a href=${link.link} target="_blank">${link.link}</td>
-                                </tr>     
-                            `
+                            return constructTableRow(
+                                properCaseToWords(link.title),
+                                " : ",
+                                html`<a href=${link.link} target="_blank">${link.link}</a>`
+                            )
                         })}
                     </table>
                 `
@@ -167,13 +166,7 @@ export class PhiFundDetails extends LitElement {
                 <table>
                     ${limits.map((limit) => {
                         const text = limit.supported ? `ages ${limit.minAge}-${limit.maxAge}` : "not supported";
-                        return html`
-                            <tr>
-                                <td>${properCaseToWords(limit.title)}:</td>
-                                <td style="width: 8px"></td>
-                                <td>${text}</td>
-                            </tr>
-                        `  
+                        return constructTableRow(properCaseToWords(limit.title), " : ", " ", text);
                     })}
                 </table>
                 ${fund.dependantLimits.nonClassifiedDependantDescription ?
@@ -226,7 +219,6 @@ export class PhiFundDetails extends LitElement {
             </div>
             
             <div id="xml" class="details">
-                <h4>XML</h4>
                 <sl-textarea size="small" resize="auto" value="${xmlFormat(fund.xml.trim(), {collapseContent: true})}">
                 </sl-textarea>
             </div>
