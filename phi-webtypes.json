@@ -215,11 +215,330 @@
                     "source": {
                         "module": "./src/components/phi-fund-browser.ts",
                         "symbol": "PhiFundBrowser"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            flex-flow: row wrap;\\r\\n            gap: 2rem;\\r\\n            overflow-y: scroll;\\r\\n\\r\\n            border-radius: 8px;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            padding: 16px;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-browser.ts",
+                                    "symbol": "PhiFundBrowser.styles"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-fund-card",
+                    "source": {
+                        "module": "./src/components/phi-fund-browser.ts",
+                        "symbol": "PhiFundCard"
+                    },
+                    "attributes": [
+                        {
+                            "name": "fund-code",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "source": {
+                                "module": "./src/components/phi-fund-browser.ts",
+                                "symbol": "PhiFundCard.fundCode"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            max-width: 300px;\\r\\n        }\\r\\n        sl-card {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n        sl-card::part(body) {\\r\\n            flex: 1 0 0;\\r\\n        }\\r\\n        sl-card::part(footer) {\\r\\n            padding: 4px 12px;\\r\\n        }\\r\\n        img.logo {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n        sl-tooltip {\\r\\n            --show-delay: 1s;\\r\\n        }\\r\\n        div[slot=\\\"footer\\\"] {\\r\\n            display: flex;\\r\\n            justify-content: start;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n        }\\r\\n        sl-icon-button.restriction-icon::part(base) {\\r\\n            color: var(--sl-color-warning-600);\\r\\n        }\\r\\n        sl-icon-button.restriction-icon::part(base):hover {\\r\\n            color: var(--sl-color-warning-800);\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-browser.ts",
+                                    "symbol": "PhiFundCard.styles"
+                                }
+                            },
+                            {
+                                "name": "fundCode",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-browser.ts",
+                                    "symbol": "PhiFundCard.fundCode"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-fund-card-click"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-fund-details",
+                    "description": "Fund details page..",
+                    "source": {
+                        "module": "./src/components/phi-fund-details.ts",
+                        "symbol": "PhiFundDetails"
+                    },
+                    "attributes": [
+                        {
+                            "name": "fund-code",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "source": {
+                                "module": "./src/components/phi-fund-details.ts",
+                                "symbol": "PhiFundDetails.fundCode"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;    // take up available space in our container (phi-page-manager)\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n\\r\\n        /* header block */\\r\\n        div.header { \\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            height: 96px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n            border-radius: 8px 8px 0 0;\\r\\n            gap: 32px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        /* header block - fund name */\\r\\n        div.header > h4 { \\r\\n            flex: 1 0 0;\\r\\n            margin: 0;\\r\\n        }\\r\\n        \\r\\n        /* details block */\\r\\n        div.details, phi-fund-product-details.details {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex-wrap: nowrap;\\r\\n            flex: 1 0 0;\\r\\n            overflow-y: auto;\\r\\n            background-color: var(--sl-color-gray-200);\\r\\n            border-radius: 0 0 8px 8px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        img.logo {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n\\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        small > *:first-child {\\r\\n            margin-top: 2px;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.styles"
+                                }
+                            },
+                            {
+                                "name": "fundCode",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.fundCode"
+                                }
+                            },
+                            {
+                                "name": "subPage",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"details\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.subPage"
+                                }
+                            },
+                            {
+                                "name": "detailsPage",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HTMLElement",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.detailsPage"
+                                }
+                            },
+                            {
+                                "name": "brandsPage",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HTMLElement",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.brandsPage"
+                                }
+                            },
+                            {
+                                "name": "xmlPage",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HTMLElement",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.xmlPage"
+                                }
+                            },
+                            {
+                                "name": "productsPage",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiFundProductBrowser",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundDetails.productsPage"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-fund-brands",
+                    "source": {
+                        "module": "./src/components/phi-fund-details.ts",
+                        "symbol": "PhiFundBrands"
+                    },
+                    "attributes": [
+                        {
+                            "name": "fund",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-fund-details.ts",
+                                "symbol": "PhiFundBrands.fund"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            flex-wrap: wrap;\\r\\n        }\\r\\n        sl-card::part(base) {\\r\\n            margin: 8px;\\r\\n            width: 200px;\\r\\n            height: 100%;  // ensure card gets stretched\\r\\n        }\\r\\n        sl-card::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n        sl-card::part(body) {\\r\\n            flex: 1 0 0;\\r\\n        }\\r\\n        img.logo {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n        div[slot=\\\"header\\\"] {\\r\\n            display: flex;\\r\\n            gap: 16px;\\r\\n            justify-content: start;\\r\\n            align-items: center;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundBrands.styles"
+                                }
+                            },
+                            {
+                                "name": "fund",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details.ts",
+                                    "symbol": "PhiFundBrands.fund"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-fund-product-browser",
+                    "description": "Fund product browser page..",
+                    "source": {
+                        "module": "./src/components/phi-fund-product-browser.ts",
+                        "symbol": "PhiFundProductBrowser"
+                    },
+                    "attributes": [
+                        {
+                            "name": "fund",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "source": {
+                                "module": "./src/components/phi-fund-product-browser.ts",
+                                "symbol": "PhiFundProductBrowser.fund"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            flex-flow: column nowrap;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.styles"
+                                }
+                            },
+                            {
+                                "name": "loaded",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.loaded"
+                                }
+                            },
+                            {
+                                "name": "fund",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.fund"
+                                }
+                            }
+                        ]
                     }
                 },
                 {
                     "name": "phi-home",
-                    "description": "Home Page.",
+                    "description": "Application home page.",
                     "source": {
                         "module": "./src/components/phi-home.ts",
                         "symbol": "PhiHome"
@@ -233,7 +552,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            height: 100%;\\r\\n        } \\r\\n        div#image {\\r\\n            display: flex;\\r\\n            background-image: var(--phi-home-background-image);\\r\\n            filter: var(--phi-home-background-filter);\\r\\n            background-size: cover;\\r\\n            background-position: center;\\r\\n            width: 50%;\\r\\n            border-radius: 8px;\\r\\n            margin: 8px;\\r\\n        }\\r\\n        div#buttons {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            position: relative;\\r\\n            justify-content: center;\\r\\n            width: 33%;\\r\\n            left: -9%;\\r\\n            gap: 5%;\\r\\n        }\\r\\n       sl-button::part(base) {\\r\\n            border: 4px double var(--sl-color-primary-200);\\r\\n            margin: 8px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            flex: 1 0 0;\\r\\n        } \\r\\n        div#image {\\r\\n            background-image: var(--phi-home-background-image);\\r\\n            filter: var(--phi-home-background-filter);\\r\\n            background-size: cover;\\r\\n            background-position: center;\\r\\n            width: 50%;\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n        div#buttons {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            position: relative;\\r\\n            justify-content: center;\\r\\n            width: 33%;\\r\\n            left: -9%;\\r\\n            gap: 5%;\\r\\n        }\\r\\n       sl-button::part(base) {\\r\\n            border: 4px double var(--sl-color-primary-200);\\r\\n            margin: 8px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-home.ts",
@@ -245,7 +564,7 @@
                 },
                 {
                     "name": "phi-main-header",
-                    "description": "Main application header",
+                    "description": "Main application header.",
                     "source": {
                         "module": "./src/components/phi-main-header.ts",
                         "symbol": "PhiMainHeader"
@@ -259,7 +578,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            background-color: var(--sl-color-gray-300);\\r\\n            border-radius: 8px;\\r\\n            margin: 8px 8px 0 8px;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        p {\\r\\n            color: var(--sl-color-primary-800);\\r\\n        }\\r\\n        \\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            flex: 0 0 auto;\\r\\n            align-items: center;\\r\\n            gap: 4rem;\\r\\n            height: 64px;\\r\\n            background-color: var(--sl-color-gray-300);\\r\\n            border-radius: 8px;\\r\\n            //margin: 8px 8px 0 8px;\\r\\n        }\\r\\n        div.title {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n            padding-left: 1rem;\\r\\n        }\\r\\n        div.menu {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            gap: 1rem;\\r\\n            flex-grow: 1;\\r\\n        }\\r\\n        div.toolbar {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n            justify-content: end;\\r\\n            gap: 0.5rem;\\r\\n            padding-right: 1rem;\\r\\n        }\\r\\n        p {\\r\\n            color: var(--sl-color-primary-800);\\r\\n        }\\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main-header.ts",
@@ -341,7 +660,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            height: 100%;\\r\\n            width: 100%;\\r\\n        }\\r\\n        phi-page-manager {\\r\\n            height: 100%;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 8px;\\r\\n            width: 100%;\\r\\n            margin: 0;\\r\\n            padding: 8px;\\r\\n            background-color: cornflowerblue;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-main.ts",
@@ -353,7 +672,7 @@
                 },
                 {
                     "name": "phi-page-manager",
-                    "description": "Page manager..",
+                    "description": "Component to manage switching between application pages (Funds, Search, etc.).",
                     "source": {
                         "module": "./src/components/phi-page-manager.ts",
                         "symbol": "PhiPageManager"
@@ -367,7 +686,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        div {\\r\\n            height: 100%;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 1 0;\\r\\n        }\\r\\n        div {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-page-manager.ts",
@@ -375,21 +694,7 @@
                                 }
                             },
                             {
-                                "name": "contentCreated",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-page-manager.ts",
-                                    "symbol": "PhiPageManager.contentCreated"
-                                }
-                            },
-                            {
-                                "name": "contentHolder",
+                                "name": "pageHolder",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
@@ -401,7 +706,7 @@
                                 },
                                 "source": {
                                     "module": "./src/components/phi-page-manager.ts",
-                                    "symbol": "PhiPageManager.contentHolder"
+                                    "symbol": "PhiPageManager.pageHolder"
                                 }
                             }
                         ]

@@ -11,6 +11,7 @@ import {Fund, FundManager} from "../api-models/funds.ts";
 import {Globals} from "../modules/globals.ts";
 import {constructTableRow, properCaseToWords} from "../modules/utilities.ts"
 import xmlFormat from 'xml-formatter';
+import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
 
 /**
  * Fund details page..
@@ -47,7 +48,7 @@ export class PhiFundDetails extends LitElement {
         }
         
         /* details block */
-        div.details {
+        div.details, phi-fund-product-browser.details {
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -55,6 +56,9 @@ export class PhiFundDetails extends LitElement {
             overflow-y: auto;
             background-color: var(--sl-color-gray-200);
             border-radius: 0 0 8px 8px;
+        }
+        
+        div#details, div#brands {
             padding: 16px;
         }
 
@@ -79,7 +83,7 @@ export class PhiFundDetails extends LitElement {
     @query("#details") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
-    @query("#products") productsPage! : HTMLElement;
+    @query("#products") productsPage! : PhiFundProductBrowser;
 
 
     constructor() {
@@ -90,6 +94,10 @@ export class PhiFundDetails extends LitElement {
         this.detailsPage.style.display = page === "details" ? "flex" : "none";
         this.brandsPage.style.display = page === "brands" ? "flex" : "none";
         this.xmlPage.style.display = page === "xml" ? "flex" : "none";
+        this.productsPage.style.display = page === "products" ? "flex" : "none";
+
+        if (page === "products")
+            this.productsPage.loadProducts();
     }
 
     protected firstUpdated(_changedProperties: PropertyValues) {
@@ -190,7 +198,7 @@ export class PhiFundDetails extends LitElement {
                     : nothing
                 }
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("xml")}>XML</sl-button>
-                <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>PRODUCTS</sl-button>
+                <sl-button variant="text" size="small" @click=${()=>this.setPage("products")}>PRODUCTS</sl-button>
                 <sl-icon-button
                         style="font-size: 32px"
                         name="x"
@@ -222,6 +230,8 @@ export class PhiFundDetails extends LitElement {
                 <sl-textarea size="small" resize="auto" value="${xmlFormat(fund.xml.trim(), {collapseContent: true})}">
                 </sl-textarea>
             </div>
+            
+            <phi-fund-product-browser id="products" class="details" fund="${fund.code}"></phi-fund-product-browser>
         `
     }
 }
@@ -274,7 +284,7 @@ export class PhiFundBrands extends LitElement {
                     <div slot="header"><img class="logo" src="${brand.logo}" alt="${fund.code}"></div>
                     <strong>${brand.name}</strong>
                     <div slot="footer">
-                        <small style="flex:1 0 0">${fund.code}</small>
+                        <small style="flex:1 0 0">${brand.code}</small>
                         <sl-tooltip content="display brand details">
                             <sl-icon-button
                                     name="arrow-right"
