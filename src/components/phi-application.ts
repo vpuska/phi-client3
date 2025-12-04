@@ -26,8 +26,8 @@ export class PhiApplication extends LitElement {
     static styles = css`
         :host {
             display: flex;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
         }
     `
     /**

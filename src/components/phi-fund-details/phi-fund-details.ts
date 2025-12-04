@@ -1,17 +1,17 @@
 /**
- * components/phi-fund-details.ts
+ * components/phi-fundCode-details.ts
  * --
  * @author VJP
  * @written 11-Nov-2025
  */
 
-import {LitElement, html, css, nothing, type TemplateResult, type PropertyValues} from 'lit'
+import {LitElement, html, css, nothing, type PropertyValues, type TemplateResult} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
-import {Fund, FundManager} from "../api-models/funds.ts";
-import {Globals} from "../modules/globals.ts";
-import {constructTableRow, properCaseToWords} from "../modules/utilities.ts"
+import {Fund, FundManager} from "../../api-models/funds.ts";
+import {Globals} from "../../modules/globals.ts";
 import xmlFormat from 'xml-formatter';
 import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
+import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
 
 /**
  * Fund details page..
@@ -41,23 +41,23 @@ export class PhiFundDetails extends LitElement {
             padding: 16px;
         }
 
-        /* header block - fund name */
+        /* header block - fundCode name */
         div.header > h4 { 
             flex: 1 0 0;
             margin: 0;
         }
         
         /* details block */
-        div.details, phi-fund-product-browser.details {
+        .details { 
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
             flex: 1 0 0;
-            overflow-y: auto;
             background-color: var(--sl-color-gray-200);
             border-radius: 0 0 8px 8px;
+            overflow-y: auto;
         }
-        
+
         div#details, div#brands {
             padding: 16px;
         }
@@ -77,18 +77,13 @@ export class PhiFundDetails extends LitElement {
             margin-top: 2px;
         }
     `
-    @property({ attribute: "fund-code", type: String }) fundCode!: string;
+    @property({ attribute: "fundCode-code", type: String }) fundCode!: string;
     @state() subPage = "details";
-
     @query("#details") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
     @query("#products") productsPage! : PhiFundProductBrowser;
 
-
-    constructor() {
-        super();
-    }
 
     setPage(page: string) {
         this.detailsPage.style.display = page === "details" ? "flex" : "none";
@@ -105,12 +100,27 @@ export class PhiFundDetails extends LitElement {
         this.setPage("details");
     }
 
+    /**
+     * Renders a block of information displaying a title and details using the following template:
+     * <pre>
+     *  <div>
+     *      <h4>${title}</h4>
+     *      <small><p>${details}</p></small>
+     *  </div>
+     *  </pre>
+     * @param title
+     * @param details
+     */
     render_block(title: string | TemplateResult, details: string | TemplateResult) {
         return html`
             <div><h4>${title}</h4><small><p>${details}</p></small></div>
         `
     }
 
+    /**
+     * Renders the fund's restriction information.  Nothing is rendered if the fund is unrestricted.
+     * @param fund
+     */
     render_restrictions(fund: Fund) {
         if (fund.type === "Restricted")
             return this.render_block(
@@ -119,15 +129,25 @@ export class PhiFundDetails extends LitElement {
             )
     }
 
+    /**
+     * Renders the fund's address.
+     * @param fund
+     */
     render_address(fund: Fund) {
         return this.render_block(
             "Address",
-            html `${fund.address.lines.map((line) => html`${line}<br>`)}
-                  ${fund.address.town} ${fund.address.state} ${fund.address.postcode}
-            `
+            html`
+            ${fund.address.lines.map((line) => html`${line}<br>`)}
+            ${fund.address.town} ${fund.address.state} ${fund.address.postcode}
+        `
         )
     }
 
+    /**
+     * Renders an individual fund contact.  Used by `render_contacts()`.
+     * @param iconName Icon to prefix the contact title
+     * @param text Text title for contact
+     */
     render_contact(iconName: string, text: string) {
         return text ? html`
             <sl-icon style="margin-right:0.5em" name=${iconName}></sl-icon>
@@ -135,55 +155,68 @@ export class PhiFundDetails extends LitElement {
         ` : nothing;
     }
 
+    /**
+     * Renders the fundCode's contacts/communication details.
+     * @param fund
+     */
     render_contacts(fund: Fund) {
         if (fund.communications.email || fund.communications.phone || fund.communications.website) {
             return this.render_block(
                 "Communication",
                 html`
-                    ${this.render_contact("telephone", fund.communications.phone)}
-                    ${this.render_contact("globe2", fund.communications.website)}
-                    ${this.render_contact("envelope", fund.communications.email)}
-                `,
+                ${this.render_contact("telephone", fund.communications.phone)}
+                ${this.render_contact("globe2", fund.communications.website)}
+                ${this.render_contact("envelope", fund.communications.email)}
+            `,
             )
         }
     }
 
+    /**
+     * Renders the fundCode's website links in a table.
+     * @param fund
+     */
     render_websites(fund: Fund) {
         if (fund.websiteLinks.length > 0)
             return this.render_block(
                 "Web-sites",
                 html`
-                    <table>
-                        ${fund.websiteLinks.map((link) => {
-                            return constructTableRow(
-                                properCaseToWords(link.title),
-                                " : ",
-                                html`<a href=${link.link} target="_blank">${link.link}</a>`
-                            )
-                        })}
-                    </table>
-                `
+                <table>
+                    ${fund.websiteLinks.map((link) => {
+                    return constructTableRow(
+                        properCaseToWords(link.title),
+                        " : ",
+                        html`<a href=${link.link} target="_blank">${link.link}</a>`
+                    )
+                })}
+                </table>
+            `
             );
     }
 
+    /**
+     * Render the fundCode's dependant limits as a table.
+     * @param fund
+     */
     render_dependant_limits(fund: Fund) {
         const limits = [ ...fund.dependantLimits.dependantLimits.values() ];
         return this.render_block(
             "Dependant Limits",
             html`
-                <table>
-                    ${limits.map((limit) => {
-                        const text = limit.supported ? `ages ${limit.minAge}-${limit.maxAge}` : "not supported";
-                        return constructTableRow(properCaseToWords(limit.title), " : ", " ", text);
-                    })}
-                </table>
-                ${fund.dependantLimits.nonClassifiedDependantDescription ?
-                        html`<p>NOTE: Non-classified dependants: ${fund.dependantLimits.nonClassifiedDependantDescription}<\p>`
-                        : nothing
-                }
-            `
+            <table>
+                ${limits.map((limit) => {
+                const text = limit.supported ? `ages ${limit.minAge}-${limit.maxAge}` : "not supported";
+                return constructTableRow(properCaseToWords(limit.title), " : ", " ", text);
+            })}
+            </table>
+            ${fund.dependantLimits.nonClassifiedDependantDescription ?
+                html`<p>NOTE Non-classified dependants: ${fund.dependantLimits.nonClassifiedDependantDescription}<\p>`
+                : nothing
+            }
+        `
         )
     }
+
 
     render() {
         const fund = FundManager.get(this.fundCode)!;
@@ -274,6 +307,7 @@ export class PhiFundBrands extends LitElement {
     `
 
     @property() fund: string = "";
+
 
     render() {
         const fund = FundManager.get(this.fund)!;

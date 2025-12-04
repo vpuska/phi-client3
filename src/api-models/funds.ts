@@ -211,13 +211,13 @@ export class Fund {
 }
 
 /**
- * A `Map` structure holding all the fund records using the fund code (Eg. MBP) as the map key.
+ * A `Map` structure holding all the fundCode records using the fundCode code (Eg. MBP) as the map key.
  */
 const fundMap = new Map<string, Fund>();
 
 
 /**
- * Read the fund map to determine the age cutoffs used for dependants.
+ * Read the fundCode map to determine the age cutoffs used for dependants.
  * @param dependantTitle
  * @returns Sorted array of ages.
  */
@@ -233,7 +233,7 @@ function dependantAgeTiers(dependantTitle: FundDependantLimitTitleType) : number
 }
 
 /**
- * Read the fund map to determine the age cutoff for young adults: `NonClassified`, `NonStudent`, `ConditionalNonStudent`.
+ * Read the fundCode map to determine the age cutoff for young adults: `NonClassified`, `NonStudent`, `ConditionalNonStudent`.
  * @returns Sorted array of ages
  */
 function youngAdultAgeTiers() : number[] {
@@ -245,7 +245,7 @@ function youngAdultAgeTiers() : number[] {
 }
 
 /**
- * Downloads the fund data from the API and loads the {@link fundMap} variable.
+ * Downloads the fundCode data from the API and loads the {@link fundMap} variable.
  */
 async function downloadFundData() {
     const response = await fetch(FUND_API);
@@ -264,24 +264,24 @@ async function downloadFundData() {
 
 
 /**
- * Object encapsulating PHIO fund and brand data.
+ * Object encapsulating PHIO fundCode and brand data.
  */
 export const FundManager = {
 
     /**
-     * Return a fund record from the fund map.
-     * @param fundCode The fund code.  Eg. `BUP`
+     * Return a fundCode record from the fundCode map.
+     * @param fundCode The fundCode code.  Eg. `BUP`
      * @returns Fund
      */
     get: (fundCode: string) => { return fundMap.get(fundCode); },
 
     /**
-     * The fund map.
+     * The fundCode map.
      */
     funds: fundMap,
 
     /**
-     * Download the fund data from the API.  This function should be called at startup before any other fund actions.
+     * Download the fundCode data from the API.  This function should be called at startup before any other fundCode actions.
      */
     download: downloadFundData,
 

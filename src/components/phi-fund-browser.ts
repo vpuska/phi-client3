@@ -104,7 +104,7 @@ export class PhiFundCard extends LitElement {
     @property({ attribute: "fund-code", type: String }) fundCode!: string;
 
 
-    // Render a warning icon if the fund is restricted.
+    // Render a warning icon if the fundCode is restricted.
     render_restriction(fund: Fund) {
         if (fund.type === "Open")
             return nothing;

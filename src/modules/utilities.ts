@@ -48,3 +48,72 @@ export function constructTableRow(...cells: (string | TemplateResult)[] ) {
         </tr>
     `
 }
+
+/**
+ * Checks the elements of `data[]` includes ALL the values found in `filters[]`<br>
+ * The order of values does not affect result.
+ * @param filter
+ * @param data
+ * @examples
+ * <pre>
+ *     matchAll([1, 2, 5], [1, 2, 3, 4 ,5]) // => true
+ *     matchAll([1, 2, 3], [1, 2, 4 ,5]) // => false
+ * </pre>
+ */
+export function matchAll(filter: any[], data: any[] | string) {
+    for (const item of filter)
+        if (!data.includes(item))
+            return false;
+    return true;
+}
+
+/**
+ * Checks if at least one value in `data[]` is found in `filter[]`  <br>
+ * The order of values does not affect result.
+ * @param filter
+ * @param data
+ * @examples
+ * <pre>
+ *   matchAny([1, 2, 3], [1, 3, 4 ,5]) // => true
+ *   matchAny([1, 2, 3], [4 ,5]) // => false
+ * </pre>
+ * */
+export function matchAny(filter: any[], data: any[]) {
+    for (const item of filter)
+        if (data.includes(item))
+            return true;
+    return false;
+}
+
+/**
+ * Checks if `data[]` and `filter[]` are equivalent.
+ * The order of values does not affect result.
+ * @param filter
+ * @param data
+ * @examples
+ * <pre>
+ *   matchExactly([1, 2, 4], [1, 2, 4]) // => true
+ *   matchExactly([1, 2, 4], [1, 2, 3, 4]) // => false
+ *   matchExactly([1, 2, 4], [1, 4]) // => false
+ * </pre>
+ */
+export function matchExactly(filter: any[], data: any[]) {
+    return matchAll(filter, data) && matchAll(data, filter);
+}
+
+/**
+ * Checks if `data[]` only includes values found in `filter[]`.
+ * @param filter
+ * @param data
+ * @examples
+ * <pre>
+ *   matchOnly([1, 2, 4], [1, 2]) // => true
+ *   matchOnly([1, 2, 4], [1, 2, 5]) // => false
+ * </pre>
+ */
+export function matchOnly(filter: any[], data: any[]) {
+    for (const item of data)
+        if (!filter.includes(item))
+            return false;
+    return true;
+}

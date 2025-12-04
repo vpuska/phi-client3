@@ -190,13 +190,15 @@ export class ProductResultSet {
         return 0;
     }
 
-    filter(field: string, value: any) {
-        const results = new Array<Product>();
-        for (const product of this.rows) {
-            if (product.getField(field) === value)
-                results.push(product);
-        }
-        return new ProductResultSet(results);
+    /**
+     * Returns the distinct excess values in the result set.
+     * Eg. [0, 250, 500, 750]
+     */
+    distinctExcessValues() : number[] {
+        const values = new Set<number>();
+        for(const row of this.rows)
+            values.add(row.excess)
+        return Array.from(values).sort((a,b)=>a-b);
     }
 }
 
