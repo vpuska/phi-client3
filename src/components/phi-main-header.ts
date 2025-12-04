@@ -107,7 +107,7 @@ export class PhiMainHeader extends LitElement {
                     Home
                 </sl-button>
                 <sl-button variant="text" size="large"
-                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fundCode-browser"))}}>
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
                     <sl-icon slot="prefix" name="buildings"></sl-icon>
                     Funds
                 </sl-button>

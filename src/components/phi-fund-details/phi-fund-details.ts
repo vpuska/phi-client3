@@ -7,9 +7,10 @@
 
 import {LitElement, html, css, nothing, type PropertyValues, type TemplateResult} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
+import xmlFormat from 'xml-formatter';
+
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {Globals} from "../../modules/globals.ts";
-import xmlFormat from 'xml-formatter';
 import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
 import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
 
