@@ -123,6 +123,15 @@ export class Product {
     getField(fieldName: string): any {
         return (this.rawData as any)[fieldName];
     }
+
+    async getXml() : Promise<string> {
+        const response = await fetch(`${PRODUCT_API}/xml/${this.code}`);
+        if (response.ok) {
+            const record: {code: string, xml:string} = await response.json();
+            return record.xml;
+        }
+        return "";
+    }
 }
 
 /**
@@ -157,9 +166,8 @@ export class ProductResultSet {
         const resultSet = new Array<Product>;
         if (response.ok) {
             const productsJSON: ProductJsonType[] = await response.json();
-            for (const product of productsJSON) {
-                resultSet.push(new Product(product));
-            }
+                for (const product of productsJSON)
+                    resultSet.push(new Product(product));
         }
         return new ProductResultSet(resultSet);
     }
@@ -203,6 +211,7 @@ export class ProductResultSet {
 }
 
 
+/**
 async function fetchProducts(state: string, productType: string, coverType: string): Promise<Response> {
     const response = await fetch(`${PRODUCT_API}/${state}/${productType}/${coverType}`);
     const fetchedProducts = new Array<Product>;
@@ -252,4 +261,6 @@ export const ProductManager = {
     filterDependantAges: filterDependantAges,
     statistics: statistics,
 }
+
+ */
 

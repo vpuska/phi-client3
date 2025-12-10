@@ -14,6 +14,8 @@ import {SlCheckbox, SlDrawer, SlInput, SlSelect} from "@shoelace-style/shoelace"
 import {Product, ProductResultSet} from "../../api-models/products.ts";
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {matchAll, matchAny, matchExactly, matchOnly} from "../../modules/utilities.ts";
+import {Globals} from "../../modules/globals.ts";
+import type {PhiProductDetails} from "../phi-product-details.ts";
 
 type ProductFilterFieldType = "brand" | "policy-type" | "tier" | "adults" | "dependants" | "state" | "excess";
 
@@ -137,6 +139,17 @@ export class PhiFundProductBrowser extends LitElement {
             this.productResultSet = rslt;
             this.savedResultSet = rslt;
         });
+    }
+
+    /**
+     * Handle click on individual product
+     */
+    displayProduct(e: MouseEvent) {
+        const row = (e.target as HTMLInputElement).getAttribute("data-row-code")!;
+        const element: PhiProductDetails = document.createElement("phi-product-details");
+        element.setAttribute("fund-code", this.fundCode);
+        element.product = this.productResultSet!.rows[Number(row)];
+        Globals.get.pageManager().pushPage(element)
     }
 
     /**
@@ -283,8 +296,9 @@ export class PhiFundProductBrowser extends LitElement {
             })
         return html`
         <div>
-            <table>
+            <table @click=${this.displayProduct}>
                 <thead>
+                <th></th>
                 <th>Code</th>
                 <th>Brands</th>
                 <th>Name</th>
@@ -297,8 +311,15 @@ export class PhiFundProductBrowser extends LitElement {
                 <th>Corporate</th>
                 <th>Premium</th>
                 </thead>
-                ${resultSet.rows.map(row => html`
+                ${resultSet.rows.map((row, index) => html`
                     <tr>
+                        <td>
+                            <sl-icon-button
+                                name="arrow-right"
+                                data-row-code="${index}"
+                                label="Display product details"
+                            ></sl-icon-button>
+                        </td>
                         <td>${row.code}</td>
                         <td>${row.brands}</td>
                         <td>${row.name}</td>
