@@ -35,9 +35,10 @@ export class PhiFundDetails extends LitElement {
             display: flex;
             flex-direction: row;
             align-items: center;
-            height: 96px;
+            height: 32px;
             background-color: var(--sl-color-gray-400);
             border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--sl-color-gray-800);
             gap: 32px;
             padding: 16px;
         }

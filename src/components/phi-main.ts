@@ -24,7 +24,7 @@ export class PhiMain extends LitElement {
             width: 100%;
             margin: 0;
             padding: 8px;
-            background-color: var(--sl-color-primary-200)
+            background-color: var(--sl-color-primary-50)
         }
     `
 

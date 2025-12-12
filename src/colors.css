@@ -2,32 +2,65 @@
 :host,
 .sl-theme-light {
     color-scheme: light;
-    --phi-color-brown-50:  rgb(251 249 248);
-    --phi-color-brown-100: rgb(242 235 232);
-    --phi-color-brown-200: rgb(232 220 215);
-    --phi-color-brown-300: rgb(221 203 197);
-    --phi-color-brown-400: rgb(206 181 172);
-    --phi-color-brown-500: rgb(188 152 140);
-    --phi-color-brown-600: rgb(168 121 106);
-    --phi-color-brown-700: rgb(150 94 75);
-    --phi-color-brown-800: rgb(135 72 51);
-    --phi-color-brown-900: rgb(114 39 14);
-    --phi-color-brown-950: rgb(74 21 3);
+    --phi-color-pink-50:  rgb(254 248 254);
+    --phi-color-pink-100: rgb(251 230 251);
+    --phi-color-pink-200: rgb(247 211 248);
+    --phi-color-pink-300: rgb(243 189 244);
+    --phi-color-pink-400: rgb(238 158 239);
+    --phi-color-pink-500: rgb(231 115 232);
+    --phi-color-pink-600: rgb(220 53 222);
+    --phi-color-pink-700: rgb(182 41 184);
+    --phi-color-pink-800: rgb(151 34 152);
+    --phi-color-pink-900: rgb(109 24 110);
+    --phi-color-pink-950: rgb(68 15 69);
 }
-
 
 :host,
 .sl-theme-dark {
     color-scheme: dark;
-    --phi-color-brown-950: rgb(251 249 248);
-    --phi-color-brown-900: rgb(242 235 232);
-    --phi-color-brown-800: rgb(232 220 215);
-    --phi-color-brown-700: rgb(221 203 197);
-    --phi-color-brown-600: rgb(206 181 172);
-    --phi-color-brown-500: rgb(188 152 140);
-    --phi-color-brown-400: rgb(168 121 106);
-    --phi-color-brown-300: rgb(150 94 75);
-    --phi-color-brown-200: rgb(135 72 51);
-    --phi-color-brown-100: rgb(114 39 14);
-    --phi-color-brown-50:  rgb(74 21 3);
+    --phi-color-pink-50:  rgb(068 15 69);
+    --phi-color-pink-100: rgb(109 24 110);
+    --phi-color-pink-200: rgb(151 34 152);
+    --phi-color-pink-300: rgb(182 41 184);
+    --phi-color-pink-400: rgb(220 53 222);
+    --phi-color-pink-500: rgb(231 115 232);
+    --phi-color-pink-600: rgb(238 158 239);
+    --phi-color-pink-700: rgb(243 189 244);
+    --phi-color-pink-800: rgb(247 211 248);
+    --phi-color-pink-900: rgb(251 230 251);
+    --phi-color-pink-950: rgb(254 248 254);
+}
+
+:root,
+:host,
+.sl-theme-light {
+    color-scheme: light;
+    --phi-color-custom: #016701;
+    --phi-color-custom-50:  color-mix(in oklab, var(--phi-color-custom), white 75%);
+    --phi-color-custom-100: color-mix(in oklab, var(--phi-color-custom), white 60%);
+    --phi-color-custom-200: color-mix(in oklab, var(--phi-color-custom), white 50%);
+    --phi-color-custom-300: color-mix(in oklab, var(--phi-color-custom), white 40%);
+    --phi-color-custom-400: color-mix(in oklab, var(--phi-color-custom), white 25%);
+    --phi-color-custom-500: color-mix(in oklab, var(--phi-color-custom), white 15%);
+    --phi-color-custom-600: var(--phi-color-custom);
+    --phi-color-custom-700: color-mix(in oklab, var(--phi-color-custom), black 15%);
+    --phi-color-custom-800: color-mix(in oklab, var(--phi-color-custom), black 30%);
+    --phi-color-custom-900: color-mix(in oklab, var(--phi-color-custom), black 50%);
+    --phi-color-custom-950: color-mix(in oklab, var(--phi-color-custom), black 60%);
+}
+
+:host,
+.sl-theme-dark {
+    color-scheme: dark;
+    --phi-color-custom-50:  color-mix(in oklab, var(--phi-color-custom), black 60%);
+    --phi-color-custom-100: color-mix(in oklab, var(--phi-color-custom), black 50%);
+    --phi-color-custom-200: color-mix(in oklab, var(--phi-color-custom), black 30%);
+    --phi-color-custom-300: color-mix(in oklab, var(--phi-color-custom), black 15%);
+    --phi-color-custom-400: var(--phi-color-custom);
+    --phi-color-custom-500: color-mix(in oklab, var(--phi-color-custom), white 20%);
+    --phi-color-custom-600: color-mix(in oklab, var(--phi-color-custom), white 40%);
+    --phi-color-custom-700: color-mix(in oklab, var(--phi-color-custom), white 50%);
+    --phi-color-custom-800: color-mix(in oklab, var(--phi-color-custom), white 60%);
+    --phi-color-custom-900: color-mix(in oklab, var(--phi-color-custom), white 70%);
+    --phi-color-custom-950: color-mix(in oklab, var(--phi-color-custom), white 80%);
 }

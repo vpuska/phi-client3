@@ -31,6 +31,7 @@ function loadTheme() {
     let preferredColor = (localStorage.getItem("themeColor") || "phi-theme-01");
     root.classList.add(preferredColor);
 
+    /*
     // the base color names.  Eg --sl-color-blue
     const primaryColor = getComputedStyle(root).getPropertyValue('--phi-primary-color').trim();
     const alternateColor = getComputedStyle(root).getPropertyValue('--phi-alternate-color').trim();
@@ -41,6 +42,7 @@ function loadTheme() {
         root.style.setProperty(`--phi-color-primary-${grad}`, color1);
         root.style.setProperty(`--phi-color-alternate-${grad}`, color2);
     }
+    */
 }
 
 

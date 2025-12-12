@@ -5,107 +5,132 @@
      * Entries added here are automatically displayed in the menu, without the need to alter any code.
      * See: phi-main-header.ts
      */
-    --phi-theme-01-name: Blue+Gray default;
+    --phi-theme-01-name: "Blue (default)";
     --phi-theme-01-primary: var(--sl-color-blue-500);
-    --phi-theme-01-alternate: var(--sl-color-gray-500);
 
-    --phi-theme-02-name: Purple+Yellow;
+    --phi-theme-02-name: Purple;
     --phi-theme-02-primary: var(--sl-color-purple-500);
-    --phi-theme-02-alternate: var(--sl-color-yellow-500);
 
-    --phi-theme-03-name: Emerald+Brown;
+    --phi-theme-03-name: Emerald;
     --phi-theme-03-primary: var(--sl-color-emerald-500);
-    --phi-theme-03-alternate: var(--phi-color-brown-500);
 
-    --phi-theme-04-name: Brown+Emerald;
-    --phi-theme-04-primary: var(--phi-color-brown-500);
-    --phi-theme-04-alternate: var(--sl-color-emerald-500);
+    --phi-theme-04-name: Pink;
+    --phi-theme-04-primary: var(--sl-color-pink-500);
 
-    --phi-theme-05-name: Red+Gray;
+    --phi-theme-05-name: Red;
     --phi-theme-05-primary: var(--sl-color-red-500);
-    --phi-theme-05-alternate: var(--sl-color-gray-500);
 
-    --phi-theme-06-name: Neutral;
-    --phi-theme-06-primary: var(--sl-color-gray-800);
-    --phi-theme-06-alternate: var(--sl-color-gray-200);
+    --phi-theme-06-name: Yellow;
+    --phi-theme-06-primary: var(--sl-color-yellow-500);
+
+    --phi-theme-07-name: "Custom Color";
+    --phi-theme-07-primary: var(--phi-color-custom);
 }
 
 :root, .phi-theme-01 {
     /* Default Theme */
-    --phi-primary-color: sl-color-blue;
-    --phi-alternate-color: sl-color-gray;
     /*noinspection CssUnknownTarget*/
     --phi-home-background-image: url("/pexels-olly-3979198.jpg");
-    --phi-home-background-filter: sepia(20%) hue-rotate(170deg) saturate(20%) brightness(66%);
-
-    /* Set default colors and define phi color variables (not really needed, but helps
-     IDE) */
-    --phi-color-primary-50:  var(--sl-color-blue-50);
-    --phi-color-primary-100: var(--sl-color-blue-100);
-    --phi-color-primary-200: var(--sl-color-blue-200);
-    --phi-color-primary-300: var(--sl-color-blue-300);
-    --phi-color-primary-400: var(--sl-color-blue-400);
-    --phi-color-primary-500: var(--sl-color-blue-500);
-    --phi-color-primary-600: var(--sl-color-blue-600);
-    --phi-color-primary-700: var(--sl-color-blue-700);
-    --phi-color-primary-800: var(--sl-color-blue-800);
-    --phi-color-primary-900: var(--sl-color-blue-900);
-    --phi-color-primary-950: var(--sl-color-blue-950);
-
-    --phi-color-alternate-50: var(--sl-color-gray-50);
-    --phi-color-alternate-100: var(--sl-color-gray-100);
-    --phi-color-alternate-200: var(--sl-color-gray-200);
-    --phi-color-alternate-300: var(--sl-color-gray-300);
-    --phi-color-alternate-400: var(--sl-color-gray-400);
-    --phi-color-alternate-500: var(--sl-color-gray-500);
-    --phi-color-alternate-600: var(--sl-color-gray-600);
-    --phi-color-alternate-700: var(--sl-color-gray-700);
-    --phi-color-alternate-800: var(--sl-color-gray-800);
-    --phi-color-alternate-900: var(--sl-color-gray-900);
-    --phi-color-alternate-950: var(--sl-color-gray-950);
-
-    /* Link primary color to phi primary color */
-    --sl-color-primary-50:  var(--phi-color-primary-50);
-    --sl-color-primary-100: var(--phi-color-primary-100);
-    --sl-color-primary-200: var(--phi-color-primary-200);
-    --sl-color-primary-300: var(--phi-color-primary-300);
-    --sl-color-primary-400: var(--phi-color-primary-400);
-    --sl-color-primary-500: var(--phi-color-primary-500);
-    --sl-color-primary-600: var(--phi-color-primary-600);
-    --sl-color-primary-700: var(--phi-color-primary-700);
-    --sl-color-primary-800: var(--phi-color-primary-800);
-    --sl-color-primary-900: var(--phi-color-primary-900);
-    --sl-color-primary-950: var(--phi-color-primary-950);
+    --phi-home-background-filter: sepia(50%) hue-rotate(170deg) saturate(50%) brightness(80%);
+    --sl-color-primary-50:  var(--sl-color-sky-50);
+    --sl-color-primary-100: var(--sl-color-sky-100);
+    --sl-color-primary-200: var(--sl-color-sky-200);
+    --sl-color-primary-300: var(--sl-color-sky-300);
+    --sl-color-primary-400: var(--sl-color-sky-400);
+    --sl-color-primary-500: var(--sl-color-sky-500);
+    --sl-color-primary-600: var(--sl-color-sky-600);
+    --sl-color-primary-700: var(--sl-color-sky-700);
+    --sl-color-primary-800: var(--sl-color-sky-800);
+    --sl-color-primary-900: var(--sl-color-sky-900);
+    --sl-color-primary-950: var(--sl-color-sky-950);
 }
 
 .phi-theme-02 {
-    --phi-primary-color: sl-color-purple;
-    --phi-alternate-color: sl-color-yellow;
-    --phi-home-background-filter: saturate(80%) brightness(66%);
+    --phi-home-background-filter: saturate(80%) brightness(80%);
+    --sl-color-primary-50:  var(--sl-color-purple-50);
+    --sl-color-primary-100: var(--sl-color-purple-100);
+    --sl-color-primary-200: var(--sl-color-purple-200);
+    --sl-color-primary-300: var(--sl-color-purple-300);
+    --sl-color-primary-400: var(--sl-color-purple-400);
+    --sl-color-primary-500: var(--sl-color-purple-500);
+    --sl-color-primary-600: var(--sl-color-purple-600);
+    --sl-color-primary-700: var(--sl-color-purple-700);
+    --sl-color-primary-800: var(--sl-color-purple-800);
+    --sl-color-primary-900: var(--sl-color-purple-900);
+    --sl-color-primary-950: var(--sl-color-purple-950);
 }
 
 .phi-theme-03 {
-    --phi-primary-color: sl-color-emerald;
-    --phi-alternate-color:  phi-color-brown;
-    --phi-home-background-filter: sepia(25%) hue-rotate(45deg) saturate(20%) brightness(50%);
+    --phi-home-background-filter: unset;
+    --sl-color-primary-50:  var(--sl-color-emerald-50);
+    --sl-color-primary-100: var(--sl-color-emerald-100);
+    --sl-color-primary-200: var(--sl-color-emerald-200);
+    --sl-color-primary-300: var(--sl-color-emerald-300);
+    --sl-color-primary-400: var(--sl-color-emerald-400);
+    --sl-color-primary-500: var(--sl-color-emerald-500);
+    --sl-color-primary-600: var(--sl-color-emerald-600);
+    --sl-color-primary-700: var(--sl-color-emerald-700);
+    --sl-color-primary-800: var(--sl-color-emerald-800);
+    --sl-color-primary-900: var(--sl-color-emerald-900);
+    --sl-color-primary-950: var(--sl-color-emerald-950);
 }
 
 .phi-theme-04 {
-    --phi-primary-color: phi-color-brown;
-    --phi-alternate-color:  sl-color-emerald;
-    --phi-home-background-filter: sepia(25%) hue-rotate(0deg) saturate(20%) brightness(66%);
+    --phi-home-background-filter: sepia(25%) hue-rotate(250deg) saturate(20%) brightness(80%);
+    --sl-color-primary-50:  var(--sl-color-pink-50);
+    --sl-color-primary-100: var(--sl-color-pink-100);
+    --sl-color-primary-200: var(--sl-color-pink-200);
+    --sl-color-primary-300: var(--sl-color-pink-300);
+    --sl-color-primary-400: var(--sl-color-pink-400);
+    --sl-color-primary-500: var(--sl-color-pink-500);
+    --sl-color-primary-600: var(--sl-color-pink-600);
+    --sl-color-primary-700: var(--sl-color-pink-700);
+    --sl-color-primary-800: var(--sl-color-pink-800);
+    --sl-color-primary-900: var(--sl-color-pink-900);
+    --sl-color-primary-950: var(--sl-color-pink-950);
 }
 
 .phi-theme-05 {
-    --phi-primary-color: sl-color-red;
-    --phi-alternate-color: sl-color-gray;
     --phi-home-background-filter: sepia(25%) hue-rotate(-40deg) saturate(20%) brightness(66%);
+    --sl-color-primary-50:  var(--sl-color-red-50);
+    --sl-color-primary-100: var(--sl-color-red-100);
+    --sl-color-primary-200: var(--sl-color-red-200);
+    --sl-color-primary-300: var(--sl-color-red-300);
+    --sl-color-primary-400: var(--sl-color-red-400);
+    --sl-color-primary-500: var(--sl-color-red-500);
+    --sl-color-primary-600: var(--sl-color-red-600);
+    --sl-color-primary-700: var(--sl-color-red-700);
+    --sl-color-primary-800: var(--sl-color-red-800);
+    --sl-color-primary-900: var(--sl-color-red-900);
+    --sl-color-primary-950: var(--sl-color-red-950);
 }
 
 .phi-theme-06 {
-    --phi-primary-color: sl-color-gray;
-    --phi-alternate-color: sl-color-gray;
-    --phi-home-background-filter: saturate(80%) brightness(66%);
+    --phi-home-background-filter: unset;
+    --sl-color-primary-50:  var(--sl-color-yellow-50);
+    --sl-color-primary-100: var(--sl-color-yellow-100);
+    --sl-color-primary-200: var(--sl-color-yellow-200);
+    --sl-color-primary-300: var(--sl-color-yellow-300);
+    --sl-color-primary-400: var(--sl-color-yellow-400);
+    --sl-color-primary-500: var(--sl-color-yellow-500);
+    --sl-color-primary-600: var(--sl-color-yellow-600);
+    --sl-color-primary-700: var(--sl-color-yellow-700);
+    --sl-color-primary-800: var(--sl-color-yellow-800);
+    --sl-color-primary-900: var(--sl-color-yellow-900);
+    --sl-color-primary-950: var(--sl-color-yellow-950);
 }
 
-
+.phi-theme-07 {
+    --phi-home-background-filter: unset;
+    --sl-color-primary-50:  var(--phi-color-custom-50);
+    --sl-color-primary-100: var(--phi-color-custom-100);
+    --sl-color-primary-200: var(--phi-color-custom-200);
+    --sl-color-primary-300: var(--phi-color-custom-300);
+    --sl-color-primary-400: var(--phi-color-custom-400);
+    --sl-color-primary-500: var(--phi-color-custom-500);
+    --sl-color-primary-600: var(--phi-color-custom-600);
+    --sl-color-primary-700: var(--phi-color-custom-700);
+    --sl-color-primary-800: var(--phi-color-custom-800);
+    --sl-color-primary-900: var(--phi-color-custom-900);
+    --sl-color-primary-950: var(--phi-color-custom-950);
+}

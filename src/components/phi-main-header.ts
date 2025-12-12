@@ -13,6 +13,7 @@ import logo from '/phi-logo.svg'
 
 import {Theming, type ThemingType} from "../modules/theming.ts";
 import {Globals} from "../modules/globals.ts";
+import {stripQuotes} from "../modules/utilities.ts";
 
 
 /**
@@ -29,10 +30,10 @@ export class PhiMainHeader extends LitElement {
             flex: 0 0 auto;
             align-items: center;
             gap: 4rem;
-            height: 64px;
-            background-color: var(--sl-color-gray-300);
+            height: 96px;
+            background-color: var(--sl-color-primary-200);
+            border: 1px solid var(--sl-color-primary-800);
             border-radius: 8px;
-            //margin: 8px 8px 0 8px;
         }
         div.title {
             display: flex;
@@ -53,8 +54,7 @@ export class PhiMainHeader extends LitElement {
             gap: 0.5rem;
             padding-right: 1rem;
         }
-        p {
-            color: var(--sl-color-primary-800);
+        sl-button::part(base) {
         }
         
     `
@@ -116,11 +116,22 @@ export class PhiMainHeader extends LitElement {
                     <sl-icon slot="prefix" name="search"></sl-icon>
                     Compare
                 </sl-button>
-                <sl-button variant="text" size="large"
-                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-home"))}}>
-                    <sl-icon slot="prefix" name="globe"></sl-icon>
-                    Resources
-                </sl-button>
+
+                <sl-dropdown>
+                    <sl-button variant="text" size="large" slot="trigger" caret>
+                        <sl-icon slot="prefix" name="globe"></sl-icon>
+                        Links
+                    </sl-button>
+                    <sl-menu>
+                        <sl-menu-item><a target="_blank" href="https://www.privatehealth.gov.au/">https://www.privatehealth.gov.au/</a></sl-menu-item>
+                        <sl-menu-item>
+                            <a target="_blank" 
+                               href="https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance">
+                            </a>
+                        </sl-menu-item>
+                    </sl-menu>
+                </sl-dropdown>
+                
             </div>
             
             <div class="toolbar">
@@ -140,8 +151,7 @@ export class PhiMainHeader extends LitElement {
                             <sl-menu-item type="checkbox" value="${theme}" ?checked="${this.themeColor===theme}">
                                 <div style="display:flex; gap: 8px; align-items: center">
                                     <sl-icon name="square-fill" style="color: ${styles.get(`--${theme}-primary`)}"></sl-icon>
-                                    <sl-icon name="square-fill" style="color: ${styles.get(`--${theme}-alternate`)}"></sl-icon>
-                                    ${styles.get(`--${theme}-name`)}
+                                    ${stripQuotes( styles.get(`--${theme}-name`)?.toString() || "No Name") }
                                 </div>
                             </sl-menu-item>    
                         `)}

@@ -117,3 +117,26 @@ export function matchOnly(filter: any[], data: any[]) {
             return false;
     return true;
 }
+
+/**
+ * Removes containing quotes from a string.  If the string is not contained in quotes, it is
+ * returned unaltered.
+ * @param input
+ * @example
+ *      "Victor's string" => Victor's string
+ *      Another string => Another string
+ *      'Unbalanced quotes => 'Unbalanced quotes
+ */
+export function stripQuotes(input: string): string {
+    if (input.length >= 2) {
+        const firstChar = input[0];
+        const lastChar = input[input.length - 1];
+
+        // Check if both are matching quotes
+        if ((firstChar === '"' && lastChar === '"') ||
+            (firstChar === "'" && lastChar === "'")) {
+            return input.slice(1, -1);
+        }
+    }
+    return input;
+}
