@@ -127,7 +127,7 @@ export class PhiFundDetails extends LitElement {
         if (fund.type === "Restricted")
             return this.render_block(
                 html`Restrictions&nbsp;<sl-icon name="exclamation-triangle"></sl-icon>`,
-                fund.restrictions.details
+                html `${fund.restrictions.details}`
             )
     }
 

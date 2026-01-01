@@ -87,15 +87,37 @@ export class Product {
     get nonStudentCover() { return this.rawData.nonStudentCover; }
     get conditionalNonStudentCover() { return this.rawData.conditionalNonStudentCover; }
     get disabilityCover() { return this.rawData.disabilityCover; }
-    get excess() { return this.rawData.excess; }
     get excessPerAdmission() { return this.rawData.excessPerAdmission; }
     get excessPerPerson() { return this.rawData.excessPerPerson; }
     get excessPerPolicy() { return this.rawData.excessPerPerson; }
     get premium() { return this.rawData.premium; }
     get hospitalComponent() { return this.rawData.hospitalComponent; }
     get hospitalTier() { return this.rawData.hospitalTier; }
-    get accommodationType() { return this.rawData.accommodationType; }
+    get accommodationType() { return this.rawData.accommodationType || ""; }
     get services() { return this.rawData.services; }
+
+    get excess() {
+        return this.excessPerPerson > 0 ? this.excessPerPerson : this.excessPerAdmission > 0 ? this.excessPerAdmission : this.excessPerPolicy;
+    }
+
+    get isHospital() {
+        return this.type === "Hospital" || this.type === "Combined";
+    }
+
+    get isGeneralHealth() {
+        return this.type === "GeneralHealth" || this.type === "Combined";
+    }
+
+    get coverageDescription() {
+        if (this.adultsCovered === 0)
+            return "Dependants Only";
+
+        if (this.adultsCovered === 1)
+            return this.dependantCover ? "Single Parent Family" : "Single";
+
+        if (this.adultsCovered === 2)
+            return this.dependantCover ? "Family" : "Couple";
+    }
 
     get dependantTypesShortDescription() {
         let types = "";
@@ -125,10 +147,9 @@ export class Product {
     }
 
     async getXml() : Promise<string> {
-        const response = await fetch(`${PRODUCT_API}/xml/${this.code}`);
+        const response = await fetch(`${PRODUCT_API}/xml/${this.fundCode}/${this.code}`);
         if (response.ok) {
-            const record: {code: string, xml:string} = await response.json();
-            return record.xml;
+            return await response.text();
         }
         return "";
     }

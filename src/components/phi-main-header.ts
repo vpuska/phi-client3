@@ -32,7 +32,7 @@ export class PhiMainHeader extends LitElement {
             gap: 4rem;
             height: 96px;
             background-color: var(--sl-color-primary-200);
-            border: 1px solid var(--sl-color-primary-800);
+            border: 1px solid var(--sl-color-primary-400);
             border-radius: 8px;
         }
         div.title {
@@ -127,6 +127,7 @@ export class PhiMainHeader extends LitElement {
                         <sl-menu-item>
                             <a target="_blank" 
                                href="https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance">
+                               Australian Government Rebate (www.ato.gov.au)
                             </a>
                         </sl-menu-item>
                     </sl-menu>

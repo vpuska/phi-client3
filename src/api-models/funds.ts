@@ -1,17 +1,10 @@
 // noinspection CssInvalidHtmlTagReference,JSUnusedGlobalSymbols
 
-const FUND_API = 'https://phi-demo-api.spartlet.net/funds?tags=Fund'
+const FUND_XML_API = 'https://phi-demo-api.spartlet.net/funds/xml'
 
 export type FundType = "Open" | "Restricted"
 export type FundWebSiteLinkTitleType = "NoGapDoctors" | "AgreementHospitals" | "PreferredProviders" | "Branches" | "Ambulance";
 export type FundDependantLimitTitleType = "Child" | "Student" | "NonClassified" | "NonStudent" | "ConditionalNonStudent" | "Disability";
-
-type FundAPIResultRowType = {
-    code: string;
-    name: string;
-    type: FundType;
-    Fund: string;
-}
 
 export type FundCommunicationType = {
     phone: string;
@@ -63,48 +56,46 @@ export type FundDependantLimitsType = {
  * Fund/brand data object.
  */
 export class Fund {
-    private document : Document;
-    private data: FundAPIResultRowType;
+    private element : Element;
     public logo: string = "";
     private brandLogos= new Map<string,string>;
 
-    constructor(data: FundAPIResultRowType) {
-        const parser = new DOMParser();
-        this.data = data;
-        this.document = parser.parseFromString(data.Fund, "text/xml");
+    constructor(element: Element) {
+        this.element = element;
     }
 
     get xml() {
-        return this.data.Fund;
+        return this.element.outerHTML;
     }
 
     get code() {
-        return this.data.code;
+        return this.element.querySelector('FundCode')?.textContent as string;
     }
 
     get name() {
-        return this.data.name;
+        return this.element.querySelector('FundName')?.textContent as string;
+
     }
 
     get type() : FundType {
-        return this.data.type;
+        return this.element.querySelector('FundType')?.textContent as FundType;
     }
 
     get description() {
-        return this.document.querySelector('Fund > FundDescription')?.textContent;
+        return this.element.querySelector('FundDescription')?.textContent as string;
     }
 
     get communications() : FundCommunicationType {
         return {
-            phone: this.document.querySelector("Fund > Phone")?.textContent || "",
-            email: this.document.querySelector("Fund > Email")?.textContent || "",
-            website: this.document.querySelector("Fund > Website")?.textContent || "",
+            phone: this.element.querySelector("Phone")?.textContent || "",
+            email: this.element.querySelector("Email")?.textContent || "",
+            website: this.element.querySelector("Website")?.textContent || "",
         }
     }
 
     get websiteLinks() : FundWebSiteLinkType[] {
         const links: FundWebSiteLinkType[] = [];
-        for (const linkElem of this.document.querySelectorAll("Fund > WebsiteLinks > Link")) {
+        for (const linkElem of this.element.querySelectorAll("WebsiteLinks > Link")) {
             links.push( {
                 title: (linkElem.getAttribute("Title") || "") as FundWebSiteLinkTitleType,
                 link: linkElem.textContent || ""
@@ -115,7 +106,7 @@ export class Fund {
 
     get brands() : FundBrandType[] {
         let list: FundBrandType[] = [];
-        for (const elem of this.document.querySelectorAll("Fund > RelatedBrandNames > Brand")) {
+        for (const elem of this.element.querySelectorAll("RelatedBrandNames > Brand")) {
             const brandCode = elem.querySelector("BrandCode")?.textContent || "";
             const b: FundBrandType = {
                 code: brandCode,
@@ -143,28 +134,28 @@ export class Fund {
         const lines : string[] = [];
         for (let j = 1; j < 4; j++) {
             const tag = "Fund > Address > AddressLine" + j;
-            if (this.document.querySelector(tag))
-                lines.push(this.document.querySelector(tag)!.textContent || "");
+            if (this.element.querySelector(tag))
+                lines.push(this.element.querySelector(tag)!.textContent || "");
         }
         return {
             lines: lines,
-            town: this.document.querySelector("Fund > Address > Town")?.textContent || "",
-            state: this.document.querySelector("Fund > Address > State")?.textContent || "",
-            postcode: this.document.querySelector("Fund > Address > Postcode")?.textContent || ""
+            town: this.element.querySelector("Address > Town")?.textContent || "",
+            state: this.element.querySelector("Address > State")?.textContent || "",
+            postcode: this.element.querySelector("Address > Postcode")?.textContent || ""
         }
     }
 
     get restrictions() : FundRestrictionsType {
         return {
-            hint: this.document.querySelector("Fund > Restrictions > RestrictionHint")?.textContent || "",
-            paragraph: this.document.querySelector("Fund > Restrictions > RestrictionParagraph")?.textContent || "",
-            details: this.document.querySelector("Fund > Restrictions > RestrictionDetails")?.textContent || "",
+            hint: this.element.querySelector("Restrictions > RestrictionHint")?.textContent || "",
+            paragraph: this.element.querySelector("Restrictions > RestrictionParagraph")?.textContent || "",
+            details: this.element.querySelector("Restrictions > RestrictionDetails")?.textContent || "",
         }
     }
 
     get dependantLimits() : FundDependantLimitsType {
         const map = new Map<FundDependantLimitTitleType,FundDependantLimitType>();
-        for (const elem of this.document.querySelectorAll("Fund > FundDependants > DependantLimits > DependantLimit")) {
+        for (const elem of this.element.querySelectorAll("FundDependants > DependantLimits > DependantLimit")) {
             const title = elem.getAttribute("Title")! as FundDependantLimitTitleType;
             map.set(title, {
                 title: title,
@@ -176,7 +167,7 @@ export class Fund {
         return {
             dependantLimits: map,
             nonClassifiedDependantDescription:
-                this.document.querySelector("Fund > FundDependants > NonClassifiedDependantDescription")?.textContent || "",
+                this.element.querySelector("FundDependants > NonClassifiedDependantDescription")?.textContent || "",
         };
     }
 
@@ -245,23 +236,25 @@ function youngAdultAgeTiers() : number[] {
 }
 
 /**
- * Downloads the fundCode data from the API and loads the {@link fundMap} variable.
+ * Download the fund XML
  */
-async function downloadFundData() {
-    const response = await fetch(FUND_API);
+async function downloadFundXml() {
+    const response = await fetch(FUND_XML_API);
     if (!response.ok) {
         alert(`Error fetching fund data from server ${response.status}: ${response.statusText}`);
         return;
     }
-    const funds = await response.json();
-    funds.sort((a:FundAPIResultRowType, b:FundAPIResultRowType) => a.name.localeCompare(b.name));
-    for (const f_raw of funds) {
-        const f = new Fund(f_raw);
+    const xmlDoc = (new DOMParser()).parseFromString(await response.text(), "text/xml");
+    const fundElements = xmlDoc.querySelectorAll("Funds > Fund");
+    const funds : Fund[] = [];
+    for (const fundElement of fundElements) {
+        const f = new Fund(fundElement);
         await f.findFundLogo();
-        fundMap.set(f.code, f);
+        funds.push(f);
     }
+    funds.sort((a, b) => a.code > b.code ? 1 : -1);
+    funds.forEach((f: Fund) => {fundMap.set(f.code, f)})
 }
-
 
 /**
  * Object encapsulating PHIO fundCode and brand data.
@@ -283,7 +276,7 @@ export const FundManager = {
     /**
      * Download the fundCode data from the API.  This function should be called at startup before any other fundCode actions.
      */
-    download: downloadFundData,
+    download: downloadFundXml,
 
     /**
      * Returns a number array of age tiers for the young adult dependant category: `NonClassified`, `NonStudent`, `ConditionalNonStudent`

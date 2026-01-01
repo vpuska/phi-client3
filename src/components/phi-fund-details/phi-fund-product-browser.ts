@@ -17,7 +17,7 @@ import {matchAll, matchAny, matchExactly, matchOnly} from "../../modules/utiliti
 import {Globals} from "../../modules/globals.ts";
 import type {PhiProductDetails} from "../phi-product-details.ts";
 
-type ProductFilterFieldType = "brand" | "policy-type" | "tier" | "adults" | "dependants" | "state" | "excess";
+type ProductFilterFieldType = "brand" | "policy-type" | "tier" | "adults" | "dependants" | "state" | "excess" | "accommodation";
 
 /**
  * Fund product browser page..
@@ -68,6 +68,14 @@ export class PhiFundProductBrowser extends LitElement {
             background-color: gray;
             z-index: 1;
         }
+        sl-spinner {
+            position: absolute;
+            top:  50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 64px; 
+            --track-width: 12px;
+        }
     `
 
     @property({attribute: "fund"}) fundCode!: string;
@@ -85,6 +93,7 @@ export class PhiFundProductBrowser extends LitElement {
     @query('sl-checkbox[data-phi-filter-field="dependants"][data-phi-filter-value="*"]') dependantSelectAllCheckBox! : SlCheckbox;
     @query('sl-checkbox[data-phi-filter-field="tier"][data-phi-filter-value="*"]') tierSelectAllCheckBox! : SlCheckbox;
     @query('sl-checkbox[data-phi-filter-field="excess"][data-phi-filter-value="*"]') excessSelectAllCheckBox! : SlCheckbox;
+    @query('sl-checkbox[data-phi-filter-field="accommodation"][data-phi-filter-value="*"]') accommodationSelectAllCheckBox! : SlCheckbox;
 
     @queryAll('sl-checkbox[data-phi-filter-field="brand"]:not([data-phi-filter-value="*"])') brandFilterCheckBoxes! : NodeListOf<SlCheckbox>;
     @queryAll('sl-checkbox[data-phi-filter-field="state"]:not([data-phi-filter-value="*"])') stateFilterCheckBoxes! : NodeListOf<SlCheckbox>;
@@ -93,6 +102,7 @@ export class PhiFundProductBrowser extends LitElement {
     @queryAll('sl-checkbox[data-phi-filter-field="tier"]:not([data-phi-filter-value="*"])') tierFilterCheckBoxes! : NodeListOf<SlCheckbox>;
     @queryAll('sl-checkbox[data-phi-filter-field="policy-type"]:not([data-phi-filter-value="*"])') typeFilterCheckBoxes! : NodeListOf<SlCheckbox>;
     @queryAll('sl-checkbox[data-phi-filter-field="excess"]:not([data-phi-filter-value="*"])') excessFilterCheckBoxes! : NodeListOf<SlCheckbox>;
+    @queryAll('sl-checkbox[data-phi-filter-field="accommodation"]:not([data-phi-filter-value="*"])') accommodationFilterCheckBoxes! : NodeListOf<SlCheckbox>;
 
 
     protected updated(_changedProperties: PropertyValues) {
@@ -127,6 +137,7 @@ export class PhiFundProductBrowser extends LitElement {
             _linkFilterHandlers(this.tierSelectAllCheckBox, this.tierFilterCheckBoxes);
             _linkFilterHandlers(this.dependantSelectAllCheckBox, this.dependantsFilterCheckBoxes);
             _linkFilterHandlers(this.excessSelectAllCheckBox, this.excessFilterCheckBoxes);
+            _linkFilterHandlers(this.accommodationSelectAllCheckBox, this.accommodationFilterCheckBoxes);
         }
     }
 
@@ -135,7 +146,7 @@ export class PhiFundProductBrowser extends LitElement {
      * first displays the product table.
      */
     loadProducts() {
-        ProductResultSet.fetch(this.fundCode).then(rslt => {
+        ProductResultSet.fetch(`fund/${this.fundCode}`).then(rslt => {
             this.productResultSet = rslt;
             this.savedResultSet = rslt;
         });
@@ -145,11 +156,14 @@ export class PhiFundProductBrowser extends LitElement {
      * Handle click on individual product
      */
     displayProduct(e: MouseEvent) {
-        const row = (e.target as HTMLInputElement).getAttribute("data-row-code")!;
-        const element: PhiProductDetails = document.createElement("phi-product-details");
-        element.setAttribute("fund-code", this.fundCode);
-        element.product = this.productResultSet!.rows[Number(row)];
-        Globals.get.pageManager().pushPage(element)
+        const target = e.target as HTMLElement;
+        if (target.hasAttribute("data-row-code")) {
+            const row = target.getAttribute("data-row-code")!;
+            const element: PhiProductDetails = document.createElement("phi-product-details");
+            element.setAttribute("fund-code", this.fundCode);
+            element.product = this.productResultSet!.rows[Number(row)];
+            Globals.get.pageManager().pushPage(element)
+        }
     }
 
     /**
@@ -169,6 +183,7 @@ export class PhiFundProductBrowser extends LitElement {
         const brandsFilter = extractFilter(this.brandFilterCheckBoxes);
         const dependantsFilter = extractFilter(this.dependantsFilterCheckBoxes);
         const excessFilter = extractFilter(this.excessFilterCheckBoxes);
+        const accommodationFilter = extractFilter(this.accommodationFilterCheckBoxes);
         const textFilter = this.textFilter.value.toUpperCase().split(' ')
 
         const dependantFilterFunction = [matchAny, matchAll, matchExactly, matchOnly][+this.dependantFilterOption.value]
@@ -179,12 +194,12 @@ export class PhiFundProductBrowser extends LitElement {
             const searchableText = (row.code + " " + row.name).toUpperCase();
             const brands = (row.brands ? row.brands : fund.code) + ";";
             const dependants = (row.dependantTypesShortDescription ? row.dependantTypesShortDescription : "None").split(" ");
-            console.log(brands);
             if (stateFilter.includes(row.state) &&
                 tierFilter.includes(row.hospitalTier) &&
                 adultsFilter.includes(row.adultsCovered.toString()) &&
                 typeFilter.includes(row.type) &&
                 excessFilter.includes(row.excess.toString()) &&
+                accommodationFilter.includes(row.accommodationType) &&
                 brandsFilter.map(filter => brands.includes(filter!+";")).includes(true) &&
                 dependantFilterFunction(dependantsFilter, dependants) &&
                 matchAll(textFilter, searchableText)
@@ -279,6 +294,16 @@ export class PhiFundProductBrowser extends LitElement {
                             _render_checkbox("excess", excess.toString(), excess === 0 ? "Nil" : excess.toString())
                     )}
                 </sl-tree-item>
+                <sl-tree-item>Accommodation
+                    ${_render_checkbox("accommodation", "*", "Select all")}
+                    ${_render_checkbox("accommodation", "", "N/a")}
+                    ${_render_checkbox("accommodation", "PrivateOrPublic", "PrivateOrPublic")}
+                    ${_render_checkbox("accommodation", "PrivateSharedPublic", "PrivateSharedPublic")}
+                    ${_render_checkbox("accommodation", "PrivateSharedPublicShared", "PrivateSharedPublicShared")}
+                    ${_render_checkbox("accommodation", "Public", "Public")}
+                    ${_render_checkbox("accommodation", "PublicShared", "PublicShared")}
+                    ${_render_checkbox("accommodation", "PrivatePublicShared", "PrivatePublicShared")}
+                </sl-tree-item>
             </sl-tree>
         `
     }
@@ -304,6 +329,7 @@ export class PhiFundProductBrowser extends LitElement {
                 <th>Name</th>
                 <th>State</th>
                 <th>Tier</th>
+                <th>Accommodation</th>
                 <th>Excess</th>
                 <th>Type</th>
                 <th>Adults</th>
@@ -325,6 +351,7 @@ export class PhiFundProductBrowser extends LitElement {
                         <td>${row.name}</td>
                         <td>${row.state}</td>
                         <td>${row.hospitalTier}</td>
+                        <td>${row.accommodationType}</td>
                         <td>${row.excess ? row.excess : ""}</td>
                         <td>${row.type}</td>
                         <td>${row.adultsCovered}</td>
@@ -341,11 +368,6 @@ export class PhiFundProductBrowser extends LitElement {
     render() {
         const fund = FundManager.get(this.fundCode)!;
         const filterDrawerRef = createRef();
-        const spinners = html `
-            <sl-spinner style="font-size: 50px; --track-width: 10px;"></sl-spinner>
-            <sl-spinner style="font-size: 50px; --track-width: 10px;"></sl-spinner>
-            <sl-spinner style="font-size: 50px; --track-width: 10px;"></sl-spinner>
-        `
         return html`
             <div id="content-area">
                 <sl-drawer ${ref(filterDrawerRef)} label="Filter" placement="start" contained class="drawer-contained" @sl-hide=${(e:Event)=> {
@@ -361,7 +383,7 @@ export class PhiFundProductBrowser extends LitElement {
                 </div>
 
                 <div id ="table">
-                    ${this.productResultSet === undefined ? spinners : this.render_product_table(this.productResultSet!)}
+                    ${this.productResultSet === undefined ? html `<sl-spinner></sl-spinner>` : this.render_product_table(this.productResultSet!)}
                 </div>
             </div>
         `
