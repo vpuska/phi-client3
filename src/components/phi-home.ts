@@ -55,7 +55,7 @@ export class PhiHome extends LitElement {
             <div id="image"></div>
             <div id="buttons">
                 <sl-button variant="primary" size="large" 
-                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-needs-analysis"))}}>
                     <sl-icon slot="prefix" name="search"></sl-icon>
                     Compare policies...
                 </sl-button>

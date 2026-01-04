@@ -10,7 +10,6 @@ import {customElement, property, query, state} from 'lit/decorators.js'
 import xmlFormat from 'xml-formatter';
 
 import {FundManager} from "../api-models/funds.ts";
-import {Globals} from "../modules/globals.ts";
 import {Product} from "../api-models/products.ts";
 
 /**
@@ -29,48 +28,11 @@ export class PhiProductDetails extends LitElement {
             background-color: var(--sl-color-gray-100);
         }
 
-        /* header block */
-        div.header { 
+        phi-card::part(body) {
             display: flex;
-            flex-direction: row;
             align-items: center;
-            height: 32px;
-            background-color: var(--sl-color-gray-400);
-            border-radius: 8px 8px 0 0;
-            border-bottom: 1px solid var(--sl-color-gray-800);
-            gap: 32px;
-            padding: 16px;
-        }
-
-        /* header block - fundCode name */
-        div.header > h4 { 
-            flex: 1 0 0;
-            margin: 0;
         }
         
-        /* details block */
-        .details { 
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            flex: 1 0 0;
-            background-color: var(--sl-color-gray-200);
-            border-radius: 0 0 8px 8px;
-            overflow-y: auto;
-        }
-
-        div#details {
-            padding: 16px;
-        }
-        
-        img.logo {
-            max-width: 80%;
-            max-height: 48px;
-            min-height: 48px;
-            width: auto;
-            height: auto;
-        }
-
         h4 {
             margin-bottom: 0;
         }
@@ -88,9 +50,11 @@ export class PhiProductDetails extends LitElement {
 
     @property({ attribute: "fund-code" }) fundCode!: string;
     @property({ attribute: false}) product: Product | null = null;
+
     @state() xml: string | undefined;
     @state() xmldoc = new DOMParser().parseFromString("<Product></Product>", "text/xml");
     @state() subPage = "details";
+
     @query("#details") detailsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
     @query("#hospital") hospitalPage! : HTMLElement;
@@ -199,36 +163,33 @@ export class PhiProductDetails extends LitElement {
         }
 
         return html`
-            <div class="header">
-                <img class="logo" src="${fund.logo}" alt="${fund.code}">
-                <h4>${this.product!.code} - ${this.product!.name}</h4>
+            <phi-page-header logo="${fund.logo}" heading="${this.product!.code} - ${this.product!.name}">
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
                 ${this.product?.isHospital ? html`<sl-button variant="text" size="small" @click=${()=>this.setPage("hospital")}>HOSPITAL</sl-button>` : nothing}
                 ${this.product?.isGeneralHealth ? html`<sl-button variant="text" size="small" @click=${()=>this.setPage("extras")}>EXTRAS</sl-button>` : nothing}
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("xml")}>XML</sl-button>
-                <sl-icon-button
-                        style="font-size: 32px"
-                        name="x"
-                        label="close close detail page"
-                        @click=${() => Globals.get.pageManager().popPage()}
-                ></sl-icon-button>
-            </div>
-            
-            <div id="details" class="details">
+            </phi-page-header>
 
-                <div style="display:flex; flex-direction: row; justify-content: space-between; font-size: x-large; font-weight: bold">
-                    <div>
-                        <sl-card>${typeLabel[this.product?.type!]}</sl-card>
-                        <sl-card>${this.product?.coverageDescription}</sl-card>
-                        <sl-card>${this.product?.state === "ALL" ? "All States" : this.product?.state}</sl-card>
-                        ${this.product?.excess ? html`<sl-card>$${this.product?.excess} Excess</sl-card>` : nothing}
-                    </div>
-                    <div>
-                        <sl-card>
-                            Premium: <sl-format-number type="currency" currency="AUD" value="${this.product?.premium}" lang="en-AU"></sl-format-number>
-                        </sl-card>
-                    </div>
-                </div>
+            <phi-page-details id="details">
+
+                <phi-headline>
+                    <phi-card slot="left">${typeLabel[this.product?.type!]}</phi-card>
+                    <phi-card slot="left">${this.product?.coverageDescription}</phi-card>
+                    <phi-card slot="left">${this.product?.state === "ALL" ? "All States" : this.product?.state}</phi-card>
+                    ${this.product?.excess ? html`<phi-card slot="left">$${this.product?.excess} Excess</phi-card>` : nothing}
+
+                    <phi-card slot="right">
+                        <div> Premium:
+                            <sl-format-number type="currency" currency="AUD" value="${this.product?.premium}"
+                                              lang="en-AU"></sl-format-number>
+                            <br>
+                            <span style="font-size: xx-small">
+                                # excludes Australian Government Rebate or Lifetime Healthcover Loadings 
+                            </span>
+                        </div>
+                    </phi-card>
+                </phi-headline>
+
 
                 <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 5%">
                     <div style="min-width:600px; max-width: 45%">
@@ -240,24 +201,24 @@ export class PhiProductDetails extends LitElement {
                 </div>
 
                 ${this.render_otherProductDetails(this.xmldoc)}
-            </div>
+            </phi-page-details>
 
-            <div id="hospital" class="details">
+            <phi-page-details id="hospital">
                 This is the hospital page
-            </div>
+            </phi-page-details>
 
-            <div id="extras" class="details">
+            <phi-page-details id="extras">
                 This is the extras page
-            </div>
+            </phi-page-details>
             
-            <div id="xml" class="details">
+            <phi-page-details id="xml" style="padding: 0">
                 <sl-textarea 
                         size="small" 
                         resize="auto" 
                         value=${this.xml ? xmlFormat(this.xml.trim(), {collapseContent:true}) : 'Loading...'}
                 >
                 </sl-textarea>
-            </div>
+            </phi-page-details>
         `
     }
 

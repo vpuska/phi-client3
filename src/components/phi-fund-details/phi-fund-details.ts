@@ -10,7 +10,6 @@ import {customElement, property, query, state} from 'lit/decorators.js'
 import xmlFormat from 'xml-formatter';
 
 import {Fund, FundManager} from "../../api-models/funds.ts";
-import {Globals} from "../../modules/globals.ts";
 import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
 import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
 
@@ -29,57 +28,20 @@ export class PhiFundDetails extends LitElement {
             flex: 1 0 0;    // take up available space in our container (phi-page-manager)
             background-color: var(--sl-color-gray-100);
         }
-
-        /* header block */
-        div.header { 
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            height: 32px;
-            background-color: var(--sl-color-gray-400);
-            border-radius: 8px 8px 0 0;
-            border-bottom: 1px solid var(--sl-color-gray-800);
-            gap: 32px;
-            padding: 16px;
-        }
-
-        /* header block - fundCode name */
-        div.header > h4 { 
-            flex: 1 0 0;
-            margin: 0;
-        }
-        
-        /* details block */
-        .details { 
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            flex: 1 0 0;
-            background-color: var(--sl-color-gray-200);
-            border-radius: 0 0 8px 8px;
-            overflow-y: auto;
-        }
-
-        div#details, div#brands {
-            padding: 16px;
-        }
-
-        img.logo {
-            max-width: 80%;
-            max-height: 48px;
-            min-height: 48px;
-            width: auto;
-            height: auto;
-        }
-
         h4 {
             margin-bottom: 0;
         }
         small > *:first-child {
             margin-top: 2px;
         }
+        div#brands-list {
+            display: flex;
+            flex-flow: row wrap;
+            gap: 12px;
+        }
     `
-    @property({ attribute: "fundCode-code", type: String }) fundCode!: string;
+
+    @property({ attribute: "fund-code", type: String }) fundCode!: string;
     @state() subPage = "details";
     @query("#details") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
@@ -224,25 +186,17 @@ export class PhiFundDetails extends LitElement {
         const fund = FundManager.get(this.fundCode)!;
 
         return html`
-            <div class="header">
-                <img class="logo" src="${fund.logo}" alt="${fund.code}">
-                <h4>${fund.name}</h4>
+            <phi-page-header logo="${fund.logo}" heading="${fund.name}">
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
                 ${fund.brands.length > 0 ?
-                    html`<sl-button variant="text" size="small" @click=${()=>this.setPage("brands")}>BRANDS</sl-button>`
-                    : nothing
+                        html`<sl-button variant="text" size="small" @click=${()=>this.setPage("brands")}>BRANDS</sl-button>`
+                        : nothing
                 }
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("xml")}>XML</sl-button>
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("products")}>PRODUCTS</sl-button>
-                <sl-icon-button
-                        style="font-size: 32px"
-                        name="x"
-                        label="close fund detail page"
-                        @click=${() => Globals.get.pageManager().popPage()}
-                ></sl-icon-button>
-            </div>
+            </phi-page-header>
             
-            <div id="details" class="details">
+            <phi-page-details id="details">
                 <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 5%">
                     <div style="min-width:600px; max-width: 45%">
                         ${this.render_block("Description", fund.description!)}
@@ -255,83 +209,28 @@ export class PhiFundDetails extends LitElement {
                 </div>
                 ${this.render_websites(fund)}
                 ${this.render_dependant_limits(fund)}
-            </div>
-            
-            <div id="brands" class="details">
-                <phi-fund-brands fund="${this.fundCode}"></phi-fund-brands>
-            </div>
-            
-            <div id="xml" class="details">
+            </phi-page-details>
+
+            <phi-page-details id="brands">
+                <div id="brands-list">
+                    ${fund.brands.map((brand) => html`
+                        <phi-card style="width:200px" header footer>
+                            <phi-logo slot="header" src="${brand.logo}" alt="${fund.code}"></phi-logo>
+                            <strong>${brand.name}</strong>
+                            <div slot="footer">
+                                <small>${brand.code}</small>
+                            </div>
+                        </phi-card>`
+                    )}
+                </div>
+            </phi-page-details>
+
+            <phi-page-details id="xml" style="padding: 0">
                 <sl-textarea size="small" resize="auto" value="${xmlFormat(fund.xml.trim(), {collapseContent: true})}">
                 </sl-textarea>
-            </div>
+            </phi-page-details>
             
             <phi-fund-product-browser id="products" class="details" fund="${fund.code}"></phi-fund-product-browser>
-        `
-    }
-}
-
-
-@customElement('phi-fund-brands')
-export class PhiFundBrands extends LitElement {
-
-    // noinspection CssUnusedSymbol
-    static styles = css`
-        :host {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        sl-card::part(base) {
-            margin: 8px;
-            width: 200px;
-            height: 100%;  // ensure card gets stretched
-        }
-        sl-card::part(header) {
-            background-color: var(--sl-color-gray-400);
-        }
-        sl-card::part(body) {
-            flex: 1 0 0;
-        }
-        img.logo {
-            max-width: 80%;
-            max-height: 48px;
-            min-height: 48px;
-            width: auto;
-            height: auto;
-        }
-        div[slot="header"] {
-            display: flex;
-            gap: 16px;
-            justify-content: start;
-            align-items: center;
-        }
-    `
-
-    @property() fund: string = "";
-
-
-    render() {
-        const fund = FundManager.get(this.fund)!;
-
-        return html`
-            ${fund.brands.map((brand) => html`
-                <sl-card>
-                    <div slot="header"><img class="logo" src="${brand.logo}" alt="${fund.code}"></div>
-                    <strong>${brand.name}</strong>
-                    <div slot="footer">
-                        <small style="flex:1 0 0">${brand.code}</small>
-                        <sl-tooltip content="display brand details">
-                            <sl-icon-button
-                                    name="arrow-right"
-                                    label="Display fund details"
-                                    @click=${() => {
-                                    }}
-                            ></sl-icon-button>
-                        </sl-tooltip>
-                    </div>
-                </sl-card>`
-            )}
         `
     }
 }
@@ -341,6 +240,5 @@ declare global {
     // noinspection JSUnusedGlobalSymbols
     interface HTMLElementTagNameMap {
         'phi-fund-details': PhiFundDetails,
-        'phi-fund-brands': PhiFundBrands,
     }
 }
