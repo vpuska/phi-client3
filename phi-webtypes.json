@@ -186,7 +186,7 @@
                     },
                     "attributes": [
                         {
-                            "name": "fundCode-code",
+                            "name": "fund-code",
                             "required": false,
                             "priority": "normal",
                             "value": {
@@ -208,7 +208,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;    // take up available space in our container (phi-page-manager)\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        small > *:first-child {\\r\\n            margin-top: 2px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;    // take up available space in our container (phi-page-manager)\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        small > *:first-child {\\r\\n            margin-top: 2px;\\r\\n        }\\r\\n        div#brands-list {\\r\\n            display: flex;\\r\\n            flex-flow: row wrap;\\r\\n            gap: 12px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-details.ts",
@@ -292,61 +292,6 @@
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-details.ts",
                                     "symbol": "PhiFundDetails.productsPage"
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "name": "phi-fund-brands",
-                    "source": {
-                        "module": "./src/components/phi-fund-details/phi-fund-details.ts",
-                        "symbol": "PhiFundBrands"
-                    },
-                    "attributes": [
-                        {
-                            "name": "fund",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "string",
-                                "required": true,
-                                "default": "\"\""
-                            },
-                            "source": {
-                                "module": "./src/components/phi-fund-details/phi-fund-details.ts",
-                                "symbol": "PhiFundBrands.fund"
-                            }
-                        }
-                    ],
-                    "js": {
-                        "properties": [
-                            {
-                                "name": "styles",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "CSSResult",
-                                    "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-flow: row wrap;\\r\\n            gap: 12px;\\r\\n        }\\r\\n        img.logo {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n    `\""
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-details.ts",
-                                    "symbol": "PhiFundBrands.styles"
-                                }
-                            },
-                            {
-                                "name": "fund",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "string",
-                                    "required": true,
-                                    "default": "\"\""
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-details.ts",
-                                    "symbol": "PhiFundBrands.fund"
                                 }
                             }
                         ]
@@ -794,6 +739,190 @@
                     }
                 },
                 {
+                    "name": "phi-needs-analysis",
+                    "description": "Health insurance needs analysis.",
+                    "source": {
+                        "module": "./src/components/phi-needs-analysis.ts",
+                        "symbol": "PhiNeedsAnalysis"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n        sl-details::part(base) {\\r\\n            background-color: var(--sl-color-neutral-500);\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n        sl-icon {\\r\\n            color: blue;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.styles"
+                                }
+                            },
+                            {
+                                "name": "product1",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Product",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.product1"
+                                }
+                            },
+                            {
+                                "name": "product2",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Product",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.product2"
+                                }
+                            },
+                            {
+                                "name": "selectedState",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.selectedState"
+                                }
+                            },
+                            {
+                                "name": "searchResults",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "{ fund: string; name: string; fundName: string; fundShortName: string; }[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.searchResults"
+                                }
+                            },
+                            {
+                                "name": "product1Input",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiKeywordSearch",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.product1Input"
+                                }
+                            },
+                            {
+                                "name": "product2Input",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiKeywordSearch",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs-analysis.ts",
+                                    "symbol": "PhiNeedsAnalysis.product2Input"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-needs",
+                    "description": "Health insurance needs.",
+                    "source": {
+                        "module": "./src/components/phi-needs.ts",
+                        "symbol": "PhiNeeds"
+                    },
+                    "attributes": [
+                        {
+                            "name": "summary",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-needs.ts",
+                                "symbol": "PhiNeeds.summary"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n   `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs.ts",
+                                    "symbol": "PhiNeeds.styles"
+                                }
+                            },
+                            {
+                                "name": "summary",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs.ts",
+                                    "symbol": "PhiNeeds.summary"
+                                }
+                            },
+                            {
+                                "name": "selectedState",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-needs.ts",
+                                    "symbol": "PhiNeeds.selectedState"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-page-manager",
                     "description": "Component to manage switching between application pages (Funds, Search, etc.).",
                     "source": {
@@ -1117,6 +1246,291 @@
                     }
                 },
                 {
+                    "name": "phi-keyword-search",
+                    "description": "Combo-box style input for searching products.  Input is in the form of search keywords.  Eg. `hospital gold nsw family`\r\n\r\nThe component supports two modes of operation:\r\n1. Keyword search - Entering keywords will perform a keyword search and display the results in a drop-down menu.  Selecting a result will populate the input with\r\nthe product name and display a menu of product variants (state and cover types) for the second mode of operation.\r\n2. Product selection - Entering a product name will display a list of available variants for that product.  Selecting a variant will populate the input\r\nwith the product name and hide the drop-down menu.  The product details are displayed in the product cover details section.",
+                    "source": {
+                        "module": "./src/shared-components/phi-keyword-search.ts",
+                        "symbol": "PhiKeywordSearch"
+                    },
+                    "attributes": [
+                        {
+                            "name": "label",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"Select product:\""
+                            },
+                            "description": "Label text used to indicate a prompt for selecting a product.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.label"
+                            }
+                        },
+                        {
+                            "name": "search-combined",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "description": "Include combined products in the search results.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.searchCombined"
+                            }
+                        },
+                        {
+                            "name": "search-hospital",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "description": "Include hospital products in the search results.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.searchHospital"
+                            }
+                        },
+                        {
+                            "name": "search-extras",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "description": "Include extras (general health) products in the search results.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.searchExtras"
+                            }
+                        },
+                        {
+                            "name": "disabled",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "description": "Disable the component.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.disabled"
+                            }
+                        },
+                        {
+                            "name": "placeholder",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"Product search keywords...\""
+                            },
+                            "description": "Set the placeholder text for the input.",
+                            "source": {
+                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.placeholder"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n        }\\r\\n        sl-dropdown {\\r\\n            width: 100%;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.styles"
+                                }
+                            },
+                            {
+                                "name": "label",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Select product:\""
+                                },
+                                "description": "Label text used to indicate a prompt for selecting a product.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.label"
+                                }
+                            },
+                            {
+                                "name": "searchCombined",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "description": "Include combined products in the search results.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchCombined"
+                                }
+                            },
+                            {
+                                "name": "searchHospital",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "description": "Include hospital products in the search results.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchHospital"
+                                }
+                            },
+                            {
+                                "name": "searchExtras",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "description": "Include extras (general health) products in the search results.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchExtras"
+                                }
+                            },
+                            {
+                                "name": "disabled",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "description": "Disable the component.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.disabled"
+                                }
+                            },
+                            {
+                                "name": "placeholder",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Product search keywords...\""
+                                },
+                                "description": "Set the placeholder text for the input.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.placeholder"
+                                }
+                            },
+                            {
+                                "name": "dropDownItems",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "TemplateResult[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "description": "Represents an array of items to be displayed in a dropdown menu.\r\nEach item is a TemplateResult, built from either a search result or a product depending\r\non the type of result.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.dropDownItems"
+                                }
+                            },
+                            {
+                                "name": "searchDropdown",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlDropdown",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchDropdown"
+                                }
+                            },
+                            {
+                                "name": "searchInput",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlInput",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchInput"
+                                }
+                            },
+                            {
+                                "name": "productCoverDetails",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HTMLElement",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.productCoverDetails"
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Product",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "description": "Represents the currently selected product, if any.  This value is the output of the component.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.value"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-keyword-search-change"
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-logo",
                     "source": {
                         "module": "./src/shared-components/phi-logo.ts",
@@ -1204,6 +1618,232 @@
                     }
                 },
                 {
+                    "name": "phi-option-set",
+                    "description": "[object Object],[object Object],[object Object]",
+                    "source": {
+                        "module": "./src/shared-components/phi-option-set.ts",
+                        "symbol": "PhiOptionSet"
+                    },
+                    "attributes": [
+                        {
+                            "name": "label",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "string",
+                                    "undefined"
+                                ],
+                                "required": true
+                            },
+                            "description": "Refer `sl-radio-group` label.",
+                            "source": {
+                                "module": "./src/shared-components/phi-option-set.ts",
+                                "symbol": "PhiOptionSet.label"
+                            }
+                        },
+                        {
+                            "name": "help-text",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "string",
+                                    "undefined"
+                                ],
+                                "required": true
+                            },
+                            "description": "Refer `sl-radio-group` helpText.  (Attribute name:`help-text`).",
+                            "source": {
+                                "module": "./src/shared-components/phi-option-set.ts",
+                                "symbol": "PhiOptionSet.helpText"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "string",
+                                    "undefined"
+                                ],
+                                "required": true,
+                                "default": "\"undefined\""
+                            },
+                            "description": "The key value of the currently selected `OptionEntryType` in the collection.",
+                            "source": {
+                                "module": "./src/shared-components/phi-option-set.ts",
+                                "symbol": "PhiOptionSet.value"
+                            }
+                        },
+                        {
+                            "name": "disabled",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "boolean",
+                                    "undefined"
+                                ],
+                                "required": false,
+                                "default": "false"
+                            },
+                            "description": "Disable control.",
+                            "source": {
+                                "module": "./src/shared-components/phi-option-set.ts",
+                                "symbol": "PhiOptionSet.disabled"
+                            }
+                        },
+                        {
+                            "name": "options",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "Map<any, OptionEntryType<any>>",
+                                    "undefined"
+                                ],
+                                "required": true
+                            },
+                            "description": "The option set collection",
+                            "source": {
+                                "module": "./src/shared-components/phi-option-set.ts",
+                                "symbol": "PhiOptionSet.options"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "slRadioGroup",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "SlRadioGroup",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.slRadioGroup"
+                                }
+                            },
+                            {
+                                "name": "selectedOption",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "OptionEntryType<any>",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.selectedOption"
+                                }
+                            },
+                            {
+                                "name": "label",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "description": "Refer `sl-radio-group` label.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.label"
+                                }
+                            },
+                            {
+                                "name": "helpText",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "description": "Refer `sl-radio-group` helpText.  (Attribute name:`help-text`).",
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.helpText"
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "undefined"
+                                    ],
+                                    "required": true,
+                                    "default": "\"undefined\""
+                                },
+                                "description": "The key value of the currently selected `OptionEntryType` in the collection.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.value"
+                                }
+                            },
+                            {
+                                "name": "disabled",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "boolean",
+                                        "undefined"
+                                    ],
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "description": "Disable control.",
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.disabled"
+                                }
+                            },
+                            {
+                                "name": "options",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Map<any, OptionEntryType<any>>",
+                                        "undefined"
+                                    ],
+                                    "required": true
+                                },
+                                "description": "The option set collection",
+                                "source": {
+                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "symbol": "PhiOptionSet.options"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-option-change",
+                                "description": "The selected option has changed and `value` has changed.  `Event.detail` points to the new OptionEntry."
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-page-details",
                     "description": "Container for page details..",
                     "source": {
@@ -1231,7 +1871,7 @@
                 },
                 {
                     "name": "phi-page-header",
-                    "description": "Common heading information for a page showing:\r\n- logo\r\n- heading\r\n- menu\r\n- close button.",
+                    "description": "Common summary information for a page showing:\r\n- logo\r\n- summary\r\n- menu\r\n- close button.",
                     "source": {
                         "module": "./src/shared-components/phi-page-header.ts",
                         "symbol": "PhiPageHeader"
@@ -1275,7 +1915,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n\\r\\n        /* header block */\\r\\n        div.header {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            height: 32px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n            border-radius: 8px 8px 0 0;\\r\\n            border-bottom: 1px solid var(--sl-color-gray-800);\\r\\n            gap: 32px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        /* header block - fundCode name */\\r\\n        div.header > h4 {\\r\\n            flex: 1 0 0;\\r\\n            margin: 0;\\r\\n        }\\r\\n        \\r\\n        img.logo {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n\\r\\n        /* header block */\\r\\n        div.header {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            height: 32px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n            border-radius: 8px 8px 0 0;\\r\\n            border-bottom: 1px solid var(--sl-color-gray-800);\\r\\n            gap: 24px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        /* header block - name */\\r\\n        div.header > h4 {\\r\\n            flex: 1 0 0;\\r\\n            margin: 0;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/shared-components/phi-page-header.ts",

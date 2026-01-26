@@ -1,6 +1,6 @@
 // noinspection CssInvalidHtmlTagReference,JSUnusedGlobalSymbols
 
-const FUND_XML_API = 'https://phi-demo-api.spartlet.net/funds/xml'
+const FUND_XML_API = 'https://phi-demo-api.spartlet.net/fund-xml'
 
 export type FundType = "Open" | "Restricted"
 export type FundWebSiteLinkTitleType = "NoGapDoctors" | "AgreementHospitals" | "PreferredProviders" | "Branches" | "Ambulance";

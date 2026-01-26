@@ -11,9 +11,9 @@ import {Globals} from "../modules/globals.ts";
 
 
 /**
- * Common heading information for a page showing:
+ * Common summary information for a page showing:
  * - logo
- * - heading
+ * - summary
  * - menu
  * - close button.
  */

@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-const PRODUCT_API = 'https://phi-demo-api.spartlet.net/products'
+const PRODUCT_API = 'https://phi-demo-api.spartlet.net'
 
 import {Fund, FundManager} from "./funds.ts";
 
@@ -39,12 +39,18 @@ export type ProductJsonType = {
     services: string,
 }
 
-
 export type ProductStatisticsType = {
     combinedCount: number;
     hospitalCount: number;
     generalCount: number;
 }
+
+export type ProductKeywordSearchResult = {
+    fund: string,
+    productName: string,
+    fundName: string,
+    fundShortName: string
+};
 
 
 /**
@@ -110,13 +116,12 @@ export class Product {
 
     get coverageDescription() {
         if (this.adultsCovered === 0)
-            return "Dependants Only";
-
-        if (this.adultsCovered === 1)
-            return this.dependantCover ? "Single Parent Family" : "Single";
-
-        if (this.adultsCovered === 2)
-            return this.dependantCover ? "Family" : "Couple";
+            return "Dependants Only"
+        else
+            if (this.adultsCovered === 1)
+                return this.dependantCover ? "Single Parent Family" : "Single";
+            else
+                return this.dependantCover ? "Family" : "Couple";
     }
 
     get dependantTypesShortDescription() {
@@ -138,6 +143,25 @@ export class Product {
         return types;
     }
 
+    get dependantTypesLongDescriptions() {
+        const types = [];
+        if (this.childCover)
+            types.push("Children")
+        if (this.studentCover)
+            types.push("Students")
+        if (this.nonStudentCover)
+            types.push("Non-Students")
+        if (this.youngAdultCover)
+            types.push("Young Adults")
+        if (this.nonClassifiedCover)
+            types.push("Non-Classified Dependants")
+        if (this.conditionalNonStudentCover)
+            types.push("Conditional Non-Students")
+        if (this.disabilityCover)
+            types.push("Disability Dependants")
+        return types;
+    }
+
     /**
      * Returns the product JSON field value.
      * @param fieldName
@@ -147,7 +171,7 @@ export class Product {
     }
 
     async getXml() : Promise<string> {
-        const response = await fetch(`${PRODUCT_API}/xml/${this.fundCode}/${this.code}`);
+        const response = await fetch(`${PRODUCT_API}/products/xml/${this.fundCode}/${this.code}`);
         if (response.ok) {
             return await response.text();
         }
@@ -183,7 +207,8 @@ export class ProductResultSet {
      * @param productApiEndpoint
      */
     static async fetch(productApiEndpoint: string): Promise<ProductResultSet> {
-        const response = await fetch(`${PRODUCT_API}/${productApiEndpoint}`);
+        const endpoint = productApiEndpoint.startsWith("product") ? productApiEndpoint : `products/${productApiEndpoint}`;
+        const response = await fetch(`${PRODUCT_API}/${endpoint}`);
         const resultSet = new Array<Product>;
         if (response.ok) {
             const productsJSON: ProductJsonType[] = await response.json();
@@ -229,6 +254,31 @@ export class ProductResultSet {
             values.add(row.excess)
         return Array.from(values).sort((a,b)=>a-b);
     }
+}
+
+/**
+ * Calls the `product-search/by-keyword` API endpoint to search for products by keyword.
+ * @param keywords Keyword string. Eg `hospital gold nsw family`
+ * @param combined Include products with combined cover. Default `true`.
+ * @param hospital Include products with hospital cover. Default `true`.
+ * @param extras Include products with extras cover. Default `true`.
+ * @param count Maximum number of results to return. Default `50`.
+ * @param timeout Maximum time to wait for response in milliseconds. Default `1500`.
+ */
+export async function productKeywordSearch(
+    keywords: string,
+    combined: boolean = true,
+    hospital: boolean = true,
+    extras: boolean = true,
+    count: number = 50,
+    timeout: number = 1500) : Promise<ProductKeywordSearchResult[]> {
+
+    const params = `keywords=${encodeURIComponent(keywords)}&count=${count}&combined=${combined}&hospital=${hospital}&extras=${extras}&timeout=${timeout}`;
+    const response = await fetch(`${PRODUCT_API}/product-search/by-keyword?${params}`);
+    if (response.ok)
+        return await response.json();
+    else
+        return [];
 }
 
 
