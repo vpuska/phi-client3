@@ -7,7 +7,7 @@
  */
 
 
-import {PhiPageManager} from "../components/phi-page-manager.ts";
+import {PhiPageManager} from "../components/application/page-manager.ts";
 
 
 let pageManager : PhiPageManager;

@@ -6,15 +6,13 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import { customElement} from 'lit/decorators.js'
-import {Globals} from "../modules/globals.ts";
+import {Globals} from "../../modules/globals.ts";
 
 
 /**
  * Application home page.
  */
-@customElement('phi-home')
-export class PhiHome extends LitElement {
+export class PhiHomePage extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -45,10 +43,6 @@ export class PhiHome extends LitElement {
             margin: 8px;
         }
     `
-    constructor() {
-        super();
-
-    }
 
     render() {
         return html`
@@ -65,13 +59,5 @@ export class PhiHome extends LitElement {
                     Browse funds...</sl-button>
             </div>
         `
-    }
-}
-
-
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-home': PhiHome,
     }
 }

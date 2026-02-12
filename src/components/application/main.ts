@@ -6,13 +6,11 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import {customElement} from 'lit/decorators.js'
 
 
 /**
  * Main application screen containing header, navigation and body
  */
-@customElement('phi-main')
 export class PhiMain extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -37,9 +35,3 @@ export class PhiMain extends LitElement {
 }
 
 
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-main': PhiMain,
-    }
-}

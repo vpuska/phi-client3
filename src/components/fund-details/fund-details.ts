@@ -1,22 +1,21 @@
 /**
- * components/phi-fundCode-details.ts
+ * components/phi-fundCode-openDetails.ts
  * --
  * @author VJP
  * @written 11-Nov-2025
  */
 
 import {LitElement, html, css, nothing, type PropertyValues, type TemplateResult} from 'lit'
-import {customElement, property, query, state} from 'lit/decorators.js'
+import {property, query, state} from 'lit/decorators.js'
 import xmlFormat from 'xml-formatter';
 
 import {Fund, FundManager} from "../../api-models/funds.ts";
-import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
+import type {PhiFundProductBrowser} from "./fund-product-browser.ts";
 import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
 
 /**
- * Fund details page..
+ * Fund openDetails page..
  */
-@customElement('phi-fund-details')
 export class PhiFundDetails extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -42,15 +41,15 @@ export class PhiFundDetails extends LitElement {
     `
 
     @property({ attribute: "fund-code", type: String }) fundCode!: string;
-    @state() subPage = "details";
-    @query("#details") detailsPage! : HTMLElement;
+    @state() subPage = "openDetails";
+    @query("#openDetails") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
     @query("#products") productsPage! : PhiFundProductBrowser;
 
 
     setPage(page: string) {
-        this.detailsPage.style.display = page === "details" ? "flex" : "none";
+        this.detailsPage.style.display = page === "openDetails" ? "flex" : "none";
         this.brandsPage.style.display = page === "brands" ? "flex" : "none";
         this.xmlPage.style.display = page === "xml" ? "flex" : "none";
         this.productsPage.style.display = page === "products" ? "flex" : "none";
@@ -61,15 +60,15 @@ export class PhiFundDetails extends LitElement {
 
     protected firstUpdated(_changedProperties: PropertyValues) {
         super.firstUpdated(_changedProperties);
-        this.setPage("details");
+        this.setPage("openDetails");
     }
 
     /**
-     * Renders a block of information displaying a title and details using the following template:
+     * Renders a block of information displaying a title and openDetails using the following template:
      * <pre>
      *  <div>
      *      <h4>${title}</h4>
-     *      <small><p>${details}</p></small>
+     *      <small><p>${openDetails}</p></small>
      *  </div>
      *  </pre>
      * @param title
@@ -120,7 +119,7 @@ export class PhiFundDetails extends LitElement {
     }
 
     /**
-     * Renders the fundCode's contacts/communication details.
+     * Renders the fundCode's contacts/communication openDetails.
      * @param fund
      */
     render_contacts(fund: Fund) {
@@ -187,7 +186,7 @@ export class PhiFundDetails extends LitElement {
 
         return html`
             <phi-page-header logo="${fund.logo}" heading="${fund.name}">
-                <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
+                <sl-button variant="text" size="small" @click=${()=>this.setPage("openDetails")}>DETAILS</sl-button>
                 ${fund.brands.length > 0 ?
                         html`<sl-button variant="text" size="small" @click=${()=>this.setPage("brands")}>BRANDS</sl-button>`
                         : nothing
@@ -235,10 +234,3 @@ export class PhiFundDetails extends LitElement {
     }
 }
 
-
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-fund-details': PhiFundDetails,
-    }
-}

@@ -6,14 +6,13 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import {customElement, query} from 'lit/decorators.js'
-import {Globals} from "../modules/globals.ts";
+import {query} from 'lit/decorators.js'
+import {Globals} from "../../modules/globals.ts";
 
 
 /**
  * Component to manage switching between application pages (Funds, Search, etc.).
  */
-@customElement('phi-page-manager')
 export class PhiPageManager extends LitElement {
 
     static styles = css`
@@ -69,10 +68,3 @@ export class PhiPageManager extends LitElement {
 
 }
 
-
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-page-manager': PhiPageManager,
-    }
-}

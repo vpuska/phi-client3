@@ -26,7 +26,7 @@ type SearchMenuValue =
  * 1. Keyword search - Entering keywords will perform a keyword search and display the results in a drop-down menu.  Selecting a result will populate the input with
  * the product name and display a menu of product variants (state and cover types) for the second mode of operation.
  * 2. Product selection - Entering a product name will display a list of available variants for that product.  Selecting a variant will populate the input
- * with the product name and hide the drop-down menu.  The product details are displayed in the product cover details section.
+ * with the product name and hide the drop-down menu.  The product openDetails are displayed in the product cover openDetails section.
  */
 @customElement('phi-keyword-search')
 export class PhiKeywordSearch extends LitElement {
@@ -161,7 +161,7 @@ export class PhiKeywordSearch extends LitElement {
 
     /**
      * Called when a menu item is selected.  If the selected item is a search result, the search is performed and the drop-down menu is cleared.  If the selected item is a product,
-     * the product is selected and the drop-down menu is hidden.  The product details are displayed in the product cover details section.
+     * the product is selected and the drop-down menu is hidden.  The product openDetails are displayed in the product cover openDetails section.
      * @param e The `sl-menu` triggering event.
      */
     handleMenuSelect(e: CustomEvent) {

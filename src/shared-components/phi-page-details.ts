@@ -1,5 +1,5 @@
 /**
- * shared-components/phi-page-details.ts
+ * shared-components/phi-page-openDetails.ts
  * --
  * @author VJP
  * @written 01-Jan-2026
@@ -10,7 +10,7 @@ import { customElement} from 'lit/decorators.js'
 
 
 /**
- * Container for page details..
+ * Container for page openDetails..
  */
 @customElement('phi-page-details')
 export class PhiPageDetails extends LitElement {

@@ -6,20 +6,19 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import { customElement, state} from 'lit/decorators.js'
+import {state} from 'lit/decorators.js'
 import type {SlSelectEvent} from "@shoelace-style/shoelace";
 
 import logo from '/phi-logo.svg'
 
-import {Theming, type ThemingType} from "../modules/theming.ts";
-import {Globals} from "../modules/globals.ts";
-import {stripQuotes} from "../modules/utilities.ts";
+import {Theming, type ThemingType} from "../../modules/theming.ts";
+import {Globals} from "../../modules/globals.ts";
+import {stripQuotes} from "../../modules/utilities.ts";
 
 
 /**
  * Main application header.
  */
-@customElement('phi-main-header')
 export class PhiMainHeader extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -160,13 +159,5 @@ export class PhiMainHeader extends LitElement {
                 </sl-dropdown>
             </div>
         `
-    }
-}
-
-
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-main-header': PhiMainHeader,
     }
 }

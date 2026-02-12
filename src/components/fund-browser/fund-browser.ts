@@ -1,19 +1,17 @@
 /**
- * components/phi-fund-browser.ts
+ * components/phi-phi-fund-browser.ts
  * --
  * @author VJP
  * @written 31-Oct-2025
  */
 
 import {LitElement, html, css, nothing} from 'lit'
-import {customElement} from 'lit/decorators.js'
-import {Fund, FundManager} from "../api-models/funds.ts";
-import {Globals} from "../modules/globals.ts";
+import {Fund, FundManager} from "../../api-models/funds.ts";
+import {Globals} from "../../modules/globals.ts";
 
 /**
  * Fund browser page..
  */
-@customElement('phi-fund-browser')
 export class PhiFundBrowser extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -98,9 +96,3 @@ export class PhiFundBrowser extends LitElement {
     `}
 }
 
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-fund-browser': PhiFundBrowser,
-    }
-}

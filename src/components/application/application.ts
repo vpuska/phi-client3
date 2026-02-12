@@ -1,25 +1,23 @@
 /**
- * components/phi-application.ts
+ * components/application/application.component.ts
  * --
- * Top-Level application element and splash-screen.
+ * Top-Level application element.
  * @author VJP
  * @written 28-Sep-2025
  */
 
 import {LitElement, html, css} from 'lit'
-import { customElement, state, property } from 'lit/decorators.js'
+import { state, property } from 'lit/decorators.js'
 import {Task} from "@lit/task";
 
-import {FundManager} from "../api-models/funds.ts";
-import {Theming} from "../modules/theming.ts";
-import logo from '/phi-logo.svg'
+import {FundManager} from "../../api-models/funds.ts";
+import {Theming} from "../../modules/theming.ts";
 
 
 /**
  * Top-level PHI application element used in `index.html`.  Displays a splash-screen during startup
  * and then shows the main application page
  */
-@customElement('phi-application')
 export class PhiApplication extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -93,46 +91,3 @@ export class PhiApplication extends LitElement {
 }
 
 
-/**
- * PHI Application splash screen
- */
-@customElement('phi-splash-screen')
-class PhiSplashScreen extends LitElement {
-    static styles = css`
-        :host {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-        div {
-            width: 100%;
-            text-align: center;
-        }
-    `
-
-    /**
-     * The number of progress tick counts to display
-     */
-    @property({attribute:"ticks", type: Number}) tickCount: number = 1;
-
-    render() {
-        return html`
-            <div>
-                <h2>Private Health Insurance Comparator</h2>
-                <img width="192px" height="192px" src=${logo} alt="PHI Logo" />
-                <p>Please wait while loading</p>
-                <p>[ :${" :".repeat(this.tickCount)} ]</p>
-            </div>
-        `
-    }
-}
-
-
-declare global {
-    // noinspection JSUnusedGlobalSymbols
-    interface HTMLElementTagNameMap {
-        'phi-application': PhiApplication,
-        'phi-splash-screen': PhiSplashScreen,
-    }
-}
