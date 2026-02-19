@@ -20,6 +20,7 @@ import {PhiNeedsAnalysis} from "./phi-na/phi-na.ts";
 import {PhiNADetails} from "./phi-na/phi-na-details.ts";
 import {PhiNADetailsGroup} from "./phi-na/phi-na-details-group.ts";
 import {PhiNADetails10} from "./phi-na/phi-na-details-10.ts";
+import {PhiNADetails20} from "./phi-na/phi-na-details-20.ts";
 
 
 // Main Application and Page Elements/containers
@@ -42,7 +43,7 @@ window.customElements.define('phi-needs-analysis', PhiNeedsAnalysis);
 window.customElements.define('phi-na-details', PhiNADetails);
 window.customElements.define('phi-na-details-group', PhiNADetailsGroup)
 window.customElements.define('phi-na-details-10', PhiNADetails10)
-
+window.customElements.define('phi-na-details-20', PhiNADetails20)
 
 declare global {
     // noinspection JSUnusedGlobalSymbols
@@ -67,5 +68,6 @@ declare global {
         'phi-na-details': PhiNADetails,
         'phi-na-details-group': PhiNADetailsGroup,
         'phi-na-details-10': PhiNADetails10,
+        'phi-na-details-20': PhiNADetails20,
     }
 }

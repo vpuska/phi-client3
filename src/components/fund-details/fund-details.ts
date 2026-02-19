@@ -1,5 +1,5 @@
 /**
- * components/phi-fundCode-openDetails.ts
+ * components/phi-fundCode-details.ts
  * --
  * @author VJP
  * @written 11-Nov-2025
@@ -14,7 +14,7 @@ import type {PhiFundProductBrowser} from "./fund-product-browser.ts";
 import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
 
 /**
- * Fund openDetails page..
+ * Fund details page..
  */
 export class PhiFundDetails extends LitElement {
 
@@ -41,15 +41,15 @@ export class PhiFundDetails extends LitElement {
     `
 
     @property({ attribute: "fund-code", type: String }) fundCode!: string;
-    @state() subPage = "openDetails";
-    @query("#openDetails") detailsPage! : HTMLElement;
+    @state() subPage = "details";
+    @query("#details") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
     @query("#products") productsPage! : PhiFundProductBrowser;
 
 
     setPage(page: string) {
-        this.detailsPage.style.display = page === "openDetails" ? "flex" : "none";
+        this.detailsPage.style.display = page === "details" ? "flex" : "none";
         this.brandsPage.style.display = page === "brands" ? "flex" : "none";
         this.xmlPage.style.display = page === "xml" ? "flex" : "none";
         this.productsPage.style.display = page === "products" ? "flex" : "none";
@@ -60,15 +60,15 @@ export class PhiFundDetails extends LitElement {
 
     protected firstUpdated(_changedProperties: PropertyValues) {
         super.firstUpdated(_changedProperties);
-        this.setPage("openDetails");
+        this.setPage("details");
     }
 
     /**
-     * Renders a block of information displaying a title and openDetails using the following template:
+     * Renders a block of information displaying a title and details using the following template:
      * <pre>
      *  <div>
      *      <h4>${title}</h4>
-     *      <small><p>${openDetails}</p></small>
+     *      <small><p>${details}</p></small>
      *  </div>
      *  </pre>
      * @param title
@@ -119,7 +119,7 @@ export class PhiFundDetails extends LitElement {
     }
 
     /**
-     * Renders the fundCode's contacts/communication openDetails.
+     * Renders the fundCode's contacts/communication details.
      * @param fund
      */
     render_contacts(fund: Fund) {
@@ -186,7 +186,7 @@ export class PhiFundDetails extends LitElement {
 
         return html`
             <phi-page-header logo="${fund.logo}" heading="${fund.name}">
-                <sl-button variant="text" size="small" @click=${()=>this.setPage("openDetails")}>DETAILS</sl-button>
+                <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
                 ${fund.brands.length > 0 ?
                         html`<sl-button variant="text" size="small" @click=${()=>this.setPage("brands")}>BRANDS</sl-button>`
                         : nothing

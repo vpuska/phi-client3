@@ -13,9 +13,12 @@
     "webtypes": "wca-webtypes analyse src --format webtypes --outFile phi-webtypes.json"
   },
   "dependencies": {
+    "@adobe/lit-mobx": "^2.2.2",
+    "@lit/context": "^1.1.6",
     "@lit/task": "^1.0.3",
     "@shoelace-style/shoelace": "^2.20.1",
     "lit": "^3.3.1",
+    "mobx": "^6.15.0",
     "xml-formatter": "^3.6.7"
   },
   "devDependencies": {

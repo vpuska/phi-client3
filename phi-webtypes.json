@@ -355,7 +355,7 @@
                 },
                 {
                     "name": "phi-fund-details",
-                    "description": "Fund details page..",
+                    "description": "Fund openDetails page..",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiFundDetails"
@@ -411,7 +411,7 @@
                                 "value": {
                                     "type": "string",
                                     "required": true,
-                                    "default": "\"details\""
+                                    "default": "\"openDetails\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -782,7 +782,7 @@
                 },
                 {
                     "name": "phi-product-details",
-                    "description": "Product details page..",
+                    "description": "Product openDetails page..",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiProductDetails"
@@ -885,7 +885,7 @@
                                 "value": {
                                     "type": "string",
                                     "required": true,
-                                    "default": "\"details\""
+                                    "default": "\"openDetails\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -963,7 +963,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n        /**\\r\\n        Formatting the detail tabs\\r\\n         */\\r\\n        phi-na-details:first-of-type::part(header) {\\r\\n            border-radius: 6px 6px 0 0;\\r\\n        }\\r\\n        phi-na-details:not([open]):last-of-type::part(header) {\\r\\n            border-radius: 0 0 6px 6px;\\r\\n        }\\r\\n        phi-na-details[open]:last-of-type::part(base) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n        }\\r\\n       /**\\r\\n        Details 2 (state and cover type) formatting\\r\\n         */\\r\\n        phi-na-details#details-2::part(content) {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 2em;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -971,21 +971,21 @@
                                 }
                             },
                             {
-                                "name": "details1Heading",
+                                "name": "context",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "string",
+                                    "type": "NeedsAnalysisContext",
                                     "required": true,
-                                    "default": "\"Do you have existing insurance?\""
+                                    "default": "\"new NeedsAnalysisContext()\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.details1Heading"
+                                    "symbol": "PhiNeedsAnalysis.context"
                                 }
                             },
                             {
-                                "name": "selectedState",
+                                "name": "state",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
@@ -995,47 +995,21 @@
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.selectedState"
+                                    "symbol": "PhiNeedsAnalysis.state"
                                 }
                             },
                             {
-                                "name": "searchResults",
+                                "name": "coverType",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "{ fund: string; name: string; fundName: string; fundShortName: string; }[]",
+                                    "type": "string",
                                     "required": true,
-                                    "default": "[]"
+                                    "default": "\"\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.searchResults"
-                                }
-                            },
-                            {
-                                "name": "product1Input",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "PhiKeywordSearch",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.product1Input"
-                                }
-                            },
-                            {
-                                "name": "product2Input",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "PhiKeywordSearch",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.product2Input"
+                                    "symbol": "PhiNeedsAnalysis.coverType"
                                 }
                             },
                             {
@@ -1065,29 +1039,16 @@
                                 }
                             },
                             {
-                                "name": "coverTypeRG",
+                                "name": "details10",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "SlRadioGroup",
+                                    "type": "PhiNADetails10",
                                     "required": true
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.coverTypeRG"
-                                }
-                            },
-                            {
-                                "name": "stateRG",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlRadioGroup",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.stateRG"
+                                    "symbol": "PhiNeedsAnalysis.details10"
                                 }
                             }
                         ]
@@ -1095,6 +1056,7 @@
                 },
                 {
                     "name": "phi-na-details",
+                    "description": "Proxy for `sl-details` element, with:\r\n- additional styling for the PHI application.\r\n- a \"continue\" button\r\n- `first` and `last` attributes to indicate whether this is the first or last details element in a group. Different styling is applied to these elements.",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiNADetails"
@@ -1129,6 +1091,34 @@
                             }
                         },
                         {
+                            "name": "first",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.first"
+                            }
+                        },
+                        {
+                            "name": "last",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "boolean",
+                                "required": false,
+                                "default": "false"
+                            },
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.last"
+                            }
+                        },
+                        {
                             "name": "button-label",
                             "required": false,
                             "priority": "normal",
@@ -1141,6 +1131,81 @@
                                 "module": "./src/components/bundle.ts",
                                 "symbol": "PhiNADetails.buttonLabel"
                             }
+                        },
+                        {
+                            "name": "`summary`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "summary text for the details element. Defaults to \"Summary\".",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
+                        },
+                        {
+                            "name": "`open`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "indicates whether the details element is open or closed.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
+                        },
+                        {
+                            "name": "`first`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "set to indicate that this is the first details element in the group.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
+                        },
+                        {
+                            "name": "`last`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "set to indicate that this is the last details element in the group.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
+                        },
+                        {
+                            "name": "`button-label`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "label for the \"continue\" button. Defaults to \"Continue\".",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
                         }
                     ],
                     "js": {
@@ -1152,7 +1217,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n\\r\\n        sl-details::part(content) {\\r\\n            padding: 24px 48px;\\r\\n        }\\r\\n        sl-details::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            padding: 24px;\\r\\n            justify-content: right;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n        }\\r\\n        \\r\\n        sl-details:first-of-type::part(header) {\\r\\n            border-radius: 6px 6px 0 0;\\r\\n        }\\r\\n        sl-details:not([open]):last-of-type::part(header) {\\r\\n            border-radius: 0 0 6px 6px;\\r\\n        }\\r\\n        sl-details[open]:last-of-type::part(base) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n\\r\\n    `\""
+                                    "default": "\"css`\\r\\n\\r\\n        :host([first]) sl-details::part(base),\\r\\n        :host([first]) sl-details::part(header) {\\r\\n            border-radius: 8px 8px 0 0;\\r\\n        }\\r\\n        :host([last]) sl-details:not([open])::part(header) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n        }\\r\\n        :host([last]) sl-details::part(base) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n        }\\r\\n        sl-details::part(content) {\\r\\n            padding: 24px 48px;\\r\\n        }\\r\\n        sl-details::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        :host([tail]) sl-details::part(base),\\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            padding: 24px;\\r\\n            justify-content: right;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -1188,6 +1253,34 @@
                                 }
                             },
                             {
+                                "name": "first",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails.first"
+                                }
+                            },
+                            {
+                                "name": "last",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails.last"
+                                }
+                            },
+                            {
                                 "name": "buttonLabel",
                                 "required": false,
                                 "priority": "normal",
@@ -1217,22 +1310,52 @@
                         ],
                         "events": [
                             {
-                                "name": "phi-na-hide"
+                                "name": "phi-na-show",
+                                "description": "fired when the details element is opened."
                             },
                             {
-                                "name": "phi-na-show"
+                                "name": "phi-na-hide",
+                                "description": "fired when the details element is closed."
                             },
                             {
-                                "name": "phi-na-continue"
+                                "name": "phi-na-continue",
+                                "description": "fired when the \"continue\" button is clicked."
                             }
                         ]
                     }
                 },
                 {
                     "name": "phi-na-details-group",
+                    "description": "Container for `phi-na-details` elements.  Automatically sets the `first` and `last` attributes of the first and last `phi-na-details` elements\r\nin the group. <br>\r\nThe `phi-na-details` element can be directly inserted into the group, or can be contained within an element in the group's shadow DOM.",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiNADetailsGroup"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "assignedDetails",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiNADetails[]",
+                                    "required": true
+                                },
+                                "description": "Returns the list of `phi-na-details` elements assigned to this group.",
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetailsGroup.assignedDetails"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-details-10",
+                    "description": "Health insurance needs analysis - Prior cover details",
+                    "source": {
+                        "module": "./src/components/bundle.ts",
+                        "symbol": "PhiNADetails10"
                     },
                     "js": {
                         "properties": [
@@ -1243,11 +1366,226 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n\\r\\n        sl-details::part(content) {\\r\\n            padding: 24px 48px;\\r\\n        }\\r\\n        sl-details::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            padding: 24px;\\r\\n            justify-content: right;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n        }\\r\\n        \\r\\n        sl-details:first-of-type::part(header) {\\r\\n            border-radius: 6px 6px 0 0;\\r\\n        }\\r\\n        sl-details:not([open]):last-of-type::part(header) {\\r\\n            border-radius: 0 0 6px 6px;\\r\\n        }\\r\\n        sl-details[open]:last-of-type::part(base) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetailsGroup.styles"
+                                    "symbol": "PhiNADetails10.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.context"
+                                }
+                            },
+                            {
+                                "name": "searchResults",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "{ fund: string; name: string; fundName: string; fundShortName: string; }[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.searchResults"
+                                }
+                            },
+                            {
+                                "name": "_summary",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Enter existing cover details\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10._summary"
+                                }
+                            },
+                            {
+                                "name": "product1Input",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiKeywordSearch",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.product1Input"
+                                }
+                            },
+                            {
+                                "name": "product2Input",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "PhiKeywordSearch",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.product2Input"
+                                }
+                            },
+                            {
+                                "name": "product1",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Product",
+                                        "null"
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.product1"
+                                }
+                            },
+                            {
+                                "name": "product2",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "Product",
+                                        "null"
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.product2"
+                                }
+                            },
+                            {
+                                "name": "coverType",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.coverType"
+                                }
+                            },
+                            {
+                                "name": "summary",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.summary"
+                                }
+                            },
+                            {
+                                "name": "state",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "\"\"",
+                                        "BaseStateType",
+                                        "\"ALL\""
+                                    ],
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails10.state"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-details-20",
+                    "description": "Health insurance needs analysis.",
+                    "source": {
+                        "module": "./src/components/bundle.ts",
+                        "symbol": "PhiNADetails20"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 2em;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.context"
+                                }
+                            },
+                            {
+                                "name": "coverTypeRG",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlRadioGroup",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.coverTypeRG"
+                                }
+                            },
+                            {
+                                "name": "stateRG",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlRadioGroup",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.stateRG"
                                 }
                             }
                         ]
@@ -1369,7 +1707,7 @@
                 },
                 {
                     "name": "phi-keyword-search",
-                    "description": "Combo-box style input for searching products.  Input is in the form of search keywords.  Eg. `hospital gold nsw family`\r\n\r\nThe component supports two modes of operation:\r\n1. Keyword search - Entering keywords will perform a keyword search and display the results in a drop-down menu.  Selecting a result will populate the input with\r\nthe product name and display a menu of product variants (state and cover types) for the second mode of operation.\r\n2. Product selection - Entering a product name will display a list of available variants for that product.  Selecting a variant will populate the input\r\nwith the product name and hide the drop-down menu.  The product details are displayed in the product cover details section.",
+                    "description": "Combo-box style input for searching products.  Input is in the form of search keywords.  Eg. `hospital gold nsw family`\r\n\r\nThe component supports two modes of operation:\r\n1. Keyword search - Entering keywords will perform a keyword search and display the results in a drop-down menu.  Selecting a result will populate the input with\r\nthe product name and display a menu of product variants (state and cover types) for the second mode of operation.\r\n2. Product selection - Entering a product name will display a list of available variants for that product.  Selecting a variant will populate the input\r\nwith the product name and hide the drop-down menu.  The product openDetails are displayed in the product cover openDetails section.",
                     "source": {
                         "module": "./src/shared-components/phi-keyword-search.ts",
                         "symbol": "PhiKeywordSearch"
@@ -1997,7 +2335,7 @@
                 },
                 {
                     "name": "phi-page-details",
-                    "description": "Container for page details..",
+                    "description": "Container for page openDetails..",
                     "source": {
                         "module": "./src/shared-components/phi-page-details.ts",
                         "symbol": "PhiPageDetails"
