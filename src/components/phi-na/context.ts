@@ -6,9 +6,8 @@
  */
 
 import {createContext} from '@lit/context'
-import {Product} from "../../api-models/products.ts";
-import {action, makeObservable, observable} from "mobx";
-import type {TemplateResult} from "lit";
+import {Product, ProductResultSet} from "../../api-models/products.ts";
+import {action, computed, makeObservable, observable} from "mobx";
 
 
 export const context = createContext<NeedsAnalysisContext>('phi-na');
@@ -28,8 +27,7 @@ export class NeedsAnalysisObservables {
     state: string = "";
     coverType: string = "";
     familyType: string = "";
-
-    tab20Label: TemplateResult | string = "Cover Type";
+    productRS: ProductResultSet | null = null;
 
     constructor() {
         observeClass(this);
@@ -42,10 +40,27 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
     constructor() {
         super();
         makeObservable(this, {
-            change: action
+            change: action,
+            hasDependants: computed,
+            needsHospitalServices: computed,
+            needsGeneralHealthServices: computed,
         });
     }
+
+    get hasDependants() {
+        return ["0D", "1D", "2D"].includes(this.familyType);
+    }
+
+    get needsHospitalServices() {
+        return this.coverType === "Hospital" || this.coverType === "Combined"
+    }
+
+    get needsGeneralHealthServices() {
+        return this.coverType === "GeneralHealth" || this.coverType === "Combined"
+    }
+
     change(values: Partial<NeedsAnalysisObservables>) {
         Object.assign(this, values);
     }
+
 }

@@ -26,10 +26,11 @@ export class PhiNADetails10 extends MobxLitElement {
     constructor() {
         super();
         this.addEventListener("phi-na-hide", () => {
-            this._summary = this.summary;
+            //this._summary = this.summary;
             this.context?.change({
                 state: this.state,
                 coverType: this.coverType,
+
                 product1: this.product1Input.value,
                 product2: this.product2Input.value
             })
@@ -54,28 +55,27 @@ export class PhiNADetails10 extends MobxLitElement {
         return cover;
     }
 
-    get summary() {
-        return {
-            "None": "No existing cover",
-            "Combined": "Existing combined hospital and extras cover",
-            "Hospital": "Existing hospital cover",
-            "GeneralHealth": "Existing extras cover"
-        } [this.coverType] || "No existing cover";
-    }
-
     get state() {
         return this.product1Input.value ? this.product1Input.value.state : "";
     }
 
-    hide() : boolean {
-        console.log("hide called phi-na-details-10");
-        this._summary = this.summary;
-        this.context?.change({
+    validate() : boolean {
+        const product1 = this.product1Input.value;
+
+        if (!product1 || !this.context)
+            return true;
+
+        if (this.context.state !== "")
+            return true;
+
+        this.context.change({
             state: this.state,
             coverType: this.coverType,
+            familyType: product1.adultsCovered.toString() + (product1.dependantCover ? "D" : ""),
             product1: this.product1Input.value,
             product2: this.product2Input.value
         })
+
         return true;
     }
 

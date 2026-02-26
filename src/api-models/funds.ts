@@ -281,10 +281,12 @@ export const FundManager = {
     /**
      * Returns a number array of age tiers for the young adult dependant category: `NonClassified`, `NonStudent`, `ConditionalNonStudent`
      */
-    youngAdultAgeTiers: youngAdultAgeTiers(),
+    youngAdultAgeTiers: youngAdultAgeTiers,
 
     /**
      * Returns a number array of age ties for the `Student` category.
      */
-    studentAgeTiers: dependantAgeTiers("Student"),
+    studentAgeTiers: () => dependantAgeTiers("Student"),
+
+    disabilityAgeTiers: () => dependantAgeTiers("Disability"),
 }
