@@ -43,13 +43,10 @@ export class PhiNADetails20 extends MobxLitElement {
     // the last family type queried from the database
     queriedFamily: string = "";
 
-    /**
-     * Constructor.
-     */
     constructor() {
         super();
-        // Event listener to copy any changes to context/state.
-        this.addEventListener("sl-change", () => {
+        // Update the context immediately on any change because of dependencies enabling/disabling tabs
+        this.addEventListener('sl-change', () => {
             this.context?.change({
                 coverType: this.coverTypeRG.value,
                 state: this.stateRG.value,
@@ -57,7 +54,6 @@ export class PhiNADetails20 extends MobxLitElement {
             })
         })
     }
-
     /**
      * Fetches product data from the database based on the selected state and family type.  Run automatically
      * when state or family type changes.
@@ -77,7 +73,7 @@ export class PhiNADetails20 extends MobxLitElement {
     validate() {
         this.queriedState = this.context?.state || "";
         this.queriedFamily = this.context?.familyType || "";
-        this.requestUpdate(); // runs fetchTask is state or familyType changes
+        this.requestUpdate(); // forces run of fetchTask if state or familyType changes
 
         if (this.context?.coverType === "" || this.context?.state === "" || this.context?.familyType === "") {
             this.error = "Please select all options";

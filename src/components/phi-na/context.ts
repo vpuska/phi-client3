@@ -29,6 +29,15 @@ export class NeedsAnalysisObservables {
     familyType: string = "";
     productRS: ProductResultSet | null = null;
 
+    /* dependent details */
+
+    children: boolean = true;
+    students: boolean = false;
+    youngAdults: boolean = false;
+    disabilityDependants: boolean = false;
+    maxStudentAge: number = 0;
+    maxYoungAdultAge: number = 0;
+
     constructor() {
         observeClass(this);
     }
