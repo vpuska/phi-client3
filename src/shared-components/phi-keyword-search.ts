@@ -175,6 +175,7 @@ export class PhiKeywordSearch extends LitElement {
             const dependants = this.value.dependantTypesLongDescriptions.length ? ` - including: ${this.value.dependantTypesLongDescriptions.join(", ")}` : "";
             this.productCoverDetails.innerHTML += `${this.value.state} - ${this.value.coverageDescription}${dependants}`;
             this.searchDropdown.hide().then();
+            this.searchInput.focus();
             this.dispatchChangeEvent();
         }
         e.stopPropagation();

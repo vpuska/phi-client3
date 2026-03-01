@@ -22,6 +22,8 @@ import {PhiNADetailsGroup} from "./phi-na/phi-na-details-group.ts";
 import {PhiNADetails10} from "./phi-na/phi-na-details-10.ts";
 import {PhiNADetails20} from "./phi-na/phi-na-details-20.ts";
 import {PhiNADetails30} from "./phi-na/phi-na-details-30.ts";
+import {PhiNADetails40} from "./phi-na/phi-na-details-40.ts";
+import {PhiNaDetails40Selections} from "./phi-na/phi-na-details-40-selections.ts";
 
 
 // Main Application and Page Elements/containers
@@ -46,6 +48,8 @@ window.customElements.define('phi-na-details-group', PhiNADetailsGroup)
 window.customElements.define('phi-na-details-10', PhiNADetails10)
 window.customElements.define('phi-na-details-20', PhiNADetails20)
 window.customElements.define('phi-na-details-30', PhiNADetails30)
+window.customElements.define('phi-na-details-40', PhiNADetails40)
+window.customElements.define('phi-na-details-40-selections', PhiNaDetails40Selections)
 
 declare global {
     // noinspection JSUnusedGlobalSymbols
@@ -72,5 +76,7 @@ declare global {
         'phi-na-details-10': PhiNADetails10,
         'phi-na-details-20': PhiNADetails20,
         'phi-na-details-30': PhiNADetails30,
+        'phi-na-details-40': PhiNADetails40,
+        'phi-na-details-40-selections': PhiNaDetails40Selections,
     }
 }

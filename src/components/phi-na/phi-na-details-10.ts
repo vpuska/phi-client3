@@ -23,20 +23,6 @@ export class PhiNADetails10 extends MobxLitElement {
         }
     `
 
-    constructor() {
-        super();
-        this.addEventListener("phi-na-hide", () => {
-            //this._summary = this.summary;
-            this.context?.change({
-                state: this.state,
-                coverType: this.coverType,
-
-                product1: this.product1Input.value,
-                product2: this.product2Input.value
-            })
-        });
-    }
-
     @consume({context: phiNAContext}) context: NeedsAnalysisContext | null = null;
 
     @state() searchResults: { fund: string, name: string, fundName: string, fundShortName: string }[] = [];
@@ -61,19 +47,24 @@ export class PhiNADetails10 extends MobxLitElement {
 
     validate() : boolean {
         const product1 = this.product1Input.value;
+        const product2 = this.product2Input.value;
 
-        if (!product1 || !this.context)
+        if (!this.context)
             return true;
 
-        if (this.context.state !== "")
+        if (!product1)
+            return true;
+
+        if (product1 === this.context.product1 && product2 === this.context.product2)
             return true;
 
         this.context.change({
             state: this.state,
             coverType: this.coverType,
             familyType: product1.adultsCovered.toString() + (product1.dependantCover ? "D" : ""),
-            product1: this.product1Input.value,
-            product2: this.product2Input.value
+            product1: product1,
+            product2: product2,
+            services: `${(product1.services || "")}${(product2?.services || "")}`,
         })
 
         return true;

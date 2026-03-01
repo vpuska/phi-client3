@@ -27,6 +27,7 @@ export class NeedsAnalysisObservables {
     state: string = "";
     coverType: string = "";
     familyType: string = "";
+    services: string = "";
     productRS: ProductResultSet | null = null;
 
     /* dependent details */

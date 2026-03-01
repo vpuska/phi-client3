@@ -12,6 +12,7 @@ import {Task} from "@lit/task";
 
 import {FundManager} from "../../api-models/funds.ts";
 import {Theming} from "../../modules/theming.ts";
+import {ServiceManager} from "../../api-models/services.ts";
 
 
 /**
@@ -65,7 +66,9 @@ export class PhiApplication extends LitElement {
 
 
     private async startupFundsTask() {
-        await FundManager.download();
+        const p1 = FundManager.download();
+        const p2 = ServiceManager.fetchServices()
+        await Promise.all([p1, p2]);
         this.tickCount += 4;
     }
 

@@ -38,7 +38,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
             background-color: var(--sl-color-gray-100);
         }
         sl-tab-group::part(body) {
-            margin: 2rem 4em;
+            padding: 1.5rem 3em;
         }
         sl-tab-panel {
             height: 100%;
@@ -61,7 +61,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
         }))
         this.addEventListener('sl-tab-hide', ((event: CustomEvent) => {
             const tab = event.detail.name;
-            const details = this.renderRoot.querySelector(tab);
+            const details = this.renderRoot.querySelector(`#${tab}`);
             if (details) {
                 if ("validate" in details) {
                     if (typeof details.validate === "function")
@@ -69,6 +69,9 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                             // remain on the current tab
                             this.tabGroup?.show(tab);
                         }
+                }
+                if (document.activeElement instanceof HTMLElement && document.activeElement !== document.body) {
+                    document.activeElement.blur();
                 }
             }
         }))
@@ -100,75 +103,82 @@ export class PhiNeedsAnalysis extends MobxLitElement {
 
                 <sl-tab-group placement="start">
                     
-                    <sl-tab slot="nav" panel="phi-na-details-10">Existing Policy</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-20">Coverage</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-30" ?disabled=${!this.context.hasDependants}>Dependants</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-40" ?disabled=${!this.context.needsHospitalServices}>Hospital Services</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-50" ?disabled=${!this.context.needsGeneralHealthServices}>General Services</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-60">Funds</sl-tab>
-                    <sl-tab slot="nav" panel="phi-na-details-70">Summary</sl-tab>
+                    <sl-tab slot="nav" panel="start">Existing Policy</sl-tab>
+                    <sl-tab slot="nav" panel="cover">Coverage</sl-tab>
+                    <sl-tab slot="nav" panel="dependants" ?disabled=${!this.context.hasDependants}>Dependants</sl-tab>
+                    <sl-tab slot="nav" panel="hospital" ?disabled=${!this.context.needsHospitalServices}>Hospital Services</sl-tab>
+                    <sl-tab slot="nav" panel="general" ?disabled=${!this.context.needsGeneralHealthServices}>General Services</sl-tab>
+                    <sl-tab slot="nav" panel="funds">Funds</sl-tab>
+                    <sl-tab slot="nav" panel="summary">Summary</sl-tab>
 
                     <div slot="nav" style="color:var(--sl-color-neutral-600); padding-top: 40px; padding-left: 20px; font-size: x-small">
                         ${this.context.productRS ? html`Rows extracted: ${this.context.productRS.rows.length}` : nothing}
                     </div>
 
-                    <sl-tab-panel name="phi-na-details-10">
-                        <phi-na-details @phi-na-continue=${() => this.tabGroup?.show("phi-na-details-20")}>
-                            <phi-na-details-10></phi-na-details-10></sl-tab-panel>
+                    <sl-tab-panel name="start">
+                        <phi-na-details @phi-na-continue=${() => this.tabGroup?.show("cover")}>
+                            <phi-na-details-10 id="start"></phi-na-details-10>
                         </phi-na-details>
                     </sl-tab-panel>
                     
-                    <sl-tab-panel name="phi-na-details-20">
+                    <sl-tab-panel name="cover">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
-                                {condition: this.context.hasDependants, tab: "phi-na-details-30"},
-                                {condition: this.context.needsHospitalServices, tab: "phi-na-details-40"},
-                                {condition: this.context.needsGeneralHealthServices, tab: "phi-na-details-50"},
+                                {condition: this.context.hasDependants, tab: "dependants"},
+                                {condition: this.context.needsHospitalServices, tab: "hospital"},
+                                {condition: this.context.needsGeneralHealthServices, tab: "general"},
                             ])
                         }}>
-                            <phi-na-details-20></phi-na-details-20></sl-tab-panel>
+                            <phi-na-details-20 id="cover"></phi-na-details-20>
                         </phi-na-details>
                     </sl-tab-panel>
                     
-                    <sl-tab-panel name="phi-na-details-30">
+                    <sl-tab-panel name="dependants">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
-                                {condition: this.context.needsHospitalServices, tab: "phi-na-details-40"},
-                                {condition: this.context.needsGeneralHealthServices, tab: "phi-na-details-50"},
+                                {condition: this.context.needsHospitalServices, tab: "hospital"},
+                                {condition: this.context.needsGeneralHealthServices, tab: "general"},
                             ])
                         }}>
-                            <phi-na-details-30></phi-na-details-30>
+                            <phi-na-details-30 id="dependants"></phi-na-details-30>
                         </phi-na-details>
                     </sl-tab-panel>
                     
-                    <sl-tab-panel name="phi-na-details-40">
+                    <sl-tab-panel name="hospital">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
-                                {condition: this.context.needsGeneralHealthServices, tab: "phi-na-details-50"},
-                                {condition: true, tab: "phi-na-details-60"},
+                                {condition: this.context.needsGeneralHealthServices, tab: "general"},
+                                {condition: true, tab: "funds"},
                             ])
                         }}>
-                            This is the hospital services tab panel.
+                            <phi-na-details-40 id="hospital">
+                                <phi-na-details-40-selections heading="Gold" service-type="H" hospital-tier="Gold"></phi-na-details-40-selections>
+                                <phi-na-details-40-selections heading="Silver" service-type="H" hospital-tier="Silver"></phi-na-details-40-selections>
+                                <phi-na-details-40-selections heading="Bronze" service-type="H" hospital-tier="Bronze"></phi-na-details-40-selections>
+                                <phi-na-details-40-selections heading="Basic" service-type="H" hospital-tier="Basic"></phi-na-details-40-selections>
+                            </phi-na-details-40>
                         </phi-na-details>
                     </sl-tab-panel>
                     
-                    <sl-tab-panel name="phi-na-details-50">
+                    <sl-tab-panel name="general">
                         <phi-na-details @phi-na-continue=${() => {
-                            this.tabGroup?.show("phi-na-details-60")
+                            this.tabGroup?.show("funds")
                         }}>
-                            This is the general services tab panel.
+                            <phi-na-details-40 id="general">
+                                <phi-na-details-40-selections service-type="G"></phi-na-details-40-selections>
+                            </phi-na-details-40>
                         </phi-na-details>
                     </sl-tab-panel>
                     
-                    <sl-tab-panel name="phi-na-details-60">
+                    <sl-tab-panel name="funds">
                         <phi-na-details @phi-na-continue=${() => {
-                            this.tabGroup?.show("phi-na-details-70")
+                            this.tabGroup?.show("summary")
                         }}>
                             This is the funds tab panel.
                         </phi-na-details>
                     </sl-tab-panel>
 
-                    <sl-tab-panel name="phi-na-details-70">
+                    <sl-tab-panel name="summary">
                         <phi-na-details>
                             This is the summary tab panel.
                         </phi-na-details>

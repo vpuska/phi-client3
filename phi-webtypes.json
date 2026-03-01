@@ -355,7 +355,7 @@
                 },
                 {
                     "name": "phi-fund-details",
-                    "description": "Fund openDetails page..",
+                    "description": "Fund details page..",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiFundDetails"
@@ -411,7 +411,7 @@
                                 "value": {
                                     "type": "string",
                                     "required": true,
-                                    "default": "\"openDetails\""
+                                    "default": "\"details\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -963,7 +963,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 1 0;\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n        \\r\\n        sl-tab-group {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(nav) {\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        sl-tab-group::part(body) {\\r\\n            padding: 1.5rem 3em;\\r\\n        }\\r\\n        sl-tab-panel {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-panel::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -985,70 +985,16 @@
                                 }
                             },
                             {
-                                "name": "state",
+                                "name": "tabGroup",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "string",
-                                    "required": true,
-                                    "default": "\"\""
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.state"
-                                }
-                            },
-                            {
-                                "name": "coverType",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "string",
-                                    "required": true,
-                                    "default": "\"\""
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.coverType"
-                                }
-                            },
-                            {
-                                "name": "details1",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "PhiNADetails",
+                                    "type": "SlTabGroup",
                                     "required": true
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.details1"
-                                }
-                            },
-                            {
-                                "name": "details2",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "PhiNADetails",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.details2"
-                                }
-                            },
-                            {
-                                "name": "details10",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "PhiNADetails10",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNeedsAnalysis.details10"
+                                    "symbol": "PhiNeedsAnalysis.tabGroup"
                                 }
                             }
                         ]
@@ -1056,68 +1002,12 @@
                 },
                 {
                     "name": "phi-na-details",
-                    "description": "Proxy for `sl-details` element, with:\r\n- additional styling for the PHI application.\r\n- a \"continue\" button\r\n- `first` and `last` attributes to indicate whether this is the first or last details element in a group. Different styling is applied to these elements.",
+                    "description": "Proxy for `sl-details` element, with:\r\n- additional styling for the PHI application.\r\n- a \"continue\" button",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiNADetails"
                     },
                     "attributes": [
-                        {
-                            "name": "summary",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "string",
-                                "required": true,
-                                "default": "\"Summary\""
-                            },
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.summary"
-                            }
-                        },
-                        {
-                            "name": "open",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
-                            },
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.open"
-                            }
-                        },
-                        {
-                            "name": "first",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
-                            },
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.first"
-                            }
-                        },
-                        {
-                            "name": "last",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
-                            },
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.last"
-                            }
-                        },
                         {
                             "name": "button-label",
                             "required": false,
@@ -1130,66 +1020,6 @@
                             "source": {
                                 "module": "./src/components/bundle.ts",
                                 "symbol": "PhiNADetails.buttonLabel"
-                            }
-                        },
-                        {
-                            "name": "`summary`",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "kind": "plain",
-                                "type": "",
-                                "required": true
-                            },
-                            "description": "summary text for the details element. Defaults to \"Summary\".",
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.undefined"
-                            }
-                        },
-                        {
-                            "name": "`open`",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "kind": "plain",
-                                "type": "",
-                                "required": true
-                            },
-                            "description": "indicates whether the details element is open or closed.",
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.undefined"
-                            }
-                        },
-                        {
-                            "name": "`first`",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "kind": "plain",
-                                "type": "",
-                                "required": true
-                            },
-                            "description": "set to indicate that this is the first details element in the group.",
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.undefined"
-                            }
-                        },
-                        {
-                            "name": "`last`",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "kind": "plain",
-                                "type": "",
-                                "required": true
-                            },
-                            "description": "set to indicate that this is the last details element in the group.",
-                            "source": {
-                                "module": "./src/components/bundle.ts",
-                                "symbol": "PhiNADetails.undefined"
                             }
                         },
                         {
@@ -1217,67 +1047,11 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n\\r\\n        :host([first]) sl-details::part(base),\\r\\n        :host([first]) sl-details::part(header) {\\r\\n            border-radius: 8px 8px 0 0;\\r\\n        }\\r\\n        :host([last]) sl-details:not([open])::part(header) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n        }\\r\\n        :host([last]) sl-details::part(base) {\\r\\n            border-radius: 0 0 8px 8px;\\r\\n        }\\r\\n        sl-details::part(content) {\\r\\n            padding: 24px 48px;\\r\\n        }\\r\\n        sl-details::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        :host([tail]) sl-details::part(base),\\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            padding: 24px;\\r\\n            justify-content: right;\\r\\n            align-items: center;\\r\\n            gap: 0.5rem;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            justify-content: space-between;\\r\\n            gap: 8px;\\r\\n            height: 100%;\\r\\n        }\\r\\n    \\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            justify-content: flex-end;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
                                     "symbol": "PhiNADetails.styles"
-                                }
-                            },
-                            {
-                                "name": "summary",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "string",
-                                    "required": true,
-                                    "default": "\"Summary\""
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails.summary"
-                                }
-                            },
-                            {
-                                "name": "open",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails.open"
-                                }
-                            },
-                            {
-                                "name": "first",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails.first"
-                                }
-                            },
-                            {
-                                "name": "last",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails.last"
                                 }
                             },
                             {
@@ -1293,30 +1067,9 @@
                                     "module": "./src/components/bundle.ts",
                                     "symbol": "PhiNADetails.buttonLabel"
                                 }
-                            },
-                            {
-                                "name": "slDetails",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlDetails",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails.slDetails"
-                                }
                             }
                         ],
                         "events": [
-                            {
-                                "name": "phi-na-show",
-                                "description": "fired when the details element is opened."
-                            },
-                            {
-                                "name": "phi-na-hide",
-                                "description": "fired when the details element is closed."
-                            },
                             {
                                 "name": "phi-na-continue",
                                 "description": "fired when the \"continue\" button is clicked."
@@ -1366,7 +1119,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            height: 100%\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/bundle.ts",
@@ -1445,38 +1198,6 @@
                                 }
                             },
                             {
-                                "name": "product1",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": [
-                                        "Product",
-                                        "null"
-                                    ],
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails10.product1"
-                                }
-                            },
-                            {
-                                "name": "product2",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": [
-                                        "Product",
-                                        "null"
-                                    ],
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails10.product2"
-                                }
-                            },
-                            {
                                 "name": "coverType",
                                 "required": false,
                                 "priority": "normal",
@@ -1490,27 +1211,14 @@
                                 }
                             },
                             {
-                                "name": "summary",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "string",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/bundle.ts",
-                                    "symbol": "PhiNADetails10.summary"
-                                }
-                            },
-                            {
                                 "name": "state",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
                                     "type": [
-                                        "\"\"",
                                         "BaseStateType",
-                                        "\"ALL\""
+                                        "\"ALL\"",
+                                        "\"\""
                                     ],
                                     "required": true
                                 },
@@ -1524,7 +1232,7 @@
                 },
                 {
                     "name": "phi-na-details-20",
-                    "description": "Health insurance needs analysis.",
+                    "description": "Health insurance needs analysis component to capture cover type, family type and state.  Also fetches\r\nproduct data from the database based on the selected state and family type.",
                     "source": {
                         "module": "./src/components/bundle.ts",
                         "symbol": "PhiNADetails20"
@@ -1563,6 +1271,20 @@
                                 }
                             },
                             {
+                                "name": "error",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.error"
+                                }
+                            },
+                            {
                                 "name": "coverTypeRG",
                                 "required": false,
                                 "priority": "normal",
@@ -1587,6 +1309,525 @@
                                     "module": "./src/components/bundle.ts",
                                     "symbol": "PhiNADetails20.stateRG"
                                 }
+                            },
+                            {
+                                "name": "familyRG",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlRadioGroup",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.familyRG"
+                                }
+                            },
+                            {
+                                "name": "queriedState",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.queriedState"
+                                }
+                            },
+                            {
+                                "name": "queriedFamily",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.queriedFamily"
+                                }
+                            },
+                            {
+                                "name": "fetchTask",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "Task<readonly [string, string], void>",
+                                    "required": true,
+                                    "default": "\"new Task(this, {\\r\\n        task: async ([state, familyType]) => {\\r\\n            if (state !== \\\"\\\" && familyType !== \\\"\\\") {\\r\\n                const result = await ProductResultSet.fetch(`segment/${state}/${familyType}`)\\r\\n                this.context?.change({productRS: result})\\r\\n            }},\\r\\n        args: () => [ this.queriedState, this.queriedFamily ]\\r\\n    })\""
+                                },
+                                "description": "Fetches product data from the database based on the selected state and family type.  Run automatically\r\nwhen state or family type changes.",
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails20.fetchTask"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-details-30",
+                    "description": "Health insurance needs analysis - dependants.",
+                    "source": {
+                        "module": "./src/components/bundle.ts",
+                        "symbol": "PhiNADetails30"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 3em;\\r\\n        }\\r\\n        sl-input {\\r\\n            width: 20rem;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.context"
+                                }
+                            },
+                            {
+                                "name": "youngAdults",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.youngAdults"
+                                }
+                            },
+                            {
+                                "name": "students",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "boolean",
+                                    "required": false,
+                                    "default": "false"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.students"
+                                }
+                            },
+                            {
+                                "name": "error",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.error"
+                                }
+                            },
+                            {
+                                "name": "childrenCheckbox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.childrenCheckbox"
+                                }
+                            },
+                            {
+                                "name": "studentCheckbox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.studentCheckbox"
+                                }
+                            },
+                            {
+                                "name": "youngAdultCheckbox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.youngAdultCheckbox"
+                                }
+                            },
+                            {
+                                "name": "disabilityCheckbox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.disabilityCheckbox"
+                                }
+                            },
+                            {
+                                "name": "studentAgeInput",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlInput",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.studentAgeInput"
+                                }
+                            },
+                            {
+                                "name": "youngAdultAgeInput",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlInput",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.youngAdultAgeInput"
+                                }
+                            },
+                            {
+                                "name": "maxYoungAdultAge",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "\"FundManager.youngAdultAgeTiers()[0]\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.maxYoungAdultAge"
+                                }
+                            },
+                            {
+                                "name": "maxStudentAge",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "\"FundManager.studentAgeTiers()[0]\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails30.maxStudentAge"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-details-40",
+                    "description": "Health insurance needs analysis component to capture hospital and general health services.",
+                    "source": {
+                        "module": "./src/components/bundle.ts",
+                        "symbol": "PhiNADetails40"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 2em;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails40.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails40.context"
+                                }
+                            },
+                            {
+                                "name": "searchTerm",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlInput",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails40.searchTerm"
+                                }
+                            },
+                            {
+                                "name": "selectionElements",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<PhiNaDetails40Selections>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails40.selectionElements"
+                                }
+                            },
+                            {
+                                "name": "error",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNADetails40.error"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-details-40-selections",
+                    "description": "Health insurance needs analysis component to hospital and general health services selections.  Renders a\r\nlist of checkboxes for a single service type or service type/hospital tier combination.",
+                    "source": {
+                        "module": "./src/components/bundle.ts",
+                        "symbol": "PhiNaDetails40Selections"
+                    },
+                    "attributes": [
+                        {
+                            "name": "service-type",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "description": "The medical service type.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNaDetails40Selections.serviceType"
+                            }
+                        },
+                        {
+                            "name": "hospital-tier",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "HospitalTier",
+                                "required": true,
+                                "default": "\"None\""
+                            },
+                            "description": "The hospital tier.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNaDetails40Selections.hospitalTier"
+                            }
+                        },
+                        {
+                            "name": "heading",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"Select all\""
+                            },
+                            "description": "The heading for the selection group.",
+                            "source": {
+                                "module": "./src/components/bundle.ts",
+                                "symbol": "PhiNaDetails40Selections.heading"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n        }\\r\\n        div#heading {\\r\\n            width: 100%;\\r\\n            padding: 0.5em 1em;\\r\\n            background-color: var(--sl-color-neutral-100);\\r\\n            border: 1px solid var(--sl-color-neutral-500);\\r\\n            border-radius: 0.5em;\\r\\n        }\\r\\n        div#selections {\\r\\n            display: flex;\\r\\n            flex-flow: row wrap;\\r\\n            column-gap: 2em;\\r\\n            row-gap: 0.5em;\\r\\n            width: 100%;\\r\\n            padding: 0.5em 1em;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.context"
+                                }
+                            },
+                            {
+                                "name": "serviceType",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "description": "The medical service type.",
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.serviceType"
+                                }
+                            },
+                            {
+                                "name": "hospitalTier",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HospitalTier",
+                                    "required": true,
+                                    "default": "\"None\""
+                                },
+                                "description": "The hospital tier.",
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.hospitalTier"
+                                }
+                            },
+                            {
+                                "name": "heading",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Select all\""
+                                },
+                                "description": "The heading for the selection group.",
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.heading"
+                                }
+                            },
+                            {
+                                "name": "searchTerm",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.searchTerm"
+                                }
+                            },
+                            {
+                                "name": "selectAll",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.selectAll"
+                                }
+                            },
+                            {
+                                "name": "selections",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/bundle.ts",
+                                    "symbol": "PhiNaDetails40Selections.selections"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-select-all",
+                                "description": "Fired when the \"Select All\" checkbox is clicked."
+                            },
+                            {
+                                "name": "phi-select-change",
+                                "description": "Fired when any of the service checkboxes are checked/unchecked by the user."
+                            },
+                            {
+                                "name": "phi-select-updated",
+                                "description": "Fired when any of the service checkboxes are updated.  For example, when loading values\r\nfrom the context."
                             }
                         ]
                     }
