@@ -1,5 +1,5 @@
 /**
- * components/phi-product-openDetails.ts
+ * components/phi-product-details.ts
  * --
  * @author VJP
  * @written 11-Nov-2025
@@ -13,7 +13,7 @@ import {FundManager} from "../../api-models/funds.ts";
 import {Product} from "../../api-models/products.ts";
 
 /**
- * Product openDetails page..
+ * Product details page..
  */
 export class PhiProductDetails extends LitElement {
 
@@ -52,15 +52,15 @@ export class PhiProductDetails extends LitElement {
 
     @state() xml: string | undefined;
     @state() xmldoc = new DOMParser().parseFromString("<Product></Product>", "text/xml");
-    @state() subPage = "openDetails";
+    @state() subPage = "details";
 
-    @query("#openDetails") detailsPage! : HTMLElement;
+    @query("#details") detailsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
     @query("#hospital") hospitalPage! : HTMLElement;
     @query("#extras") extrasPage! : HTMLElement;
 
     setPage(page: string) {
-        this.detailsPage.style.display = page === "openDetails" ? "flex" : "none";
+        this.detailsPage.style.display = page === "details" ? "flex" : "none";
         this.xmlPage.style.display = page === "xml" ? "flex" : "none";
         this.hospitalPage.style.display = page === "hospital" ? "flex" : "none";
         this.extrasPage.style.display = page === "extras" ? "flex" : "none";
@@ -78,15 +78,15 @@ export class PhiProductDetails extends LitElement {
             })
         })
 
-        this.setPage("openDetails");
+        this.setPage("details");
     }
 
     /**
-     * Renders a block of information displaying a title and openDetails using the following template:
+     * Renders a block of information displaying a title and details using the following template:
      * <pre>
      *  <div>
      *      <h4>${title}</h4>
-     *      <small><p>${openDetails}</p></small>
+     *      <small><p>${details}</p></small>
      *  </div>
      *  </pre>
      * @param title
@@ -163,7 +163,7 @@ export class PhiProductDetails extends LitElement {
 
         return html`
             <phi-page-header logo="${fund.logo}" heading="${this.product!.code} - ${this.product!.name}">
-                <sl-button variant="text" size="small" @click=${()=>this.setPage("openDetails")}>DETAILS</sl-button>
+                <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
                 ${this.product?.isHospital ? html`<sl-button variant="text" size="small" @click=${()=>this.setPage("hospital")}>HOSPITAL</sl-button>` : nothing}
                 ${this.product?.isGeneralHealth ? html`<sl-button variant="text" size="small" @click=${()=>this.setPage("extras")}>EXTRAS</sl-button>` : nothing}
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("xml")}>XML</sl-button>

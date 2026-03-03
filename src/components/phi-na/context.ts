@@ -8,6 +8,7 @@
 import {createContext} from '@lit/context'
 import {Product, ProductResultSet} from "../../api-models/products.ts";
 import {action, computed, makeObservable, observable} from "mobx";
+import {FundManager} from "../../api-models/funds.ts";
 
 
 export const context = createContext<NeedsAnalysisContext>('phi-na');
@@ -28,6 +29,8 @@ export class NeedsAnalysisObservables {
     coverType: string = "";
     familyType: string = "";
     services: string = "";
+    funds: string = [...FundManager.funds.values()].filter(fund => fund.type==="Open").map(fund => fund.code).join(";");
+    restrictedFunds: string = "";
     productRS: ProductResultSet | null = null;
 
     /* dependent details */

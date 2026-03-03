@@ -49,14 +49,21 @@ export class PhiNADetails10 extends MobxLitElement {
         const product1 = this.product1Input.value;
         const product2 = this.product2Input.value;
 
-        if (!this.context)
-            return true;
-
-        if (!product1)
+        if (!this.context || !product1)
             return true;
 
         if (product1 === this.context.product1 && product2 === this.context.product2)
             return true;
+
+        const fund1 = product1.fund;
+        const fund2 = product2?.fund || fund1;
+        let funds = this.context.funds;
+        if (fund1.type === "Restricted")
+            if (!funds.includes(fund1.code))
+                funds = funds.concat(";", fund1.code);
+        if (fund2.type === "Restricted")
+            if (!funds.includes(fund2.code))
+                funds = funds.concat(";", fund2.code);
 
         this.context.change({
             state: this.state,
@@ -64,6 +71,7 @@ export class PhiNADetails10 extends MobxLitElement {
             familyType: product1.adultsCovered.toString() + (product1.dependantCover ? "D" : ""),
             product1: product1,
             product2: product2,
+            funds: funds,
             services: `${(product1.services || "")}${(product2?.services || "")}`,
         })
 

@@ -111,7 +111,6 @@ export class PhiNaDetails40Selections extends MobxLitElement {
         // ...and add them back to the context services
         context_services = context_services.concat(selected_services).sort();
         this.context?.change({services: context_services.join(";")});
-        console.log("context_services", this.context?.services);
         return true;
     }
 

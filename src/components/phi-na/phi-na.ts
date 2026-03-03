@@ -174,7 +174,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         <phi-na-details @phi-na-continue=${() => {
                             this.tabGroup?.show("summary")
                         }}>
-                            This is the funds tab panel.
+                            <phi-na-details-50></phi-na-details-50>
                         </phi-na-details>
                     </sl-tab-panel>
 
