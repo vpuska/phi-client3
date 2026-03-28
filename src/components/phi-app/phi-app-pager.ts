@@ -1,19 +1,20 @@
 /**
- * components/phi-page-manager.ts
+ * components/phi-app/phi-app-pager.ts
  * --
  * @author VJP
  * @written 31-Oct-2025
  */
 
 import {LitElement, html, css} from 'lit'
-import {query} from 'lit/decorators.js'
+import {customElement, query} from 'lit/decorators.js'
 import {Globals} from "../../modules/globals.ts";
 
 
 /**
  * Component to manage switching between application pages (Funds, Search, etc.).
  */
-export class PhiPageManager extends LitElement {
+@customElement('phi-app-pager')
+export class PhiAppPager extends LitElement {
 
     static styles = css`
         :host {
@@ -68,3 +69,8 @@ export class PhiPageManager extends LitElement {
 
 }
 
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-app-pager': PhiAppPager;
+    }
+}

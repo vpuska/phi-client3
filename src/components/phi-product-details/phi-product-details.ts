@@ -6,15 +6,16 @@
  */
 
 import {LitElement, html, css, type PropertyValues, type TemplateResult, nothing} from 'lit'
-import {property, query, state} from 'lit/decorators.js'
+import {customElement, property, query, state} from 'lit/decorators.js'
 import xmlFormat from 'xml-formatter';
 
 import {FundManager} from "../../api-models/funds.ts";
 import {Product} from "../../api-models/products.ts";
 
 /**
- * Product details page..
+ * Display product details for a single product.
  */
+@customElement('phi-product-details')
 export class PhiProductDetails extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -71,7 +72,7 @@ export class PhiProductDetails extends LitElement {
 
         this.product?.getXml().then(result => {
             // deliberate delay for testing!
-            new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
+            new Promise((resolve) => setTimeout(resolve, 100)).then(() => {
                 this.xml = result;
                 const parser = new DOMParser();
                 this.xmldoc = parser.parseFromString(result, "text/xml");
@@ -221,5 +222,11 @@ export class PhiProductDetails extends LitElement {
         `
     }
 
+}declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-product-details': PhiProductDetails;
+    }
 }
+
 

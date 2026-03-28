@@ -6,7 +6,7 @@
  */
 
 import {html, css} from 'lit'
-import {property, query, queryAll, state} from 'lit/decorators.js'
+import {customElement, property, query, queryAll, state} from 'lit/decorators.js'
 import {consume} from "@lit/context";
 
 import {MobxLitElement} from "@adobe/lit-mobx";
@@ -23,6 +23,7 @@ import {type HospitalTier, ServiceManager, type ServiceType} from "../../api-mod
  * @event phi-select-updated - Fired when any of the service checkboxes are updated.  For example, when loading values
  * from the context.
  */
+@customElement('phi-na-details-40-selections')
 export class PhiNaDetails40Selections extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
@@ -172,3 +173,9 @@ export class PhiNaDetails40Selections extends MobxLitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-na-details-40-selections': PhiNaDetails40Selections;
+    }
+}

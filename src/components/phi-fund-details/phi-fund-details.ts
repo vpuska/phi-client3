@@ -6,16 +6,19 @@
  */
 
 import {LitElement, html, css, nothing, type PropertyValues, type TemplateResult} from 'lit'
-import {property, query, state} from 'lit/decorators.js'
+import {customElement, property, query, state} from 'lit/decorators.js'
 import xmlFormat from 'xml-formatter';
 
 import {Fund, FundManager} from "../../api-models/funds.ts";
-import type {PhiFundProductBrowser} from "./fund-product-browser.ts";
+import type {PhiFundProductBrowser} from "./phi-fund-product-browser.ts";
 import {constructTableRow, properCaseToWords} from "../../modules/utilities.ts";
+
+import "./phi-fund-product-browser.ts";
 
 /**
  * Fund details page..
  */
+@customElement('phi-fund-details')
 export class PhiFundDetails extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -234,3 +237,9 @@ export class PhiFundDetails extends LitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-fund-details': PhiFundDetails;
+    }
+}

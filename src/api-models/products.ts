@@ -6,6 +6,10 @@ import {Fund, FundManager} from "./funds.ts";
 
 export type BaseStateType = "NSW" | "VIC" | "QLD" | "TAS" | "SA" | "WA" | "NT"
 
+export type CoverType = "Hospital" | "GeneralHealth" | "Combined"
+
+export type ProductAvailabilityType = "AnyHospital" | "AnyGeneralHealth" | "Products" | "NotApplicable"
+
 /**
  * JSON structure returned by the phi-api product list/search endpoints.
  */
@@ -13,12 +17,12 @@ export type ProductJsonType = {
     code: string;
     fundCode: string;
     name: string;
-    type: "Combined" | "Hospital" | "GeneralHealth",
+    type: CoverType;
     state: BaseStateType | "ALL",
     adultsCovered: 0 | 1 | 2,
     isCorporate: boolean,
     brands: string | null,
-    onlyAvailableWith: string,
+    onlyAvailableWith: ProductAvailabilityType,
     onlyAvailableWithProducts: string | null,
     dependantCover: boolean,
     childCover: boolean,
@@ -75,7 +79,9 @@ export class Product {
         this.maxStudentAge = this.studentCover ? this.fund.dependantLimits.dependantLimits.get("Student")!.maxAge : 0;
     }
 
+    // Product's PHIS code.  Eg: `H24/A2741D0`
     get code() { return this.rawData.code; }
+    // Product's fund code.  Eg: `BUP`
     get fundCode() { return this.rawData.fundCode; }
     get name() { return this.rawData.name; }
     get type() { return this.rawData.type; }
@@ -83,7 +89,7 @@ export class Product {
     get isCorporate() { return this.rawData.isCorporate; }
     get brands() { return this.rawData.brands; }
     get onlyAvailableWith() { return this.rawData.onlyAvailableWith; }
-    get onlyAvailableWithProducts() { return this.rawData.onlyAvailableWithProducts; }
+    get onlyAvailableWithProducts() { return this.rawData.onlyAvailableWithProducts || "" }
     get adultsCovered() { return this.rawData.adultsCovered; }
     get dependantCover() { return this.rawData.dependantCover; }
     get childCover() { return this.rawData.childCover; }
@@ -162,6 +168,37 @@ export class Product {
         return types;
     }
 
+    canPackageWith(product: Product) : boolean {
+        // Check matching attributes...
+        if (this.fundCode !== product.fundCode ||
+            this.isCorporate !== product.isCorporate ||
+            this.state !== product.state ||
+            this.adultsCovered !== product.adultsCovered ||
+            this.childCover !== product.childCover ||
+            this.studentCover !== product.studentCover ||
+            this.youngAdultCover !== product.youngAdultCover ||
+            this.nonClassifiedCover !== product.nonClassifiedCover ||
+            this.adultsCovered !== product.adultsCovered ||
+            this.disabilityCover !== product.disabilityCover)
+            return false;
+
+        // Can only package hospital with general health...
+        if (this.type === "Combined" || product.type === "Combined" || this.type === product.type )
+            return false;
+
+        // Check if the product is only available with certain products...
+        if (this.onlyAvailableWith === "NotApplicable" ||
+            this.onlyAvailableWith === "AnyHospital" ||
+            this.onlyAvailableWith === "AnyGeneralHealth" )
+            return true;
+
+        // We get here if the product is only available with certain products...
+        const validTableCodes = this.onlyAvailableWithProducts!.split(";");
+        if (validTableCodes.length === 0)
+            return false;
+        const otherTableCode = product.code.split("/")[0];
+        return validTableCodes.includes(otherTableCode);
+    }
     /**
      * Returns the product JSON field value.
      * @param fieldName
@@ -281,57 +318,4 @@ export async function productKeywordSearch(
         return [];
 }
 
-
-/**
-async function fetchProducts(state: string, productType: string, coverType: string): Promise<Response> {
-    const response = await fetch(`${PRODUCT_API}/${state}/${productType}/${coverType}`);
-    const fetchedProducts = new Array<Product>;
-    if (response.ok) {
-        const products: ProductJsonType[] = await response.json();
-        for (const product of products) {
-            fetchedProducts.push(new Product(product));
-        }
-    }
-    ProductManager.fetchedProducts = fetchedProducts;
-    ProductManager.filteredProducts = fetchedProducts;
-    return response;
-}
-
-
-function statistics() : ProductStatisticsType {
-    const stats: ProductStatisticsType = {
-        combinedCount: 0,
-        hospitalCount: 0,
-        generalCount: 0,
-    }
-    for (const product of ProductManager.filteredProducts) {
-        stats.combinedCount += (product.type === "Combined") ? 1 : 0;
-        stats.hospitalCount += (product.type === "Hospital") ? 1 : 0;
-        stats.generalCount += (product.type === "GeneralHealth") ? 1 : 0;
-    }
-    return stats;
-}
-
-
-function filterDependantAges(studentAge: number, youngAdultAge: number) {
-    if(studentAge ===0 && youngAdultAge ===0)
-        return;
-    const newList: Product[] = [];
-    for (const product of ProductManager.filteredProducts) {
-        if (product.maxStudentAge >= studentAge && product.maxYoungAdultAge >= youngAdultAge)
-            newList.push(product);
-    }
-    ProductManager.filteredProducts = newList;
-}
-
-
-export const ProductManager = {
-    fetchedProducts: new Array<Product>,
-    filteredProducts: new Array<Product>,
-    fetchProducts: fetchProducts,
-    filterDependantAges: filterDependantAges,
-    statistics: statistics,
-}
-
- */
 

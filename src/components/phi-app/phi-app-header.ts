@@ -1,12 +1,12 @@
 /**
- * components/phi-main-header.ts
+ * components/phi-app/phi-app-header.ts
  * --
  * @author VJP
  * @written 29-Sep-2025
  */
 
 import {LitElement, html, css} from 'lit'
-import {state} from 'lit/decorators.js'
+import {customElement, state} from 'lit/decorators.js'
 import type {SlSelectEvent} from "@shoelace-style/shoelace";
 
 import logo from '/phi-logo.svg'
@@ -15,11 +15,11 @@ import {Theming, type ThemingType} from "../../modules/theming.ts";
 import {Globals} from "../../modules/globals.ts";
 import {stripQuotes} from "../../modules/utilities.ts";
 
-
 /**
  * Main application header.
  */
-export class PhiMainHeader extends LitElement {
+@customElement('phi-app-header')
+export class PhiAppHeader extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -159,5 +159,11 @@ export class PhiMainHeader extends LitElement {
                 </sl-dropdown>
             </div>
         `
+    }
+}
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-app-header': PhiAppHeader;
     }
 }

@@ -6,7 +6,7 @@
  */
 
 import {LitElement, html, css, type PropertyValues, nothing} from 'lit'
-import {property, query, queryAll, state} from 'lit/decorators.js'
+import {customElement, property, query, queryAll, state} from 'lit/decorators.js'
 import {ref, createRef} from 'lit/directives/ref.js';
 
 import {SlCheckbox, SlDrawer, SlInput, SlSelect} from "@shoelace-style/shoelace";
@@ -15,13 +15,14 @@ import {Product, ProductResultSet} from "../../api-models/products.ts";
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {matchAll, matchAny, matchExactly, matchOnly} from "../../modules/utilities.ts";
 import {Globals} from "../../modules/globals.ts";
-import type {PhiProductDetails} from "../product-details/product-details.ts";
+import type {PhiProductDetails} from "../phi-product-details/phi-product-details.ts";
 
 type ProductFilterFieldType = "brand" | "policy-type" | "tier" | "adults" | "dependants" | "state" | "excess" | "accommodation";
 
 /**
  * Fund product browser page..
  */
+@customElement('phi-fund-product-browser')
 export class PhiFundProductBrowser extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -389,3 +390,9 @@ export class PhiFundProductBrowser extends LitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-fund-product-browser': PhiFundProductBrowser;
+    }
+}

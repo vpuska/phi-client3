@@ -7,17 +7,17 @@
  */
 
 
-import {PhiPageManager} from "../components/application/page-manager.ts";
+import {PhiAppPager} from "../components/phi-app/phi-app-pager.ts";
 
 
-let pageManager : PhiPageManager;
+let pageManager : PhiAppPager;
 
 
 /**
  * Register the `<phi-page-manager>` element for the application.
  * @param pageMgr
  */
-function registerPageManager(pageMgr : PhiPageManager) {
+function registerPageManager(pageMgr : PhiAppPager) {
     pageManager = pageMgr
 }
 

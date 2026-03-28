@@ -1,17 +1,19 @@
 /**
- * components/phi-main.ts
+ * components/phi-app/phi-main.ts
  * --
  * @author VJP
  * @written 29-Sep-2025
  */
 
 import {LitElement, html, css} from 'lit'
+import {customElement} from "lit/decorators.js";
 
 
 /**
  * Main application screen containing header, navigation and body
  */
-export class PhiMain extends LitElement {
+@customElement('phi-app-main')
+export class PhiAppMain extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -28,10 +30,14 @@ export class PhiMain extends LitElement {
 
     render() {
         return html`
-            <phi-main-header></phi-main-header>
-            <phi-page-manager></phi-page-manager>
+            <phi-app-header></phi-app-header>
+            <phi-app-pager></phi-app-pager>
         `
     }
 }
 
-
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-app-main': PhiAppMain;
+    }
+}

@@ -6,7 +6,7 @@
  */
 
 import {html, css, nothing} from 'lit'
-import {query, queryAssignedElements, state} from 'lit/decorators.js'
+import {customElement, query, queryAssignedElements, state} from 'lit/decorators.js'
 import {consume} from "@lit/context";
 
 import {MobxLitElement} from "@adobe/lit-mobx";
@@ -18,6 +18,7 @@ import type {SlInput} from "@shoelace-style/shoelace";
 /**
  * Health insurance needs analysis component to capture hospital and general health services.
  */
+@customElement('phi-na-details-40')
 export class PhiNADetails40 extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
@@ -114,3 +115,9 @@ export class PhiNADetails40 extends MobxLitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-na-details-40': PhiNADetails40;
+    }
+}

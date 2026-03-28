@@ -7,19 +7,24 @@
  */
 
 import {LitElement, html, css} from 'lit'
-import { state, property } from 'lit/decorators.js'
+import {state, property, customElement} from 'lit/decorators.js'
 import {Task} from "@lit/task";
 
 import {FundManager} from "../../api-models/funds.ts";
 import {Theming} from "../../modules/theming.ts";
 import {ServiceManager} from "../../api-models/services.ts";
 
+import "./phi-app-splash.ts";
+import "./phi-app-main.ts";
+import "./phi-app-pager.ts";
+import "./phi-app-header.ts";
 
 /**
  * Top-level PHI application element used in `index.html`.  Displays a splash-screen during startup
  * and then shows the main application page
  */
-export class PhiApplication extends LitElement {
+@customElement('phi-app')
+export class PhiApp extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -74,12 +79,12 @@ export class PhiApplication extends LitElement {
 
 
     render_splash_screen() {
-        return html`<phi-splash-screen ticks="${this.tickCount}"></phi-splash-screen>`;
+        return html`<phi-app-splash ticks="${this.tickCount}"></phi-app-splash>`;
     }
 
 
     render_main_screen() {
-        return html`<phi-main></phi-main>`;
+        return html`<phi-app-main></phi-app-main>`;
     }
 
 
@@ -93,4 +98,8 @@ export class PhiApplication extends LitElement {
     }
 }
 
-
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-app': PhiApp;
+    }
+}

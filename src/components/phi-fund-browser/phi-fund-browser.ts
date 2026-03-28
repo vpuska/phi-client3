@@ -8,10 +8,12 @@
 import {LitElement, html, css, nothing} from 'lit'
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {Globals} from "../../modules/globals.ts";
+import {customElement} from "lit/decorators.js";
 
 /**
  * Fund browser page..
  */
+@customElement('phi-fund-browser')
 export class PhiFundBrowser extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -96,3 +98,8 @@ export class PhiFundBrowser extends LitElement {
     `}
 }
 
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-fund-browser': PhiFundBrowser;
+    }
+}

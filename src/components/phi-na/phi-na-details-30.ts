@@ -6,7 +6,7 @@
  */
 
 import {html, css, nothing} from 'lit'
-import {query, state} from "lit/decorators.js";
+import {customElement, query, state} from "lit/decorators.js";
 import {consume} from "@lit/context";
 import {MobxLitElement} from "@adobe/lit-mobx";
 import {SlCheckbox, SlInput} from "@shoelace-style/shoelace";
@@ -16,6 +16,7 @@ import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
 /**
  * Health insurance needs analysis - dependants.
  */
+@customElement('phi-na-details-30')
 export class PhiNADetails30 extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
@@ -136,3 +137,9 @@ export class PhiNADetails30 extends MobxLitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-na-details-30': PhiNADetails30;
+    }
+}

@@ -6,7 +6,7 @@
  */
 
 import {html, css} from 'lit'
-import {queryAll} from 'lit/decorators.js'
+import {customElement, queryAll} from 'lit/decorators.js'
 import {consume} from "@lit/context";
 
 import {MobxLitElement} from "@adobe/lit-mobx";
@@ -18,6 +18,7 @@ import {FundManager, type FundType} from "../../api-models/funds.ts";
 /**
  * Needs analysis funds selection.
  */
+@customElement('phi-na-details-50')
 export class PhiNaDetails50 extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
@@ -54,6 +55,11 @@ export class PhiNaDetails50 extends MobxLitElement {
     @queryAll('sl-checkbox[data-fund-code]') fundCheckBoxes!: NodeListOf<SlCheckbox>;
 
     validate() {
+        const funds = [...this.fundCheckBoxes]
+            .filter(fundCheckbox => fundCheckbox.checked)
+            .map(fundCheckbox => fundCheckbox.getAttribute("data-fund-code"))
+            .join(";")
+        this.context?.change({funds: funds});
         return true;
     }
 

@@ -1,12 +1,12 @@
 /**
- * components/application/splash-screen.component.ts
+ * components/phi-app/phi-app-splash.ts
  * --
  * Top-Level application element and splash-screen.
  * @author VJP
  * @written 28-Sep-2025
  */
 
-import {property} from "lit/decorators.js";
+import {customElement, property} from "lit/decorators.js";
 import {css, html, LitElement} from "lit";
 
 import logo from '/phi-logo.svg'
@@ -14,7 +14,8 @@ import logo from '/phi-logo.svg'
 /**
  * PHI Application splash screen displayed while the application is loading.
  */
-export class PhiSplashScreen extends LitElement {
+@customElement('phi-app-splash')
+export class PhiAppSplash extends LitElement {
     static styles = css`
         :host {
             display: flex;
@@ -42,5 +43,11 @@ export class PhiSplashScreen extends LitElement {
                 <p>[ :${" :".repeat(this.tickCount)} ]</p>
             </div>
         `
+    }
+}
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-app-splash': PhiAppSplash;
     }
 }

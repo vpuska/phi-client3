@@ -9,7 +9,7 @@ import {css, html, LitElement} from "lit";
 import {property} from "lit/decorators.js";
 
 /**
- * Proxy for `sl-details` element, with:
+ * Wrapper between `sl-details` and `phi-na-details-xx` elements, with:
  * - additional styling for the PHI application.
  * - a "continue" button
  * @attribute `button-label` - label for the "continue" button. Defaults to "Continue".

@@ -6,13 +6,14 @@
  */
 
 import {LitElement, html, css} from 'lit'
+import {customElement} from "lit/decorators.js";
 import {Globals} from "../../modules/globals.ts";
-
 
 /**
  * Application home page.
  */
-export class PhiHomePage extends LitElement {
+@customElement('phi-home')
+export class PhiHome extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -49,15 +50,22 @@ export class PhiHomePage extends LitElement {
             <div id="image"></div>
             <div id="buttons">
                 <sl-button variant="primary" size="large" 
-                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-needs-analysis"))}}>
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-needs-analysis") as LitElement)}}>
                     <sl-icon slot="prefix" name="search"></sl-icon>
                     Compare policies...
                 </sl-button>
                 <sl-button variant="primary" size="large"
-                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser"))}}>
+                           @click=${() => {Globals.get.pageManager().setPage(document.createElement("phi-fund-browser") as LitElement)}}>
                     <sl-icon slot="prefix" name="book"></sl-icon>
                     Browse funds...</sl-button>
             </div>
         `
+    }
+}
+
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-home': PhiHome;
     }
 }

@@ -6,7 +6,7 @@
  */
 
 import {html, css, nothing} from 'lit'
-import {query, state} from 'lit/decorators.js'
+import {customElement, query, state} from 'lit/decorators.js'
 import {map} from 'lit/directives/map.js';
 import {consume} from "@lit/context";
 import {Task} from "@lit/task";
@@ -19,6 +19,7 @@ import {ProductResultSet} from "../../api-models/products.ts";
  * Health insurance needs analysis component to capture cover type, family type and state.  Also fetches
  * product data from the database based on the selected state and family type.
  */
+@customElement('phi-na-details-20')
 export class PhiNADetails20 extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
@@ -152,6 +153,13 @@ export class PhiNADetails20 extends MobxLitElement {
                 </sl-alert>
             ` : nothing }
         `
+    }
+}
+
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-na-details-20': PhiNADetails20;
     }
 }
 

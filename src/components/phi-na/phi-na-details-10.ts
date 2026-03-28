@@ -6,7 +6,7 @@
  */
 
 import {html, css} from 'lit'
-import {query, state} from 'lit/decorators.js'
+import {customElement, query, state} from 'lit/decorators.js'
 import type {PhiKeywordSearch} from "../../shared-components/phi-keyword-search.ts";
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
 import {consume} from "@lit/context";
@@ -15,6 +15,7 @@ import {MobxLitElement} from "@adobe/lit-mobx";
 /**
  * Health insurance needs analysis - Prior cover details
  */
+@customElement('phi-na-details-10')
 export class PhiNADetails10 extends MobxLitElement {
 
     static styles = css`
@@ -151,3 +152,9 @@ export class PhiNADetails10 extends MobxLitElement {
     }
 }
 
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface HTMLElementTagNameMap {
+        'phi-na-details-10': PhiNADetails10;
+    }
+}
