@@ -8,7 +8,7 @@
 import {LitElement, html, css, type TemplateResult} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
 import type {SlDropdown, SlInput} from "@shoelace-style/shoelace";
-import {Product, productKeywordSearch, type ProductKeywordSearchResult, ProductResultSet} from "../api-models/products.ts";
+import {Product, productKeywordSearch, type ProductKeywordSearchResult, ProductResultSet} from "../../api-models/products.ts";
 
 /**
  * The drop-down menu can be either a list of product keyword search results or a list of products.  This type

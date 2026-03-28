@@ -7,7 +7,7 @@
 
 import {html, css} from 'lit'
 import {customElement, query, state} from 'lit/decorators.js'
-import type {PhiKeywordSearch} from "../../shared-components/phi-keyword-search.ts";
+import type {PhiKeywordSearch} from "../shared/phi-keyword-search.ts";
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
 import {consume} from "@lit/context";
 import {MobxLitElement} from "@adobe/lit-mobx";

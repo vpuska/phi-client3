@@ -7,7 +7,7 @@
 
 import {LitElement, html, css, nothing} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {Globals} from "../modules/globals.ts";
+import {Globals} from "../../modules/globals.ts";
 
 
 /**

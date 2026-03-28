@@ -6,7 +6,7 @@
  */
 
 import {css, html, LitElement} from "lit";
-import {property} from "lit/decorators.js";
+import {customElement, property} from "lit/decorators.js";
 
 /**
  * Wrapper between `sl-details` and `phi-na-details-xx` elements, with:
@@ -16,6 +16,7 @@ import {property} from "lit/decorators.js";
  * @event phi-na-continue - fired when the "continue" button is clicked.
  * @see PhiNADetailsGroup
  */
+@customElement('phi-na-details')
 export class PhiNADetails extends LitElement {
 
     // noinspection CssUnusedSymbol
@@ -53,5 +54,11 @@ export class PhiNADetails extends LitElement {
                 </sl-button>
             </div>
         `
+    }
+}
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'phi-na-details': PhiNADetails;
     }
 }

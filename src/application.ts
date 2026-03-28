@@ -19,16 +19,7 @@ registerIconLibrary('app-icons', {
 });
 
 // Application modules
-import "./themes.css"
-import "./colors.css"
-
-import "./shared-components/phi-logo"
-import "./shared-components/phi-headline"
-import "./shared-components/phi-card"
-import "./shared-components/phi-page-header"
-import "./shared-components/phi-page-details"
-import "./shared-components/phi-option-set"
-import "./shared-components/phi-keyword-search"
-
+import "./css/themes.css"
+import "./css/colors.css"
 import "./components/bundle"
 

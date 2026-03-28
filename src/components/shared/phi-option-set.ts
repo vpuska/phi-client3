@@ -6,7 +6,7 @@
 import {LitElement, html} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 
-import {type OptionEntryType} from "../modules/option-sets.ts";
+import {type OptionEntryType} from "../../modules/option-sets.ts";
 import {SlRadioGroup} from "@shoelace-style/shoelace";
 
 
