@@ -10,8 +10,8 @@ import '@shoelace-style/shoelace/dist/themes/dark.css'
 import '@shoelace-style/shoelace/dist/shoelace.js'
 
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
-setBasePath('/node_modules/@shoelace-style/shoelace/dist')
-//setBasePath("./shoelace" )
+//setBasePath('/node_modules/@shoelace-style/shoelace/dist')
+setBasePath('/shoelace')
 
 import { registerIconLibrary} from '@shoelace-style/shoelace/dist/utilities/icon-library.js'
 registerIconLibrary('app-icons', {
