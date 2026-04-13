@@ -87,7 +87,7 @@ export class Product {
     get type() { return this.rawData.type; }
     get state() { return this.rawData.state; }
     get isCorporate() { return this.rawData.isCorporate; }
-    get brands() { return this.rawData.brands; }
+    get brandCodes() { return this.rawData.brands; }
     get onlyAvailableWith() { return this.rawData.onlyAvailableWith; }
     get onlyAvailableWithProducts() { return this.rawData.onlyAvailableWithProducts || "" }
     get adultsCovered() { return this.rawData.adultsCovered; }
@@ -171,6 +171,7 @@ export class Product {
     canPackageWith(product: Product) : boolean {
         // Check matching attributes...
         if (this.fundCode !== product.fundCode ||
+            this.brandCodes !== product.brandCodes || // assuming only 1 brand per product for now
             this.isCorporate !== product.isCorporate ||
             this.state !== product.state ||
             this.adultsCovered !== product.adultsCovered ||

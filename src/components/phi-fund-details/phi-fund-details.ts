@@ -217,7 +217,7 @@ export class PhiFundDetails extends LitElement {
                 <div id="brands-list">
                     ${fund.brands.map((brand) => html`
                         <phi-card style="width:200px" header footer>
-                            <phi-logo slot="header" src="${brand.logo}" alt="${fund.code}"></phi-logo>
+                            <phi-logo slot="header" src="${brand.logo}" alt="${brand.code}"></phi-logo>
                             <strong>${brand.name}</strong>
                             <div slot="footer">
                                 <small>${brand.code}</small>

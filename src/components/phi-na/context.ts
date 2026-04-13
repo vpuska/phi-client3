@@ -8,7 +8,7 @@
 import {createContext} from '@lit/context'
 import {Product, ProductResultSet} from "../../api-models/products.ts";
 import {action, computed, makeObservable, observable} from "mobx";
-import {FundManager} from "../../api-models/funds.ts";
+import {Fund, FundManager} from "../../api-models/funds.ts";
 import {ServiceManager} from "../../api-models/services.ts";
 
 
@@ -18,6 +18,9 @@ export const context = createContext<NeedsAnalysisContext>('phi-na');
 export type ProductPair = {
     hospital: Product | null;
     generalHealth: Product | null;
+    premium: number;
+    fund: Fund | null;
+    brand: string | null;
 }
 
 
@@ -120,6 +123,12 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
             // filter for cover type (Hospital, GeneralHealth, Combined)
             if (product.type !== this.coverType && this.coverType !== "Combined")
                 continue;
+            // exclude corporate products
+            if (product.isCorporate)
+                continue;
+            // exclude ambulance only
+            if (product.type === "GeneralHealth" && product.services ==='')
+                continue;
             // filter for dependants
             if (["0D", "1D", "2D"].includes(this.familyType)) {
                 if (this.children && !product.childCover)
@@ -166,13 +175,31 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
         const generalHealthProducts = products.filter(p => p.type === "GeneralHealth");
 
         if (this.coverType === "Hospital")
-            hospitalProducts.filter(p => p.onlyAvailableWith === "NotApplicable").forEach(p => pairs.push({hospital: p, generalHealth: null}));
+            hospitalProducts.filter(p => p.onlyAvailableWith === "NotApplicable").forEach(p => pairs.push({
+                hospital: p,
+                generalHealth: null,
+                premium: p.premium,
+                fund: p.fund,
+                brand: p.brandCodes,
+            }));
 
         if (this.coverType === "GeneralHealth")
-            generalHealthProducts.filter(p => p.onlyAvailableWith === "NotApplicable").forEach(p => pairs.push({hospital: null, generalHealth: p}));
+            generalHealthProducts.filter(p => p.onlyAvailableWith === "NotApplicable").forEach(p => pairs.push({
+                hospital: null,
+                generalHealth: p,
+                premium: p.premium,
+                fund: p.fund,
+                brand: p.brandCodes,
+            }));
 
         if (this.coverType === "Combined") {
-            combinedProducts.forEach(p => pairs.push({hospital: p, generalHealth: p}));
+            combinedProducts.forEach(p => pairs.push({
+                hospital: p,
+                generalHealth: p,
+                premium: p.premium,
+                fund: p.fund,
+                brand: p.brandCodes,
+            }));
             // make possible combinations of hospital/general health products...
             const fundCodes = new Set(hospitalProducts.map(p => p.fundCode));
             for (const fundCode of fundCodes) {
@@ -181,7 +208,13 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 for (const hospitalProduct of hospitalProductsForFund)
                     for (const generalHealthProduct of generalHealthProductsForFund)
                         if (hospitalProduct.canPackageWith(generalHealthProduct) && generalHealthProduct.canPackageWith(hospitalProduct))
-                            pairs.push({hospital: hospitalProduct, generalHealth: generalHealthProduct});
+                            pairs.push({
+                                hospital: hospitalProduct,
+                                generalHealth: generalHealthProduct,
+                                premium: hospitalProduct.premium + generalHealthProduct.premium,
+                                fund: hospitalProduct.fund,
+                                brand: hospitalProduct.brandCodes,
+                            });
             }
         }
         return pairs

@@ -22,8 +22,10 @@ export class PhiCard extends LitElement {
         }
         sl-card {
             height: 100%;
+            width: 100%;
         }
         sl-card::part(base) {
+            width: 100%;
             height: 100%;
         }
         sl-card::part(header) {

@@ -192,7 +192,7 @@ export class PhiFundProductBrowser extends LitElement {
         console.log(brandsFilter);
         for (const row of this.savedResultSet!.rows) {
             const searchableText = (row.code + " " + row.name).toUpperCase();
-            const brands = (row.brands ? row.brands : fund.code) + ";";
+            const brands = (row.brandCodes ? row.brandCodes : fund.code) + ";";
             const dependants = (row.dependantTypesShortDescription ? row.dependantTypesShortDescription : "None").split(" ");
             if (stateFilter.includes(row.state) &&
                 tierFilter.includes(row.hospitalTier) &&
@@ -347,7 +347,7 @@ export class PhiFundProductBrowser extends LitElement {
                             ></sl-icon-button>
                         </td>
                         <td>${row.code}</td>
-                        <td>${row.brands}</td>
+                        <td>${row.brandCodes}</td>
                         <td>${row.name}</td>
                         <td>${row.state}</td>
                         <td>${row.hospitalTier}</td>

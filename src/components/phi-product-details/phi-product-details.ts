@@ -117,7 +117,7 @@ export class PhiProductDetails extends LitElement {
                     ${this.render_table_row("Name", this.product!.name)}
                     ${this.render_table_row("Type", this.product!.type)}
                     ${this.render_table_row("Corporate?", this.product!.isCorporate ? "Yes" : "No")}
-                    ${this.render_table_row("Brands", this.product!.brands || "-")}
+                    ${this.render_table_row("Brands", this.product!.brandCodes || "-")}
                     ${this.render_table_row("PHIS", html`<a href="${phis}" target="_blank">${phis}</a>`)}
                 </table>
         `)

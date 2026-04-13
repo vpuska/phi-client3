@@ -20,6 +20,7 @@ import "./phi-na-details-40.ts";
 import "./phi-na-details-40-selections.ts";
 import "./phi-na-details-50.ts";
 import "./phi-na-details-60.ts";
+import "./phi-na-results.ts";
 
 /**
  * Health insurance needs analysis component.  This renders all the subcomponents in a tabbed interface and manages navigation between them.
@@ -27,13 +28,13 @@ import "./phi-na-details-60.ts";
  * - phi-na-details-10 (existing policy)
  * - phi-na-details-20 (coverage)
  * - phi-na-details-30 (dependants)
- * - phi-na-details-40 (hospital services)
- * - phi-na-details-50 (general services)
+ * - phi-na-details-40 (services)
+ * - phi-na-details-50 (funds)
  * - phi-na-details-60 (summary)
- * - phi-na-details-70 (results)
+ * - phi-na-results (results)
  */
 @customElement('phi-needs-analysis')
- export class PhiNeedsAnalysis extends MobxLitElement {
+export class PhiNeedsAnalysis extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -211,9 +212,8 @@ import "./phi-na-details-60.ts";
                     </sl-tab-panel>
 
                     <sl-tab-panel name="results">
-                        <phi-na-details>
-                            This is the results tab panel.
-                        </phi-na-details>
+                        <phi-na-results>
+                        </phi-na-results>
                     </sl-tab-panel>
 
                 </sl-tab-group>
