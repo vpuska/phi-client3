@@ -24,6 +24,7 @@ export class PhiAppMain extends LitElement {
             width: 100%;
             margin: 0;
             padding: 8px;
+            overflow-x: hidden;
             background-color: var(--sl-color-primary-50)
         }
     `
