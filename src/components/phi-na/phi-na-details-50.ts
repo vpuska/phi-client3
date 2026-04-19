@@ -79,7 +79,7 @@ export class PhiNaDetails50 extends MobxLitElement {
     }
 
     render_funds(fundType: FundType) {
-        const funds = [...FundManager.funds.values()];
+        const funds = FundManager.fundList(fundType).sort((a, b) => a.name.localeCompare(b.name));
         return html`
             <div class="container">
                 <div class="heading">
@@ -88,12 +88,14 @@ export class PhiNaDetails50 extends MobxLitElement {
                     </sl-checkbox>
                 </div>
                 <div class="selections" @sl-change=${this.updated.bind(this)}>
-                    ${funds.filter(fund => (fund.type===fundType)).map(fund => {
+                    ${funds.map(fund => {
                         const checked = this.context?.funds.includes(fund.code);
                         return html`
-                            <sl-checkbox data-fund-type="${fundType}" data-fund-code="${fund.code}" ?checked=${checked}>
-                                ${fund.name}
-                            </sl-checkbox>
+                            <sl-tooltip placement="top-start" content="${fund.code}">
+                                <sl-checkbox data-fund-type="${fundType}" data-fund-code="${fund.code}" ?checked=${checked}>
+                                    ${fund.name}
+                                </sl-checkbox>
+                            </sl-tooltip>
                             `
                     })}
                 </div>

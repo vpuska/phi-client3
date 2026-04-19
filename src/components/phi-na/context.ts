@@ -36,7 +36,7 @@ export class NeedsAnalysisObservables {
     coverType: string = "";
     familyType: string = "";
     services: string = "";
-    funds: string = [...FundManager.funds.values()].filter(fund => fund.type==="Open").map(fund => fund.code).join(";");
+    funds: string = FundManager.fundList("Open").map(fund => fund.code).join(";");
     productRS: ProductResultSet | null = null;
 
     /* dependant details */
@@ -118,6 +118,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
         const results: Product[] = [];
         const hospitalServices = ServiceManager.getAll("H").filter(s => this.services.includes(s.key)).map(s => s.key);
         const generalServices = ServiceManager.getAll("G").filter(s => this.services.includes(s.key)).map(s => s.key);
+        const funds = this.funds.split(";");
 
         outerLoop: for (const product of this.productRS!.rows) {
             // filter for cover type (Hospital, GeneralHealth, Combined)
@@ -141,7 +142,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                     continue
             }
             // filter for funds
-            if (!this.funds.includes(product.fundCode))
+            if (!(funds.includes(product.brandCodes || product.fundCode)))
                 continue;
             // filter for hospital services
             if (this.needsHospitalServices)

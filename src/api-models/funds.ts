@@ -235,6 +235,20 @@ function youngAdultAgeTiers() : number[] {
     ])).sort((a, b) => b - a);
 }
 
+function fundList(fundType: FundType) {
+    const funds: {
+        code: string,
+        name: string,
+    }[] = [];
+    [...fundMap.values()].filter((fund: Fund) => fund.type === fundType).forEach((fund: Fund) => {
+        funds.push({code: fund.code, name: fund.name});
+        fund.brands.forEach((brand: FundBrandType) => {
+            funds.push({code: brand.code, name: brand.name + " (" + fund.code + ")"});
+        })
+    })
+    return funds;
+}
+
 /**
  * Download the fund XML
  */
@@ -273,6 +287,10 @@ export const FundManager = {
      */
     funds: fundMap,
 
+    /**
+     * Return a list of fundCode records for the specified fundType.
+     */
+    fundList: fundList,
     /**
      * Download the fundCode data from the API.  This function should be called at startup before any other fundCode actions.
      */
