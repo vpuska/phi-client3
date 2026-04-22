@@ -10,7 +10,7 @@ import { customElement} from 'lit/decorators.js'
 
 
 /**
- * Container for page openDetails..
+ * Container for page details..
  */
 @customElement('phi-page-details')
 export class PhiPageDetails extends LitElement {
