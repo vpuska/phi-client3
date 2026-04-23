@@ -74,7 +74,6 @@ export class Fund {
 
     get name() {
         return this.element.querySelector('FundName')?.textContent as string;
-
     }
 
     get type() : FundType {
@@ -171,7 +170,7 @@ export class Fund {
         };
     }
 
-    async determineLogoFileName(base : string) : Promise<string|null> {
+    private async determineLogoFileName(base : string) : Promise<string|null> {
         const extensions = ["svg", "png", "jpg", "webp"];
 
         for (const ext of extensions) {
@@ -201,110 +200,82 @@ export class Fund {
     }
 }
 
-/**
- * A `Map` structure holding all the fundCode records using the fundCode code (Eg. MBP) as the map key.
- */
-const fundMap = new Map<string, Fund>();
+export class FundManager {
 
-
-/**
- * Read the fundCode map to determine the age cutoffs used for dependants.
- * @param dependantTitle
- * @returns Sorted array of ages.
- */
-function dependantAgeTiers(dependantTitle: FundDependantLimitTitleType) : number[] {
-    let tiers: number[] = [0];
-    for (const fund of fundMap.values()) {
-        const depLimit = fund.dependantLimits.dependantLimits.get(dependantTitle);
-        if (depLimit?.supported)
-            tiers.push(depLimit.maxAge);
-    }
-    tiers = Array.from(new Set(tiers)).sort((a, b) => b - a);
-    return tiers;
-}
-
-/**
- * Read the fundCode map to determine the age cutoff for young adults: `NonClassified`, `NonStudent`, `ConditionalNonStudent`.
- * @returns Sorted array of ages
- */
-function youngAdultAgeTiers() : number[] {
-    return Array.from(new Set([
-        ...dependantAgeTiers("NonClassified"),
-        ...dependantAgeTiers("NonStudent"),
-        ...dependantAgeTiers("ConditionalNonStudent")
-    ])).sort((a, b) => b - a);
-}
-
-function fundList(fundType: FundType) {
-    const funds: {
-        code: string,
-        name: string,
-    }[] = [];
-    [...fundMap.values()].filter((fund: Fund) => fund.type === fundType).forEach((fund: Fund) => {
-        funds.push({code: fund.code, name: fund.name});
-        fund.brands.forEach((brand: FundBrandType) => {
-            funds.push({code: brand.code, name: brand.name + " (" + fund.code + ")"});
-        })
-    })
-    return funds;
-}
-
-/**
- * Download the fund XML
- */
-async function downloadFundXml() {
-    const response = await fetch(FUND_XML_API);
-    if (!response.ok) {
-        alert(`Error fetching fund data from server ${response.status}: ${response.statusText}`);
-        return;
-    }
-    const xmlDoc = (new DOMParser()).parseFromString(await response.text(), "text/xml");
-    const fundElements = xmlDoc.querySelectorAll("Funds > Fund");
-    const funds : Fund[] = [];
-    for (const fundElement of fundElements) {
-        const f = new Fund(fundElement);
-        await f.findFundLogo();
-        funds.push(f);
-    }
-    funds.sort((a, b) => a.code > b.code ? 1 : -1);
-    funds.forEach((f: Fund) => {fundMap.set(f.code, f)})
-}
-
-/**
- * Object encapsulating PHIO fundCode and brand data.
- */
-export const FundManager = {
+    // Map collection of fund records keyed by fundCode.
+    public static readonly fundMap = new Map<string, Fund>();
+    public static readonly funds = FundManager.fundMap;
 
     /**
      * Return a fundCode record from the fundCode map.
      * @param fundCode The fundCode code.  Eg. `BUP`
      * @returns Fund
      */
-    get: (fundCode: string) => { return fundMap.get(fundCode); },
+    static get (fundCode: string) {
+        return FundManager.fundMap.get(fundCode)
+    }
 
     /**
-     * The fundCode map.
+     * Read the fundCode map to determine the age cutoffs used for dependants.
+     * @param dependantTitle
+     * @returns Sorted array of ages.
      */
-    funds: fundMap,
+    static dependantAgeTiers(dependantTitle: FundDependantLimitTitleType) : number[] {
+        let tiers: number[] = [0];
+        for (const fund of FundManager.fundMap.values()) {
+            const depLimit = fund.dependantLimits.dependantLimits.get(dependantTitle);
+            if (depLimit?.supported)
+                tiers.push(depLimit.maxAge);
+        }
+        tiers = Array.from(new Set(tiers)).sort((a, b) => b - a);
+        return tiers;
+    }
 
     /**
-     * Return a list of fundCode records for the specified fundType.
+     * Read the fundCode map to determine the age cutoff for young adults: `NonClassified`, `NonStudent`, `ConditionalNonStudent`.
+     * @returns Sorted array of ages
      */
-    fundList: fundList,
-    /**
-     * Download the fundCode data from the API.  This function should be called at startup before any other fundCode actions.
-     */
-    download: downloadFundXml,
+    static youngAdultAgeTiers() : number[] {
+        return Array.from(new Set([
+            ...FundManager.dependantAgeTiers("NonClassified"),
+            ...FundManager.dependantAgeTiers("NonStudent"),
+            ...FundManager.dependantAgeTiers("ConditionalNonStudent")
+        ])).sort((a, b) => b - a);
+    }
+
+    static fundList(fundType: FundType) {
+        const funds: {
+            code: string,
+            name: string,
+        }[] = [];
+        [...FundManager.fundMap.values()].filter((fund: Fund) => fund.type === fundType).forEach((fund: Fund) => {
+            funds.push({code: fund.code, name: fund.name});
+            fund.brands.forEach((brand: FundBrandType) => {
+                funds.push({code: brand.code, name: brand.name + " (" + fund.code + ")"});
+            })
+        })
+        return funds;
+    }
 
     /**
-     * Returns a number array of age tiers for the young adult dependant category: `NonClassified`, `NonStudent`, `ConditionalNonStudent`
+     * Download the fund XML
      */
-    youngAdultAgeTiers: youngAdultAgeTiers,
+    static async downloadFundXml() {
+        const response = await fetch(FUND_XML_API);
+        if (!response.ok) {
+            alert(`Error fetching fund data from server ${response.status}: ${response.statusText}`);
+            return;
+        }
+        const xmlDoc = (new DOMParser()).parseFromString(await response.text(), "text/xml");
+        const fundElements = xmlDoc.querySelectorAll("Funds > Fund");
+        const funds : Fund[] = [];
+        for (const fundElement of fundElements) {
+            const f = new Fund(fundElement);
+            await f.findFundLogo();
+            funds.push(f);
+        }
+        funds.sort((a, b) => a.code > b.code ? 1 : -1);
+        funds.forEach((f: Fund) => {FundManager.fundMap.set(f.code, f)})
+    }
 
-    /**
-     * Returns a number array of age ties for the `Student` category.
-     */
-    studentAgeTiers: () => dependantAgeTiers("Student"),
-
-    disabilityAgeTiers: () => dependantAgeTiers("Disability"),
 }

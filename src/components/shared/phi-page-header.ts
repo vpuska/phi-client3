@@ -22,12 +22,8 @@ export class PhiPageHeader extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
-        :host {
-            padding: 0;
-        }
 
-        /* header block */
-        div.header {
+        :host {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -39,8 +35,8 @@ export class PhiPageHeader extends LitElement {
             padding: 16px;
         }
 
-        /* header block - name */
-        div.header > h4 {
+        /* title/name - take up available space in row */
+        h4 {
             flex: 1 0 0;
             margin: 0;
         }
@@ -51,17 +47,15 @@ export class PhiPageHeader extends LitElement {
 
     render() {
         return html`
-            <div class="header">
-                ${this.logo === "" ? nothing : html`<phi-logo src="${this.logo}" alt="Fund's logo"></phi-logo>`}
-                <h4>${this.heading}</h4>
-                <slot></slot>
-                <sl-icon-button
-                        style="font-size: 32px"
-                        name="x"
-                        label="close fund detail page"
-                        @click=${() => Globals.get.pageManager().popPage()}
-                ></sl-icon-button>
-            </div>
+            ${this.logo === "" ? nothing : html`<phi-logo src="${this.logo}" alt="Fund's logo"></phi-logo>`}
+            <h4>${this.heading}</h4>
+            <slot></slot>
+            <sl-icon-button
+                    style="font-size: 32px"
+                    name="x"
+                    label="close fund detail page"
+                    @click=${() => Globals.get.pageManager().popPage()}
+            ></sl-icon-button>
         `
     }
 }

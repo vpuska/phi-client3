@@ -71,7 +71,7 @@ export class PhiApp extends LitElement {
 
 
     private async startupFundsTask() {
-        const p1 = FundManager.download();
+        const p1 = FundManager.downloadFundXml();
         const p2 = ServiceManager.fetchServices()
         await Promise.all([p1, p2]);
         this.tickCount += 4;
