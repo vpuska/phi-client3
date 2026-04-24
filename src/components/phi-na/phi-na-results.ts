@@ -154,6 +154,13 @@ export class PhiNaResults extends MobxLitElement {
                     : nothing 
                 }
 
+                ${this.context?.coverType !== "GeneralHealth"
+                        ? this.render_row((productPair) => {
+                            return html`${productPair.hospital!.accommodationType}`
+                        })
+                        : nothing
+                }
+                
                 <!-- phis code -->
                 ${this.render_row(this.render_phis_code)}
             </table>

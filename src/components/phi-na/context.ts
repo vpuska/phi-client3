@@ -36,6 +36,8 @@ export class NeedsAnalysisObservables {
     coverType: string = "";
     familyType: string = "";
     services: string = "";
+    excess: number = 99999;
+    accommodation: string = "PrivateOrPublic;PrivateSharedPublic;PrivateSharedPublicShared;PrivatePublicShared";
     funds: string = FundManager.fundList("Open").map(fund => fund.code).join(";");
     productRS: ProductResultSet | null = null;
 
@@ -119,6 +121,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
         const hospitalServices = ServiceManager.getAll("H").filter(s => this.services.includes(s.key)).map(s => s.key);
         const generalServices = ServiceManager.getAll("G").filter(s => this.services.includes(s.key)).map(s => s.key);
         const funds = this.funds.split(";");
+        const accommodation = this.accommodation.split(';');
 
         outerLoop: for (const product of this.productRS!.rows) {
             // filter for cover type (Hospital, GeneralHealth, Combined)
@@ -126,6 +129,12 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 continue;
             // exclude corporate products
             if (product.isCorporate)
+                continue;
+            // filter excess
+            if (product.excess > this.excess && product.type !== "GeneralHealth")
+                continue;
+            // filter accommodation
+            if (!accommodation.includes(product.accommodationType) && product.type !== "GeneralHealth")
                 continue;
             // exclude ambulance only
             if (product.type === "GeneralHealth" && product.services ==='')

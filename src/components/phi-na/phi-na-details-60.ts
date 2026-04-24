@@ -11,7 +11,7 @@ import {consume} from "@lit/context";
 import {MobxLitElement} from "@adobe/lit-mobx";
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
 import {FundManager} from "../../api-models/funds.ts";
-import {type HospitalTier, ServiceManager, type ServiceType} from "../../api-models/services.ts";
+import {type HospitalTierType, ServiceManager, type ServiceType} from "../../api-models/services.ts";
 
 /**
  * Health insurance needs analysis component to capture cover type, family type and state.  Also fetches
@@ -83,7 +83,7 @@ export class PhiNADetails60 extends MobxLitElement {
         `)
     }
 
-    render_service(type: ServiceType, tier: HospitalTier, label: string) : TemplateResult | typeof nothing {
+    render_service(type: ServiceType, tier: HospitalTierType, label: string) : TemplateResult | typeof nothing {
         if (type === "H" && this.context!.coverType === "GeneralHealth") return nothing;
         if (type === "G" && this.context!.coverType === "Hospital") return nothing;
         const services = ServiceManager.getAll(type, tier);

@@ -13,7 +13,7 @@ import {MobxLitElement} from "@adobe/lit-mobx";
 import {SlCheckbox} from "@shoelace-style/shoelace";
 
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
-import {type HospitalTier, ServiceManager, type ServiceType} from "../../api-models/services.ts";
+import {type HospitalTierType, ServiceManager, type ServiceType} from "../../api-models/services.ts";
 
 /**
  * Health insurance needs analysis component to hospital and general health services selections.  Renders a
@@ -55,7 +55,7 @@ export class PhiNaDetails40Selections extends MobxLitElement {
     /**
      * The hospital tier.
      */
-    @property({attribute: "hospital-tier", type: String}) hospitalTier: HospitalTier = "None";
+    @property({attribute: "hospital-tier", type: String}) hospitalTier: HospitalTierType = "None";
     /**
      * The heading for the selection group.
      */

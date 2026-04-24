@@ -243,6 +243,17 @@ export class FundManager {
         ])).sort((a, b) => b - a);
     }
 
+    /**
+     * Read the fundCode map to determine the age cutoff for students
+     * @returns Sorted array of ages
+     */
+    static studentAgeTiers() : number[] {
+        return Array.from(new Set([
+            ...FundManager.dependantAgeTiers("Student"),
+        ]))
+    }
+
+
     static fundList(fundType: FundType) {
         const funds: {
             code: string,

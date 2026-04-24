@@ -1,14 +1,14 @@
 
 const SERVICES_API = "https://phi-demo-api.spartlet.net/product-services"
 
-export type HospitalTier = "None" | "Basic" | "Bronze" | "Silver" | "Gold";
+export type HospitalTierType = "None" | "Basic" | "Bronze" | "Silver" | "Gold";
 export type ServiceType = "G" | "H" | "";
 
 export class Service {
     key: string = "";
     serviceType: ServiceType = "";
     serviceCode: string = "";
-    hospitalTier: HospitalTier = "None";
+    hospitalTier: HospitalTierType = "None";
     description: string = "";
 }
 
@@ -33,7 +33,7 @@ export class ServiceManager {
         return this.services.get(key);
     }
 
-    static getAll(serviceType: ServiceType, hospitalTier?: HospitalTier) : Service[] {
+    static getAll(serviceType: ServiceType, hospitalTier?: HospitalTierType) : Service[] {
         let subset = [...this.services.values()].filter((service) => service.serviceType === serviceType);
         if (hospitalTier)
             subset = subset.filter( (service) => service.hospitalTier === hospitalTier);

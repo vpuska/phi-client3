@@ -16,6 +16,7 @@ import "./phi-na-details.ts";
 import "./phi-na-details-10.ts";
 import "./phi-na-details-20.ts";
 import "./phi-na-details-30.ts";
+import "./phi-na-details-35.ts";
 import "./phi-na-details-40.ts";
 import "./phi-na-details-40-selections.ts";
 import "./phi-na-details-50.ts";
@@ -130,6 +131,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                     <sl-tab slot="nav" panel="start">Existing Policy</sl-tab>
                     <sl-tab slot="nav" panel="cover">Coverage</sl-tab>
                     <sl-tab slot="nav" panel="dependants" ?disabled=${!this.context.hasDependants}>Dependants</sl-tab>
+                    <sl-tab slot="nav" panel="hospital-cover" ?disabled=${!this.context.needsHospitalServices}>Accommodation & Excess</sl-tab>
                     <sl-tab slot="nav" panel="hospital" ?disabled=${!this.context.needsHospitalServices}>Hospital Services</sl-tab>
                     <sl-tab slot="nav" panel="general" ?disabled=${!this.context.needsGeneralHealthServices}>General Services</sl-tab>
                     <sl-tab slot="nav" panel="funds" ?disabled=${!this.context.isCoverDefined}>Funds</sl-tab>
@@ -150,11 +152,23 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
                                 {condition: this.context.hasDependants, tab: "dependants"},
-                                {condition: this.context.needsHospitalServices, tab: "hospital"},
+                                {condition: this.context.needsHospitalServices, tab: "hospital-cover"},
                                 {condition: this.context.needsGeneralHealthServices, tab: "general"},
                             ])
                         }}>
                             <phi-na-details-20 id="cover"></phi-na-details-20>
+                        </phi-na-details>
+                    </sl-tab-panel>
+                    
+                    <sl-tab-panel name="hospital-cover">
+                        <phi-na-details @phi-na-continue=${() => {
+                            this.gotoTab([
+                                {condition: this.context.hasDependants, tab: "dependants"},
+                                {condition: this.context.needsHospitalServices, tab: "hospital"},
+                                {condition: this.context.needsGeneralHealthServices, tab: "general"},
+                            ])
+                        }}>
+                            <phi-na-details-35 id="hospital-cover"></phi-na-details-35>
                         </phi-na-details>
                     </sl-tab-panel>
                     

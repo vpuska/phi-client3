@@ -1,8 +1,12 @@
 // noinspection JSUnusedGlobalSymbols
 
+import type {HospitalTierType} from "./services.ts";
+
 const PRODUCT_API = 'https://phi-demo-api.spartlet.net'
 
 import {Fund, FundManager} from "./funds.ts";
+
+export type AccommodationType = "PrivateOrPublic" | "PrivateSharedPublic" | "PrivateSharedPublicShared" | "Public" | "PublicShared" | "PrivatePublicShared" | ""
 
 export type BaseStateType = "NSW" | "VIC" | "QLD" | "TAS" | "SA" | "WA" | "NT"
 
@@ -104,8 +108,8 @@ export class Product {
     get excessPerPolicy() { return this.rawData.excessPerPerson; }
     get premium() { return this.rawData.premium; }
     get hospitalComponent() { return this.rawData.hospitalComponent; }
-    get hospitalTier() { return this.rawData.hospitalTier; }
-    get accommodationType() { return this.rawData.accommodationType || ""; }
+    get hospitalTier() : HospitalTierType { return this.rawData.hospitalTier as HospitalTierType; }
+    get accommodationType() : AccommodationType { return (this.rawData.accommodationType || "") as AccommodationType; }
     get services() { return this.rawData.services; }
 
     get excess() {

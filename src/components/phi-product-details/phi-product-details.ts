@@ -11,7 +11,7 @@ import xmlFormat from 'xml-formatter';
 
 import {FundManager} from "../../api-models/funds.ts";
 import {Product} from "../../api-models/products.ts";
-import {type HospitalTier, ServiceManager, type ServiceType} from "../../api-models/services.ts";
+import {type HospitalTierType, ServiceManager, type ServiceType} from "../../api-models/services.ts";
 
 /**
  * Display product details for a single product.
@@ -151,7 +151,7 @@ export class PhiProductDetails extends LitElement {
         )
     }
 
-    render_hospital_services(serviceType: ServiceType, tier: HospitalTier = "None") {
+    render_hospital_services(serviceType: ServiceType, tier: HospitalTierType = "None") {
         const icons = {
             Y : "check-circle-fill",
             N : "x-circle-fill",
