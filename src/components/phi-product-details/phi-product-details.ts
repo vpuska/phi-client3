@@ -11,6 +11,7 @@ import xmlFormat from 'xml-formatter';
 
 import {FundManager} from "../../api-models/funds.ts";
 import {Product} from "../../api-models/products.ts";
+import {type HospitalTier, ServiceManager, type ServiceType} from "../../api-models/services.ts";
 
 /**
  * Display product details for a single product.
@@ -46,6 +47,12 @@ export class PhiProductDetails extends LitElement {
             text-align: left;
             font-weight: normal;
         }
+        
+        table.services td:nth-child(1) {
+            width: 32px;
+        }
+        
+        
     `
 
     @property({ attribute: "fund-code" }) fundCode!: string;
@@ -144,6 +151,61 @@ export class PhiProductDetails extends LitElement {
         )
     }
 
+    render_hospital_services(serviceType: ServiceType, tier: HospitalTier = "None") {
+        const icons = {
+            Y : "check-circle-fill",
+            N : "x-circle-fill",
+            R : "question-circle-fill",
+        }
+        const style = {
+            Y : "color:var(--sl-color-success-500)",
+            N : "color:var(--sl-color-danger-500)",
+            R : "color:var(--sl-color-warning-500)",
+        }
+        const tooltip = {
+            Y: "For information on what is covered under each category, see https://www.privatehealth.gov.au/categories",
+            N: "This categories is not covered by this policy.",
+            R: "Restricted categories partially cover your hospital costs as a private patient in a public hospital. You may incur significant expenses in a private room or private hospital."
+        }
+        return html`
+            <table class="services">
+                ${ServiceManager.getAll(serviceType, tier).map((service) => html`
+                    <tr>
+                        <td>
+                            <sl-tooltip>
+                                <div slot="content">${tooltip[this.product?.coversService(service.key) ?? "N"]}</div>
+                                <sl-icon 
+                                    name="${icons[this.product?.coversService(service.key) ?? "N"]}" 
+                                    style="${style[this.product?.coversService(service.key) ?? "N"]}">
+                                </sl-icon>
+                            </sl-tooltip>
+                        </td>
+                        <td>${service.description}</td>
+                    </tr>
+                `)}
+            </table>
+        `
+    }
+
+    render_hospital() {
+        return html`
+            <h3>Gold</h3>
+            ${this.render_hospital_services("H", "Gold")}
+            <h3>Silver</h3>
+            ${this.render_hospital_services("H", "Silver")}
+            <h3>Bronze</h3>
+            ${this.render_hospital_services("H", "Bronze")}
+            <h3>Basic</h3>
+            ${this.render_hospital_services("H", "Basic")}
+        `
+    }
+
+    render_general_health() {
+        return html`
+            ${this.render_hospital_services("G", "None")}
+        `
+    }
+
     render_otherProductDetails(xmldoc: Document) {
         let details: string = "Still waiting..."
         if (this.xml) {
@@ -163,6 +225,7 @@ export class PhiProductDetails extends LitElement {
         }
 
         return html`
+
             <phi-page-header logo="${fund.logo}" heading="${this.product!.code} - ${this.product!.name}">
                 <sl-button variant="text" size="small" @click=${()=>this.setPage("details")}>DETAILS</sl-button>
                 ${this.product?.isHospital ? html`<sl-button variant="text" size="small" @click=${()=>this.setPage("hospital")}>HOSPITAL</sl-button>` : nothing}
@@ -204,11 +267,11 @@ export class PhiProductDetails extends LitElement {
             </phi-page-details>
 
             <phi-page-details id="hospital">
-                This is the hospital page
+                ${this.render_hospital()}
             </phi-page-details>
 
             <phi-page-details id="extras">
-                This is the extras page
+                ${this.render_general_health()}
             </phi-page-details>
             
             <phi-page-details id="xml" style="padding: 0">

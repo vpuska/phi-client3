@@ -200,6 +200,18 @@ export class Product {
         const otherTableCode = product.code.split("/")[0];
         return validTableCodes.includes(otherTableCode);
     }
+
+    coversService(service: string) : "Y" | "N" | "R" {
+        if (this.services === null || this.services === undefined)
+            return "N";
+        if (this.services.includes(service + "-"))
+            return "R";
+        if (this.services.includes(service))
+            return "Y"
+        else
+            return "N";
+    }
+
     /**
      * Returns the product JSON field value.
      * @param fieldName

@@ -25,7 +25,7 @@ export class PhiPageDetails extends LitElement {
             background-color: var(--sl-color-gray-200);
             border-radius: 0 0 8px 8px;
             overflow-y: auto;
-            padding: 12px;
+            padding: 16px;
         }
     `
 
