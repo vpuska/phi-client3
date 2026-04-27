@@ -15,8 +15,12 @@ import type {PhiProductDetails} from "../phi-product-details/phi-product-details
 import {Globals} from "../../modules/globals.ts";
 import {context as phiNAContext, NeedsAnalysisContext, type ProductPair} from "./context.ts";
 
+/**
+ * Render the results page of the needs analysis in a html table.  Each column represents a product pair (hospital and general health) and each
+ * row is a product attribute.
+ */
 @customElement('phi-na-results')
-export class PhiNaResults extends MobxLitElement {
+export class PhiNAResults extends MobxLitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -152,6 +156,27 @@ export class PhiNaResults extends MobxLitElement {
     }
 
     /**
+     * Render the dependant types covered by the product pair
+     * @param productPair
+     */
+    render_dependants(productPair: ProductPair) {
+        const product = productPair.hospital || productPair.generalHealth;
+        const dependants = product?.dependantTypesShortDescription.trim().split(" ");
+        const dependant_desc = {
+            "Ch" : "Child",
+            "St" : "Student",
+            "YAdlt" : "Young Adult",
+            "NonCls" : "Non-Classified",
+            "NonSt" : "Non-Student",
+            "Cond": "Conditional Non-student",
+            "Dis" : "Disabled",
+        }
+        return html`<td>
+            ${dependants?.map((d) => html`<sl-tag size="small" pill variant="primary">${dependant_desc[d as keyof typeof dependant_desc]}</sl-tag>`)}
+        </td>`
+    }
+
+    /**
      * Renders an entire row of the resultset table.  The `render_row` method will call the render function for each product; and
      * the render function will return a single table cell.
      * @param renderer The render function that takes a product pair and returns a single table cell.
@@ -167,10 +192,12 @@ export class PhiNaResults extends MobxLitElement {
     }
 
     /**
-     * Master render routine
+     * Master render routine.  Rendering is delegated to the `render_row` method for each product attribute.  The `render_row` method
+     * will call the attribute's render function which returns a single table cell.
      */
     render() {
-        const resultSet = this.context?.comparisonResults.sort((a, b) => a.premium - b.premium).slice(0,50)
+        const resultSet = this.context?.comparisonResults.sort((a, b) => a.premium - b.premium).slice(0,100)
+        // save as a class property for easy access..
         this.resultSet = resultSet || [];
 
         return html`
@@ -192,12 +219,16 @@ export class PhiNaResults extends MobxLitElement {
                 
                 <!-- phis code -->
                 ${this.render_row(this.render_phis_code)}
+
+                <!-- dependants -->
+                ${this.context?.hasDependants ? this.render_row(this.render_dependants) : nothing} 
+
             </table>
     `}
 }
 
 declare global {
     interface HTMLElementTagNameMap {
-        'phi-na-results': PhiNaResults;
+        'phi-na-results': PhiNAResults;
     }
 }

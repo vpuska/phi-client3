@@ -24,15 +24,8 @@ import "./phi-na-details-60.ts";
 import "./phi-na-results.ts";
 
 /**
- * Health insurance needs analysis component.  This renders all the subcomponents in a tabbed interface and manages navigation between them.
- * The subcomponents are:
- * - phi-na-details-10 (existing policy)
- * - phi-na-details-20 (coverage)
- * - phi-na-details-30 (dependants)
- * - phi-na-details-40 (services)
- * - phi-na-details-50 (funds)
- * - phi-na-details-60 (summary)
- * - phi-na-results (results)
+ * Health insurance needs analysis component.  This renders all the subcomponents in a tabbed interface and manages navigation between them.  Communication between components,
+ * data retrieval, and filtering is managed via the {@link NeedsAnalysisContext} published by this component and consumed by the sub-components.
  */
 @customElement('phi-needs-analysis')
 export class PhiNeedsAnalysis extends MobxLitElement {
@@ -86,7 +79,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                 if ("validate" in details) {
                     if (typeof details.validate === "function")
                         if (!details.validate()) {
-                            // remain on the current tab
+                            // validation failed, remain on the current tab
                             this.tabGroup?.show(tab);
                         }
                 }
@@ -128,6 +121,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
 
                 <sl-tab-group placement="start">
                     
+                    <!-- Navigation tabs -->
                     <sl-tab slot="nav" panel="start">Existing Policy</sl-tab>
                     <sl-tab slot="nav" panel="cover">Coverage</sl-tab>
                     <sl-tab slot="nav" panel="dependants" ?disabled=${!this.context.hasDependants}>Dependants</sl-tab>
@@ -138,16 +132,19 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                     <sl-tab slot="nav" panel="summary" ?disabled=${!this.context.isCoverDefined}>Summary</sl-tab>
                     <sl-tab slot="nav" panel="results" ?disabled=${!this.context.isCoverDefined}>Compare Results</sl-tab>
                     
+                    <!-- Display in nav panel total rows extracted -->
                     <div slot="nav" style="color:var(--sl-color-neutral-600); padding-top: 40px; padding-left: 20px; font-size: x-small">
                         ${this.context.productRS ? html`Rows extracted: ${this.context.productRS.rows.length}` : nothing}
                     </div>
 
+                    <!-- Existing policy details -->
                     <sl-tab-panel name="start">
                         <phi-na-details @phi-na-continue=${() => this.tabGroup?.show("cover")}>
                             <phi-na-details-10 id="start"></phi-na-details-10>
                         </phi-na-details>
                     </sl-tab-panel>
-                    
+
+                    <!-- Core needs: state, family type and product type (and retrieve data from API) -->
                     <sl-tab-panel name="cover">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
@@ -159,7 +156,8 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                             <phi-na-details-20 id="cover"></phi-na-details-20>
                         </phi-na-details>
                     </sl-tab-panel>
-                    
+
+                    <!-- Hospital Accommodation type and excess -->
                     <sl-tab-panel name="hospital-cover">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
@@ -172,6 +170,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
                     
+                    <!-- Dependants -->
                     <sl-tab-panel name="dependants">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
@@ -183,6 +182,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
                     
+                    <!-- Hospital services -->
                     <sl-tab-panel name="hospital">
                         <phi-na-details @phi-na-continue=${() => {
                             this.gotoTab([
@@ -199,6 +199,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
                     
+                    <!-- General services -->
                     <sl-tab-panel name="general">
                         <phi-na-details @phi-na-continue=${() => {
                             this.tabGroup?.show("funds")
@@ -209,6 +210,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
                     
+                    <!-- Fund filter -->
                     <sl-tab-panel name="funds">
                         <phi-na-details @phi-na-continue=${() => {
                             this.tabGroup?.show("summary")
@@ -217,6 +219,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
 
+                    <!-- Summary page -->
                     <sl-tab-panel name="summary">
                         <phi-na-details @phi-na-continue=${() => {
                             this.tabGroup?.show("results")
@@ -225,6 +228,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                         </phi-na-details>
                     </sl-tab-panel>
 
+                    <!-- Results page -->
                     <sl-tab-panel name="results">
                         <phi-na-results>
                         </phi-na-results>

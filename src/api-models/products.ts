@@ -145,7 +145,7 @@ export class Product {
         if (this.youngAdultCover)
             types += "YAdlt ";
         if (this.nonClassifiedCover)
-            types += "NonCls";
+            types += "NonCls ";
         if (this.conditionalNonStudentCover)
             types += "Cond ";
         if (this.disabilityCover)

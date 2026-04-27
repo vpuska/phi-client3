@@ -14,15 +14,17 @@ import {ServiceManager} from "../../api-models/services.ts";
 
 export const context = createContext<NeedsAnalysisContext>('phi-na');
 
-
+/**
+ * A pair of products or a single product that represents a possible solution to the needs analysis.
+ */
 export type ProductPair = {
+    // Hospital or hospital/general health packaged product
     hospital: Product | null;
     generalHealth: Product | null;
     premium: number;
     fund: Fund | null;
     brand: string | null;
 }
-
 
 /**
  * Simple class to hold properties (observables) for the needs analysis component.  This forms the base class for
@@ -51,6 +53,7 @@ export class NeedsAnalysisObservables {
     maxYoungAdultAge: number = 0;
 
     constructor() {
+        // Manually make our fields observable because of limitations in the standard mobx function
         const annotations: Record<string, any> = {};
         Object.keys(this).forEach(key => annotations[key] = observable);
         makeObservable(this, annotations);
@@ -70,6 +73,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
             needsHospitalServices: computed,
             needsGeneralHealthServices: computed,
             filteredProducts: computed,
+            comparisonResults: computed,
         });
     }
 
@@ -82,7 +86,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
     }
 
     /**
-     * Returns true if the cover type, state and family type are defined.
+     * Returns true if the cover type, state, and family type are defined.
      */
     get isCoverDefined() {
         return (this.coverType !== "" && this.state !== "" && this.familyType !== "");
@@ -110,7 +114,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
     }
 
     /**
-     * Returns the list of products that match the context filter criteria.
+     * Returns the raw list of products that match the filter criteria.
      * @returns Matching product records.
      */
     get filteredProducts() {
@@ -178,6 +182,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
      * @returns Matching product pairs.
      */
     get comparisonResults() {
+
         const products = this.filteredProducts;
         const pairs: ProductPair[] = [];
         const combinedProducts = products.filter(p => p.type === "Combined");
@@ -210,6 +215,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 fund: p.fund,
                 brand: p.brandCodes,
             }));
+
             // make possible combinations of hospital/general health products...
             const fundCodes = new Set(hospitalProducts.map(p => p.fundCode));
             for (const fundCode of fundCodes) {
