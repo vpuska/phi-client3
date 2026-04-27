@@ -36,7 +36,7 @@ export class PhiNADetails35 extends MobxLitElement {
 
     validate() {
         const excess = +(this.excessSelect?.value || "0");
-        const accommodation = [...this.accommodationCheckBoxes].map(checkbox => checkbox.value).join(';');
+        const accommodation = [...this.accommodationCheckBoxes].filter(checkbox => checkbox.checked).map(checkbox => checkbox.value).join(';');
         this.context?.change({
             excess: excess,
             accommodation: accommodation

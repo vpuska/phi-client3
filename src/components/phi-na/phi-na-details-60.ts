@@ -30,6 +30,9 @@ export class PhiNADetails60 extends MobxLitElement {
         h4 {
             margin-bottom: 0;
         }
+        td:first-child {
+            width: 20em;
+        }
     `
     @consume({context: phiNAContext}) context: NeedsAnalysisContext | null = null;
     @state() error: string = "";
@@ -89,7 +92,7 @@ export class PhiNADetails60 extends MobxLitElement {
         const services = ServiceManager.getAll(type, tier);
         const selected = services.filter(service => this.context!.services.includes(service.key));
         return html `<tr>
-            <td style="width:10em">${label}:</td>
+            <td>${label}:</td>
             <td>${selected.length} of ${services.length} services</td>
         </tr>
     `}
@@ -143,8 +146,15 @@ export class PhiNADetails60 extends MobxLitElement {
             ${this.render_services()}
             ${this.render_funds()}
             
-            ${this.context?.productRS?.rows.length} / ${combinedProducts} / ${hospitalProducts} / ${generalProducts} products selected.<br>
-            ${this.context?.comparisonResults.length} pairs found.
+            ${this.render_block("Statistics", html`
+                <table>
+                    <tr><td>Records returned by API</td><td>${this.context?.productRS?.rows.length}</td></tr>
+                    <tr><td>Combined products selected</td><td>${combinedProducts}</td></tr>
+                    <tr><td>Hospital products selected</td><td>${hospitalProducts}</td></tr>
+                    <tr><td>General health products</td><td>${generalProducts}</td></tr>
+                    <tr><td>Product pairs generated</td><td>${this.context?.comparisonResults.length}</td></tr>
+                </table>
+            `)}
             
             ${(this.error !== "") ? html`
                 <sl-alert variant="warning" open>
