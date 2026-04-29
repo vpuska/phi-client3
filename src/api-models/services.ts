@@ -17,6 +17,12 @@ export class ServiceManager {
 
     static services = new Map<string,Service>;
 
+    static basicServices: Service[] = [];
+    static bronzeServices: Service[] = [];
+    static silverServices: Service[] = [];
+    static goldServices: Service[] = [];
+    static generalServices: Service[] = [];
+
     static async fetchServices() {
         const response = await fetch(SERVICES_API);
         if (response.ok) {
@@ -26,6 +32,11 @@ export class ServiceManager {
                 Object.assign(service, row);
                 this.services.set(service.key, service);
             }
+            ServiceManager.basicServices = ServiceManager.getAll("H", "Basic");
+            ServiceManager.bronzeServices = ServiceManager.getAll("H", "Bronze");
+            ServiceManager.silverServices = ServiceManager.getAll("H", "Silver");
+            ServiceManager.goldServices = ServiceManager.getAll("H", "Gold");
+            ServiceManager.generalServices = ServiceManager.getAll("G", "None");
         }
     }
 
@@ -39,6 +50,7 @@ export class ServiceManager {
             subset = subset.filter( (service) => service.hospitalTier === hospitalTier);
         return subset.sort((a,b) => a.description.localeCompare(b.key));
     }
+
 }
 
 // ServiceManager.fetchServices().then()

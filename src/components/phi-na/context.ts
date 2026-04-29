@@ -24,6 +24,7 @@ export type ProductPair = {
     premium: number;
     fund: Fund | null;
     brand: string | null;
+    services: string[];
 }
 
 /**
@@ -196,6 +197,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
+                services: p.services.split(';').filter(s => s !== ''),
             }));
 
         if (this.coverType === "GeneralHealth")
@@ -205,6 +207,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
+                services: p.services.split(';').filter(s => s !== ''),
             }));
 
         if (this.coverType === "Combined") {
@@ -214,6 +217,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
+                services: p.services.split(';').filter(s => s !== ''),
             }));
 
             // make possible combinations of hospital/general health products...
@@ -230,6 +234,10 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                                 premium: hospitalProduct.premium + generalHealthProduct.premium,
                                 fund: hospitalProduct.fund,
                                 brand: hospitalProduct.brandCodes,
+                                services: [
+                                    ...hospitalProduct.services.split(';').filter(s => s !== ''),
+                                    ...generalHealthProduct.services.split(';').filter(s => s !== '')
+                                ]
                             });
             }
         }
