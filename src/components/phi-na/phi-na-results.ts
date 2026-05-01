@@ -258,6 +258,14 @@ export class PhiNAResults extends MobxLitElement {
         `
     }
 
+    /**
+     * Conditionally renders an entire row of the resultset table.  The row will not be rendered if the condition is `false`.
+     * Otherwise, the function is the same as {@link render_row}.
+     * the render function will return a single table cell.
+     * @param condition If `false`, the row will not be rendered
+     * @param renderer The render function that takes a product pair and returns a single table cell.
+     * @param args Optional arguments to pass to the renderer.  Arguments depend on the renderer function.
+     */
     render_row_if(condition: boolean, renderer: (productPair: ProductPair, ...args: any) => TemplateResult, ...args: any) {
         return condition ? this.render_row(renderer, ...args) : nothing
     }
@@ -290,11 +298,11 @@ export class PhiNAResults extends MobxLitElement {
             .map((service) => service.substring(0,3)))
         const serviceDifferences = [...differences].map((service) => ServiceManager.get(service)!)
         // split into categories
-        const goldServices = this.showGoldServices? ServiceManager.goldServices : serviceDifferences.filter((s) => s.hospitalTier === "Gold");
-        const silverServices = this.showSilverServices? ServiceManager.silverServices : serviceDifferences.filter((s) => s.hospitalTier === "Silver");
-        const bronzeServices = this.showBronzeServices? ServiceManager.bronzeServices : serviceDifferences.filter((s) => s.hospitalTier === "Bronze");
-        const basicServices = this.showBasicServices? ServiceManager.basicServices : serviceDifferences.filter((s) => s.hospitalTier === "Basic");
-        const generalServices = this.showGeneralServices? ServiceManager.generalServices : serviceDifferences.filter((s) => s.serviceType === "G");
+        const goldServices = this.showGoldServices? ServiceManager.goldServices : serviceDifferences.filter((s) => s.isGoldHospital);
+        const silverServices = this.showSilverServices? ServiceManager.silverServices : serviceDifferences.filter((s) => s.isSilverHospital);
+        const bronzeServices = this.showBronzeServices? ServiceManager.bronzeServices : serviceDifferences.filter((s) => s.isBronzeHospital);
+        const basicServices = this.showBasicServices? ServiceManager.basicServices : serviceDifferences.filter((s) => s.isBasicHospital);
+        const generalServices = this.showGeneralServices? ServiceManager.generalServices : serviceDifferences.filter((s) => s.isGeneralHealth);
 
         return html`
             <table>
