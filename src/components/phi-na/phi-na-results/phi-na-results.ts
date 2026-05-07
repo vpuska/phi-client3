@@ -6,15 +6,21 @@
  */
 
 import {css, html, nothing, type TemplateResult} from 'lit'
-import {customElement, state} from "lit/decorators.js";
+import {customElement, query, queryAll, state} from "lit/decorators.js";
 import {MobxLitElement} from "@adobe/lit-mobx";
 import {consume} from "@lit/context";
 
-import type {Product} from "../../api-models/products.ts";
-import type {PhiProductDetails} from "../phi-product-details/phi-product-details.ts";
-import {Globals} from "../../modules/globals.ts";
-import {context as phiNAContext, NeedsAnalysisContext, type ProductPair} from "./context.ts";
-import {Service, ServiceManager} from "../../api-models/services.ts";
+import type {Product} from "../../../api-models/products.ts";
+import type {PhiProductDetails} from "../../phi-product-details/phi-product-details.ts";
+import {Globals} from "../../../modules/globals.ts";
+import {context as phiNAContext, NeedsAnalysisContext, type ProductPair} from "../context.ts";
+import {Service, ServiceCollection, ServiceManager} from "../../../api-models/services.ts";
+import {SlDetails} from "@shoelace-style/shoelace";
+
+import "./phi-na-results-svc-head.ts"
+import type {PhiNaResultsSvcHead} from "./phi-na-results-svc-head.ts";
+
+type ServiceDisplayType = "matching" | "variations"
 
 /**
  * Render the results page of the needs analysis in a html table.  Each column represents a product pair (hospital and general health) and each
@@ -73,6 +79,9 @@ export class PhiNAResults extends MobxLitElement {
         sl-details::part(content) {
             display: none;
         }
+        tr.service[data-class=match] {
+            visibility: collapse;
+        }
     `
 
     // Needs analysis context.
@@ -81,11 +90,40 @@ export class PhiNAResults extends MobxLitElement {
     // The final set of results for the comparison saved by the `render` method for display.
     private resultSet: ProductPair[] = [];
 
-    @state() showBasicServices = false;
-    @state() showBronzeServices = false;
-    @state() showSilverServices = false;
-    @state() showGoldServices = false;
-    @state() showGeneralServices = false;
+    // Service display flags.
+    //
+    @state() showBasicServices : ServiceDisplayType = "variations";
+    @state() showBronzeServices : ServiceDisplayType = "variations";
+    @state() showSilverServices : ServiceDisplayType = "variations";
+    @state() showGoldServices : ServiceDisplayType = "variations";
+    @state() showGeneralServices : ServiceDisplayType = "variations";
+
+    @query("table#results") resultsTable!: HTMLTableElement;
+    @queryAll("sl-details.service") serviceSlDetails!: NodeListOf<SlDetails>;
+    @queryAll("td.service") serviceCells!: NodeListOf<HTMLTableCellElement>;
+    @queryAll("phi-na-results-svc-head") serviceHeads!: NodeListOf<PhiNaResultsSvcHead>;
+
+    constructor() {
+        super();
+    }
+
+    protected createRenderRoot(): HTMLElement | DocumentFragment {
+        const root = super.createRenderRoot();
+        root.addEventListener("phi-service-event", (e: Event) => {
+             const head = (e.target as PhiNaResultsSvcHead);
+            this.serviceHeads.forEach((elem) => {
+                if (elem.tier === head.tier)
+                    elem.mode = (e.target as PhiNaResultsSvcHead).mode;
+            })
+            for (const row of this.resultsTable.rows) {
+                const tier = row.getAttribute("data-tier") || "";
+                const mode = row.getAttribute("data-class") || "";
+                if (tier == head.tier)
+                    row.style.visibility = mode===head.mode ? "visible" : "collapse"
+            }
+        })
+        return root;
+    }
 
     /**
      * Handle click on individual product PHIS code to display the product details page
@@ -205,41 +243,45 @@ export class PhiNAResults extends MobxLitElement {
         </td>`
     }
 
-    render_service_heading(productPair: ProductPair, args: any[]) {
+    /**
+     * Renders a service tier heading row in the results table.
+     * @param productPair The product pair to render
+     * @param args The arguments to the heading renderer:
+     * - `label`: The label for the heading
+     * - `services`: The service collection for the heading (basic, bronze...)
+     */
+    render_service_tier(productPair: ProductPair, args: any[]) {
         const label = args[0] as string;
-        const state = args[1] as "showBasicServices" | "showBronzeServices" | "showSilverServices" | "showGoldServices" | "showGeneralServices";
-        const services = args[2] as Service[];
-        const covered = services.filter((service) => productPair.services.includes(service.key)).length;
-        const restricted = services.filter((service) => productPair.services.includes(service.key + "-")).length;
+        const services = args[1] as ServiceCollection;
+        const covered = services.intersect(productPair.services.covered).length;
+        const restricted = services.intersect(productPair.services.restricted).length;
         const notCovered = services.length - covered - restricted;
 
         return html`
-            <td>
-                <sl-details 
-                    ?open=${this[state]}
-                    @sl-show=${() => this[state] = true}
-                    @sl-hide=${() => this[state] = false}
+            <td class="service-heading">
+                <phi-na-results-svc-head 
+                        label="${label}"
+                        tier="${services.tier}"
+                        covered="${covered}" 
+                        restricted="${restricted}" 
+                        not-covered="${notCovered}"
                 >
-                    <div slot="summary">${label} 
-                        ${covered > 0 ? html`<sl-badge variant="primary" pill>${covered}</sl-badge>` : nothing}
-                        ${restricted > 0 ? html`<sl-badge variant="warning" pill>${restricted}</sl-badge>` : nothing}
-                        ${notCovered > 0 ? html`<sl-badge variant="danger" pill>${notCovered}</sl-badge>` : nothing}
-                    </div>
-                </sl-details>
-            </td>`
-        }
+                </phi-na-results-svc-head>
+            </td>
+        `
+    }
 
-    render_service(productPair: ProductPair, args: any[]) {
+    render_service(productPair: ProductPair, ...args: any) {
         const targetService = args[0] as Service;
-        const s = productPair.services.filter((service) => service.startsWith(targetService.key));
         const label = targetService.description;
-        if (s.length===0)
-            return html`<td class="service not-covered"><div>${label}</div></td>`;
+        const tier = targetService.isGeneralHealth ? "general" : targetService.hospitalTier.toLowerCase();
+
+        if (productPair.services.has(targetService.key))
+            return html`<td class="service covered" data-tier="${tier}"><div>${label}</div></td>`;
+        else if (productPair.services.has(targetService.key + "-"))
+            return html`<td class="service restricted"><div>${label}</div></td>`;
         else
-            if (s[0] === targetService.key)
-                return html`<td class="service covered"><div>${label}</div></td>`;
-            else
-                return html`<td class="service restricted"><div>${label}</div></td>`
+            return html`<td class="service not-covered"><div>${label}</div></td>`;
     }
 
     /**
@@ -271,41 +313,34 @@ export class PhiNAResults extends MobxLitElement {
     }
 
     /**
+     * Renders a service row in the results table.  Attributes `data-tier` and `data-class` are set based on the service and matching status.
+     * Matching services will have their visibility collapsed.
+     * @param condition If `false`, the row will not be rendered
+     * @param service The service to render
+     * @param matches The collection of matching services
+     */
+    render_service_row(condition: boolean, service: Service, matches: ServiceCollection) {
+        if (!condition)
+            return nothing;
+        const tier = service.isGeneralHealth ? "general" : service.hospitalTier.toLowerCase();
+        const clss = matches.has(service) ? "matching" : "varying";
+        const visibility = clss === "matching" ? "collapse" : "visible";
+        return html`
+            <tr class="service" data-tier=${tier} data-class=${clss} style="visibility: ${visibility};">
+                ${this.resultSet.map((productPair) => this.render_service(productPair, service))}
+            </tr>
+        `
+    }
+
+    /**
      * Master render routine.  Rendering is delegated to the `render_row` method for each product attribute.  The `render_row` method
      * will call the attribute's render function which returns a single table cell.
      */
     render() {
-        const resultSet = this.context?.comparisonResults.sort((a, b) => a.premium - b.premium).slice(0,50)
-        // save as a class property for easy access...
-        this.resultSet = resultSet || [];
-
-        // determine what services are not consistently covered across the result set...
-        // step 1 - the union of all services covered in the result set.
-        let union = new Set<string>();
-        this.resultSet.forEach((result) => {
-            union = new Set<string>([...union, ...result.services])
-        })
-        // step 2 - the intersection of all services covered in the result set.  Ie.  Services that are consistently
-        //           covered by all products.
-        let intersection = new Set<string>([...union]);
-        this.resultSet.forEach((result) => {
-            intersection = new Set<string>(result.services.filter((service) => intersection.has(service)))
-        })
-        // step 3 - services that are not consistently covered by all products in the result set.
-        //          Ie: union - intersection
-        const differences = new Set<string>([...union]
-            .filter((service) => !intersection.has(service))
-            .map((service) => service.substring(0,3)))
-        const serviceDifferences = [...differences].map((service) => ServiceManager.get(service)!)
-        // split into categories
-        const goldServices = this.showGoldServices? ServiceManager.goldServices : serviceDifferences.filter((s) => s.isGoldHospital);
-        const silverServices = this.showSilverServices? ServiceManager.silverServices : serviceDifferences.filter((s) => s.isSilverHospital);
-        const bronzeServices = this.showBronzeServices? ServiceManager.bronzeServices : serviceDifferences.filter((s) => s.isBronzeHospital);
-        const basicServices = this.showBasicServices? ServiceManager.basicServices : serviceDifferences.filter((s) => s.isBasicHospital);
-        const generalServices = this.showGeneralServices? ServiceManager.generalServices : serviceDifferences.filter((s) => s.isGeneralHealth);
-
+        this.resultSet = this.context!.comparisonResults;
+        const matchingCover = this.context!.matchingServiceCovers;
         return html`
-            <table>
+            <table id="results" class="show-variations">
                 
                 <!-- fund logo -->
                 ${this.render_row(this.render_logo)}
@@ -329,24 +364,24 @@ export class PhiNAResults extends MobxLitElement {
                 ${this.context?.hasDependants ? this.render_row(this.render_dependants) : nothing} 
 
                 <!-- basic service differences -->
-                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_heading, "Basic Hospital", "showBasicServices", ServiceManager.basicServices)}
-                ${basicServices.map((service) => this.render_row_if(this.context!.needsHospitalServices, this.render_service, service))}
+                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Basic Hospital", ServiceManager.basicServices)}
+                ${ServiceManager.basicServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
 
                 <!-- bronze service differences -->
-                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_heading, "Bronze Hospital", "showBronzeServices", ServiceManager.bronzeServices)}
-                ${bronzeServices.map((service) => this.render_row_if(this.context!.needsHospitalServices, this.render_service, service))}
+                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Bronze Hospital", ServiceManager.bronzeServices)}
+                ${ServiceManager.bronzeServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
                  
                 <!-- silver service differences -->
-                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_heading, "Silver Hospital", "showSilverServices", ServiceManager.silverServices)}
-                ${silverServices.map((service) => this.render_row_if(this.context!.needsHospitalServices, this.render_service, service))}
+                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Silver Hospital", ServiceManager.silverServices)}
+                ${ServiceManager.silverServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
  
                 <!-- gold service differences -->
-                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_heading, "Gold Hospital", "showGoldServices", ServiceManager.goldServices)}
-                ${goldServices.map((service) => this.render_row_if(this.context!.needsHospitalServices, this.render_service, service))}
+                ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Gold Hospital", ServiceManager.goldServices)}
+                ${ServiceManager.goldServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
  
                 <!-- general service differences -->
-                ${this.render_row_if(this.context!.needsGeneralHealthServices, this.render_service_heading, "General Health", "showGeneralServices", ServiceManager.generalServices)}
-                ${generalServices.map((service) => this.render_row_if(this.context!.needsGeneralHealthServices, this.render_service, service))}
+                ${this.render_row_if(this.context!.needsGeneralHealthServices, this.render_service_tier, "General Health", ServiceManager.generalServices)}
+                ${ServiceManager.generalServices.services.map((service) => this.render_service_row(this.context!.needsGeneralHealthServices, service, matchingCover))}
  
             </table>
     `}

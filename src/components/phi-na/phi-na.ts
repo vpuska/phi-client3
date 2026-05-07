@@ -21,7 +21,7 @@ import "./phi-na-details-40.ts";
 import "./phi-na-details-40-selections.ts";
 import "./phi-na-details-50.ts";
 import "./phi-na-details-60.ts";
-import "./phi-na-results.ts";
+import "./phi-na-results/phi-na-results.ts";
 
 /**
  * Health insurance needs analysis component.  This renders all the subcomponents in a tabbed interface and manages navigation between them.  Communication between components,

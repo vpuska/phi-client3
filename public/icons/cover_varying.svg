@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="color-0" bx:pinned="true" gradientUnits="userSpaceOnUse">
+      <title>Covered</title>
+      <stop style="stop-color: rgb(1, 198, 32);"/>
+    </linearGradient>
+    <linearGradient id="color-1" bx:pinned="true" gradientUnits="userSpaceOnUse">
+      <title>Restricted</title>
+      <stop style="stop-color: rgb(233, 174, 27);"/>
+    </linearGradient>
+    <linearGradient id="color-2" bx:pinned="true" gradientUnits="userSpaceOnUse">
+      <title>Not Covered</title>
+      <stop style="stop-color: rgb(216, 10, 10);"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <g transform="matrix(1.046135, 0, 0, 1, -2.496547, 0)" style="">
+      <rect x="25.134" y="24.733" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); fill: url(&quot;#color-0&quot;);"/>
+      <rect x="113.369" y="24.733" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      <rect x="201.604" y="24.733" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+      <rect x="289.839" y="24.733" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+      <rect x="378.075" y="24.733" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-1&quot;);"/>
+    </g>
+    <g transform="matrix(1.046135, 0, 0, 1, -2.496547, -3.921668)" style="">
+      <g>
+        <g>
+          <g>
+            <rect x="25.134" y="145.054" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+            <rect x="378.075" y="145.054" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-1&quot;);"/>
+          </g>
+        </g>
+        <rect x="113.369" y="145.054" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-1&quot;);"/>
+        <rect x="201.604" y="145.054" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+        <rect x="289.839" y="145.054" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      </g>
+    </g>
+    <g transform="matrix(1.046135, 0, 0, 1, -0.817501, -11.585331)" style="">
+      <g>
+        <rect x="23.529" y="269.117" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+        <rect x="376.47" y="269.117" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+      </g>
+      <rect x="111.764" y="269.117" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      <rect x="199.999" y="269.117" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      <rect x="288.234" y="269.117" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-1&quot;);"/>
+    </g>
+    <g transform="matrix(1.046135, 0, 0, 1, 0.300816, 0)" style="">
+      <rect x="22.46" y="373.931" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      <rect x="375.401" y="373.931" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-2&quot;);"/>
+      <rect x="110.695" y="373.931" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+      <rect x="198.93" y="373.931" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-1&quot;);"/>
+      <rect x="287.165" y="373.931" width="75.936" height="98.396" style="stroke: rgb(0, 0, 0); stroke-width: 1; fill: url(&quot;#color-0&quot;);"/>
+    </g>
+  </g>
+</svg>
