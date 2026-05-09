@@ -35,7 +35,7 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
     @property() covered = 0;
     @property() restricted = 0;
     @property({attribute: "not-covered"}) notCovered = 0;
-    @property() mode: "varying" | "matching" = "varying";
+    @property() mode: "varying" | "matching" | "no-cover" = "varying";
 
     @queryAll("sl-menu-item") menuItems!: NodeListOf<SlMenuItem>;
 
@@ -49,7 +49,7 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
      * Main render routine.
      */
     render() {
-        let icon = VALID_MODES.includes(this.mode) ? "cover_" + this.mode : "cover_varying";
+        let icon = VALID_MODES.includes(this.mode) ? "cover_" + this.mode : "cover_none";
 
         return html`
             <sl-dropdown style="width: 100%">
@@ -72,6 +72,10 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
                     <sl-menu-item type="checkbox" value="matching" ?checked=${this.mode === 'matching'}>
                         <sl-icon name="cover_matching" library="app-icons"></sl-icon>
                         Matching coverage
+                    </sl-menu-item>
+                    <sl-menu-item type="checkbox" value="no-cover" ?checked=${this.mode === 'no-cover'}>
+                        <sl-icon name="cover_none" library="app-icons"></sl-icon>
+                        No cover
                     </sl-menu-item>
                 </sl-menu>
             </sl-dropdown>

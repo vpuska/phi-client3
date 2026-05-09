@@ -9,7 +9,7 @@ import {createContext} from '@lit/context'
 import {Product, ProductResultSet} from "../../api-models/products.ts";
 import {action, computed, makeObservable, observable} from "mobx";
 import {Fund, FundManager} from "../../api-models/funds.ts";
-import {ServiceCollection, ServiceManager} from "../../api-models/services.ts";
+import {ServiceCoverCollection, ServiceManager} from "../../api-models/services.ts";
 
 
 export const context = createContext<NeedsAnalysisContext>('phi-na');
@@ -24,7 +24,7 @@ export type ProductPair = {
     premium: number;
     fund: Fund | null;
     brand: string | null;
-    services: ServiceCollection;
+    services: ServiceCoverCollection;
 }
 
 /**
@@ -75,6 +75,8 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
             needsGeneralHealthServices: computed,
             filteredProducts: computed,
             comparisonResults: computed,
+            coveredServices: computed,
+            notCoveredServices: computed,
             varyingServiceCovers: computed,
             matchingServiceCovers: computed,
         });
@@ -198,7 +200,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
-                services: new ServiceCollection(p.services),
+                services: new ServiceCoverCollection(p.services),
             }));
 
         if (this.coverType === "GeneralHealth")
@@ -208,7 +210,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
-                services: new ServiceCollection(p.services),
+                services: new ServiceCoverCollection(p.services),
             }));
 
         if (this.coverType === "Combined") {
@@ -218,7 +220,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                 premium: p.premium,
                 fund: p.fund,
                 brand: p.brandCodes,
-                services: new ServiceCollection(p.services),
+                services: new ServiceCoverCollection(p.services),
             }));
 
             // make possible combinations of hospital/general health products...
@@ -235,30 +237,40 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                                 premium: hospitalProduct.premium + generalHealthProduct.premium,
                                 fund: hospitalProduct.fund,
                                 brand: hospitalProduct.brandCodes,
-                                services: new ServiceCollection(hospitalProduct.services + ";" + generalHealthProduct.services)
+                                services: new ServiceCoverCollection(hospitalProduct.services + ";" + generalHealthProduct.services)
                             });
             }
         }
         return pairs.sort((a, b) => a.premium - b.premium).slice(0,50)
     }
 
+    get coveredServices() : ServiceCoverCollection {
+        let covered = new ServiceCoverCollection();
+        this.comparisonResults.forEach((productPair) => covered = covered.union(productPair.services));
+        return covered;
+    }
+
+    get notCoveredServices() : ServiceCoverCollection{
+        const notCovered = new ServiceCoverCollection(ServiceManager.allServices);
+        return notCovered.subtract(this.coveredServices.unrestrictedServices).subtract(this.coveredServices.restrictedServices);
+    }
+
     /**
      * A collection of services where service cover is not indentical across all products returned by {@link comparisonResults}.
      */
-    get varyingServiceCovers() : ServiceCollection {
+    get varyingServiceCovers() : ServiceCoverCollection {
         // inconsistent service cover = the union of services - the intersection of services
-        let union = new ServiceCollection();
-        this.comparisonResults.forEach((productPair) => union = union.union(productPair.services));
-        let intersection = new ServiceCollection(union);
+        let union = new ServiceCoverCollection(this.coveredServices);
+        let intersection = new ServiceCoverCollection(union);
         this.comparisonResults.forEach((productPair) => intersection = intersection.intersect(productPair.services))
-        return new ServiceCollection(union).subtract(intersection)
+        return new ServiceCoverCollection(union).subtract(intersection)
     }
 
     /**
      * A collection of services in {@link comparisonResults} that are common across all products
      */
-    get matchingServiceCovers() : ServiceCollection {
-        return new ServiceCollection(ServiceManager.allServices)
-            .subtract(this.varyingServiceCovers);
+    get matchingServiceCovers() : ServiceCoverCollection {
+        return new ServiceCoverCollection(this.coveredServices)
+            .subtract(this.varyingServiceCovers)
     }
 }

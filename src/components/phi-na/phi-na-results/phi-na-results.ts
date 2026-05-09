@@ -14,7 +14,7 @@ import type {Product} from "../../../api-models/products.ts";
 import type {PhiProductDetails} from "../../phi-product-details/phi-product-details.ts";
 import {Globals} from "../../../modules/globals.ts";
 import {context as phiNAContext, NeedsAnalysisContext, type ProductPair} from "../context.ts";
-import {Service, ServiceCollection, ServiceManager} from "../../../api-models/services.ts";
+import {Service, ServiceCoverCollection, ServiceManager} from "../../../api-models/services.ts";
 import {SlDetails} from "@shoelace-style/shoelace";
 
 import "./phi-na-results-svc-head.ts"
@@ -252,9 +252,9 @@ export class PhiNAResults extends MobxLitElement {
      */
     render_service_tier(productPair: ProductPair, args: any[]) {
         const label = args[0] as string;
-        const services = args[1] as ServiceCollection;
-        const covered = services.intersect(productPair.services.covered).length;
-        const restricted = services.intersect(productPair.services.restricted).length;
+        const services = args[1] as ServiceCoverCollection;
+        const covered = services.intersect(productPair.services.unrestrictedServices).length;
+        const restricted = services.intersect(productPair.services.restrictedServices).length;
         const notCovered = services.length - covered - restricted;
 
         return html`
@@ -262,6 +262,7 @@ export class PhiNAResults extends MobxLitElement {
                 <phi-na-results-svc-head 
                         label="${label}"
                         tier="${services.tier}"
+                        mode="varying"
                         covered="${covered}" 
                         restricted="${restricted}" 
                         not-covered="${notCovered}"
@@ -276,9 +277,9 @@ export class PhiNAResults extends MobxLitElement {
         const label = targetService.description;
         const tier = targetService.isGeneralHealth ? "general" : targetService.hospitalTier.toLowerCase();
 
-        if (productPair.services.has(targetService.key))
+        if (productPair.services.hasKey(targetService.key))
             return html`<td class="service covered" data-tier="${tier}"><div>${label}</div></td>`;
-        else if (productPair.services.has(targetService.key + "-"))
+        else if (productPair.services.hasKey(targetService.key + "-"))
             return html`<td class="service restricted"><div>${label}</div></td>`;
         else
             return html`<td class="service not-covered"><div>${label}</div></td>`;
@@ -317,14 +318,19 @@ export class PhiNAResults extends MobxLitElement {
      * Matching services will have their visibility collapsed.
      * @param condition If `false`, the row will not be rendered
      * @param service The service to render
-     * @param matches The collection of matching services
      */
-    render_service_row(condition: boolean, service: Service, matches: ServiceCollection) {
+    render_service_row(condition: boolean, service: Service) {
         if (!condition)
             return nothing;
         const tier = service.isGeneralHealth ? "general" : service.hospitalTier.toLowerCase();
-        const clss = matches.has(service) ? "matching" : "varying";
-        const visibility = clss === "matching" ? "collapse" : "visible";
+
+        let clss = "no-cover";
+        if (this.context?.matchingServiceCovers.hasService(service))
+            clss = "matching"
+        else if (this.context?.varyingServiceCovers.hasService(service))
+            clss = "varying"
+
+        const visibility = clss === "varying" ? "visible" : "collapse";
         return html`
             <tr class="service" data-tier=${tier} data-class=${clss} style="visibility: ${visibility};">
                 ${this.resultSet.map((productPair) => this.render_service(productPair, service))}
@@ -338,7 +344,6 @@ export class PhiNAResults extends MobxLitElement {
      */
     render() {
         this.resultSet = this.context!.comparisonResults;
-        const matchingCover = this.context!.matchingServiceCovers;
         return html`
             <table id="results" class="show-variations">
                 
@@ -365,23 +370,23 @@ export class PhiNAResults extends MobxLitElement {
 
                 <!-- basic service differences -->
                 ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Basic Hospital", ServiceManager.basicServices)}
-                ${ServiceManager.basicServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
+                ${ServiceManager.basicServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service))}
 
                 <!-- bronze service differences -->
                 ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Bronze Hospital", ServiceManager.bronzeServices)}
-                ${ServiceManager.bronzeServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
+                ${ServiceManager.bronzeServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service))}
                  
                 <!-- silver service differences -->
                 ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Silver Hospital", ServiceManager.silverServices)}
-                ${ServiceManager.silverServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
+                ${ServiceManager.silverServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service))}
  
                 <!-- gold service differences -->
                 ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Gold Hospital", ServiceManager.goldServices)}
-                ${ServiceManager.goldServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service, matchingCover))}
+                ${ServiceManager.goldServices.services.map((service) => this.render_service_row(this.context!.needsHospitalServices, service))}
  
                 <!-- general service differences -->
                 ${this.render_row_if(this.context!.needsGeneralHealthServices, this.render_service_tier, "General Health", ServiceManager.generalServices)}
-                ${ServiceManager.generalServices.services.map((service) => this.render_service_row(this.context!.needsGeneralHealthServices, service, matchingCover))}
+                ${ServiceManager.generalServices.services.map((service) => this.render_service_row(this.context!.needsGeneralHealthServices, service))}
  
             </table>
     `}
