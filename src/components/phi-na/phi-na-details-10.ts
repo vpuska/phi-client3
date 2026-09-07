@@ -1,8 +1,8 @@
-/**
+/*
  * components/phi-na/phi-na-details-10.ts
- * --
- * @author VJP
- * @written 11-Feb-2026
+ * --------------------------------------
+ * author VJP
+ * written 11-Feb-2026
  */
 
 import {html, css} from 'lit'
@@ -134,6 +134,11 @@ export class PhiNADetails10 extends MobxLitElement {
                 <code>defence top hosp</code>
             </p>
 
+            <div style="margin: 24px 0; padding:24px 24px 48px; border: 1px solid var(--sl-color-gray-400); border-radius: 6px;">
+                <phi-rg-state></phi-rg-state>
+                <phi-rg-family-type></phi-rg-family-type>
+            </div>
+            
             <div style="margin: 24px 0; padding:24px 24px 48px; border: 1px solid var(--sl-color-gray-400); border-radius: 6px;">
                 <phi-keyword-search id="product-1"
                                     label="Select combined, hospital or extras insurance product"

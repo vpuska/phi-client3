@@ -50,7 +50,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
             background-color: var(--sl-color-gray-100);
         }
         sl-tab-group::part(body) {
-            padding: 1.5rem 3em;
+            /*padding: 1.5rem 3em;*/
         }
         sl-tab-panel {
             height: 100%;

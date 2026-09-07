@@ -1,18 +1,11 @@
 // noinspection JSUnusedGlobalSymbols
 
-import type {HospitalTierType} from "./services.ts";
+import {ProductGroup, ProductVariant} from "phi-common"
+import type {SerializedProductGroup, AccommodationType, AusState, ProductType, ProductPairingType, HospitalTier} from "phi-common"
 
 const PRODUCT_API = 'https://phi-demo-api.spartlet.net'
 
 import {Fund, FundManager} from "./funds.ts";
-
-export type AccommodationType = "PrivateOrPublic" | "PrivateSharedPublic" | "PrivateSharedPublicShared" | "Public" | "PublicShared" | "PrivatePublicShared" | ""
-
-export type BaseStateType = "NSW" | "VIC" | "QLD" | "TAS" | "SA" | "WA" | "NT"
-
-export type CoverType = "Hospital" | "GeneralHealth" | "Combined"
-
-export type ProductAvailabilityType = "AnyHospital" | "AnyGeneralHealth" | "Products" | "NotApplicable"
 
 /**
  * JSON structure returned by the phi-api product list/search endpoints.
@@ -21,12 +14,12 @@ export type ProductJsonType = {
     code: string;
     fundCode: string;
     name: string;
-    type: CoverType;
-    state: BaseStateType | "ALL",
+    type: ProductType;
+    state: AusState | "ALL",
     adultsCovered: 0 | 1 | 2,
     isCorporate: boolean,
     brands: string | null,
-    onlyAvailableWith: ProductAvailabilityType,
+    onlyAvailableWith: ProductPairingType,
     onlyAvailableWithProducts: string | null,
     dependantCover: boolean,
     childCover: boolean,
@@ -42,8 +35,8 @@ export type ProductJsonType = {
     excessPerPolicy: number,
     premium: number,
     hospitalComponent: number,
-    hospitalTier: string,
-    accommodationType: string,
+    hospitalTier: HospitalTier,
+    accommodationType: AccommodationType,
     services: string,
 }
 
@@ -66,15 +59,16 @@ export type ProductKeywordSearchResult = {
  */
 export class Product {
     fund: Fund;
+    group: ProductGroup;
+    variant: ProductVariant;
     maxYoungAdultAge: number = 0;
     maxStudentAge: number = 0;
-    private readonly rawData: ProductJsonType;
-    /**
-     * @param rawData The Product JSON returned by the api.
-     */
-    constructor(rawData: ProductJsonType) {
-        this.rawData= rawData;
-        this.fund = FundManager.get(this.fundCode)!;
+
+    constructor(group: ProductGroup, variant: ProductVariant) {
+        this.group = group;
+        this.variant = variant;
+
+        this.fund = FundManager.get(group.fundCode)!;
         this.maxYoungAdultAge = Math.max(
             this.nonStudentCover ? this.fund.dependantLimits.dependantLimits.get("NonStudent")!.maxAge : 0,
             this.nonClassifiedCover ? this.fund.dependantLimits.dependantLimits.get("NonClassified")!.maxAge : 0,
@@ -84,37 +78,31 @@ export class Product {
     }
 
     // Product's PHIS code.  Eg: `H24/A2741D0`
-    get code() { return this.rawData.code; }
+    get code() { return this.variant.code; }
     // Product's fund code.  Eg: `BUP`
-    get fundCode() { return this.rawData.fundCode; }
-    get name() { return this.rawData.name; }
-    get type() { return this.rawData.type; }
-    get state() { return this.rawData.state; }
-    get isCorporate() { return this.rawData.isCorporate; }
-    get brandCodes() { return this.rawData.brands; }
-    get onlyAvailableWith() { return this.rawData.onlyAvailableWith; }
-    get onlyAvailableWithProducts() { return this.rawData.onlyAvailableWithProducts || "" }
-    get adultsCovered() { return this.rawData.adultsCovered; }
-    get dependantCover() { return this.rawData.dependantCover; }
-    get childCover() { return this.rawData.childCover; }
-    get studentCover() { return this.rawData.studentCover; }
-    get youngAdultCover() { return this.rawData.youngAdultCover; }
-    get nonClassifiedCover() { return this.rawData.nonClassifiedCover; }
-    get nonStudentCover() { return this.rawData.nonStudentCover; }
-    get conditionalNonStudentCover() { return this.rawData.conditionalNonStudentCover; }
-    get disabilityCover() { return this.rawData.disabilityCover; }
-    get excessPerAdmission() { return this.rawData.excessPerAdmission; }
-    get excessPerPerson() { return this.rawData.excessPerPerson; }
-    get excessPerPolicy() { return this.rawData.excessPerPerson; }
-    get premium() { return this.rawData.premium; }
-    get hospitalComponent() { return this.rawData.hospitalComponent; }
-    get hospitalTier() : HospitalTierType { return this.rawData.hospitalTier as HospitalTierType; }
-    get accommodationType() : AccommodationType { return (this.rawData.accommodationType || "") as AccommodationType; }
-    get services() { return this.rawData.services; }
-
-    get excess() {
-        return this.excessPerPerson > 0 ? this.excessPerPerson : this.excessPerAdmission > 0 ? this.excessPerAdmission : this.excessPerPolicy;
-    }
+    get fundCode() { return this.group.fundCode; }
+    get name() { return this.group.name; }
+    get type() { return this.group.type as ProductType; }
+    get state() { return this.variant.state as "ALL" | AusState; }
+    get isCorporate() { return this.group.isCorporate; }
+    get brandCodes() { return this.group.brands; }
+    get onlyAvailableWith() { return this.group.onlyAvailableWith as ProductPairingType; }
+    get onlyAvailableWithProducts() { return this.group.onlyAvailableWithProducts || "" }
+    get adultsCovered() { return this.variant.adultsCovered; }
+    get dependantCover() { return this.variant.dependantCover; }
+    get childCover() { return this.variant.childCover; }
+    get studentCover() { return this.variant.studentCover; }
+    get youngAdultCover() { return this.variant.nonClassifiedCover || this.variant.nonStudentCover || this.variant.conditionalNonStudentCover; }
+    get nonClassifiedCover() { return this.variant.nonClassifiedCover; }
+    get nonStudentCover() { return this.variant.nonStudentCover; }
+    get conditionalNonStudentCover() { return this.variant.conditionalNonStudentCover; }
+    get disabilityCover() { return this.variant.disabilityCover; }
+    get premium() { return this.variant.premium; }
+    get hospitalComponent() { return this.variant.hospitalComponent; }
+    get hospitalTier()  { return this.group.hospitalTier as HospitalTier }
+    get accommodationType() { return (this.group.accommodationType || "") as AccommodationType; }
+    get services() { return this.group.services; }
+    get excess() { return this.variant.excess }
 
     get isHospital() {
         return this.type === "Hospital" || this.type === "Combined";
@@ -221,7 +209,7 @@ export class Product {
      * @param fieldName
      */
     getField(fieldName: string): any {
-        return (this.rawData as any)[fieldName];
+        return this[fieldName as keyof Product];
     }
 
     async getXml() : Promise<string> {
@@ -231,10 +219,24 @@ export class Product {
         }
         return "";
     }
+
+    // TODO: Remove this method as it is not used
+    // @ts-ignore
+    static async find(fundCode: string, productCode: string) : Promise<Product | null> {
+        /*
+        const response = await fetch(`${PRODUCT_API}/products/find/${fundCode}/${productCode}`);
+        if (response.ok) {
+            const productJson: ProductJsonType = await response.json();
+            return new Product(productJson);
+        }
+
+         */
+        return null;
+    }
 }
 
 /**
- * The products returned from the product api endpoint.
+ * The products returned from the product dataset.
  */
 export class ProductResultSet {
 
@@ -260,16 +262,10 @@ export class ProductResultSet {
      * Factory method to call the nominated endpoint and return a {@link Product} result set.
      * @param productApiEndpoint
      */
+    // TODO: Remove this method as it is not used.
+    // @ts-ignore
     static async fetch(productApiEndpoint: string): Promise<ProductResultSet> {
-        const endpoint = productApiEndpoint.startsWith("product") ? productApiEndpoint : `products/${productApiEndpoint}`;
-        const response = await fetch(`${PRODUCT_API}/${endpoint}`);
-        const resultSet = new Array<Product>;
-        if (response.ok) {
-            const productsJSON: ProductJsonType[] = await response.json();
-                for (const product of productsJSON)
-                    resultSet.push(new Product(product));
-        }
-        return new ProductResultSet(resultSet);
+        return new ProductResultSet([]);
     }
 
     /**
@@ -336,3 +332,49 @@ export async function productKeywordSearch(
 }
 
 
+export class ProductManager {
+
+    private static productGroups: ProductGroup[] = [];
+
+    public static async loadDataSet() {
+        this.productGroups = [];
+        const response = await fetch(`${PRODUCT_API}/products/dataset`);
+        if (response.ok) {
+            const groups: SerializedProductGroup[] = await response.json();
+            for (const group of groups)
+                this.productGroups.push(new ProductGroup(group));
+        }
+    }
+
+    public static getFundProductGroups(fundCode: string) {
+        const groups: ProductGroup[] = [];
+        for (const group of this.productGroups) {
+            if (group.fundCode === fundCode)
+                groups.push(group);
+        }
+        return groups;
+    }
+
+    public static getFundProducts(fundCode: string) {
+        const products: Product[] = [];
+
+        for (const group of this.productGroups) {
+            if (group.fundCode === fundCode) {
+                for (const variant of group)
+                    products.push(new Product(group, variant));
+            }
+        }
+        return new ProductResultSet(products);
+    }
+
+    public static getSegment(state: string, numAdults: number, dependants: boolean) {
+        const products: Product[] = [];
+        for (const group of this.productGroups) {
+            for (const variant of group) {
+                if (variant.state === state && variant.adultsCovered === numAdults && variant.dependantCover === dependants)
+                    products.push(new Product(group, variant));
+            }
+        }
+        return new ProductResultSet(products);
+    }
+}

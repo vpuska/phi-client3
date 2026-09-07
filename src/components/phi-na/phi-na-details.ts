@@ -27,9 +27,10 @@ export class PhiNADetails extends LitElement {
             flex-direction: column;
             justify-content: space-between;
             gap: 8px;
-            height: 100%;
+            height: calc(100% - 4em);
+            padding: 2em 1.5em;
         }
-    
+        
         div#continue {
             display: flex;
             justify-content: flex-end;
@@ -41,7 +42,7 @@ export class PhiNADetails extends LitElement {
 
     render() {
         return html`
-            <div id = "content">
+            <div id="content">
                 <slot></slot>
             </div>
                          

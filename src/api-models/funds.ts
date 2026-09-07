@@ -1,6 +1,7 @@
 // noinspection CssInvalidHtmlTagReference,JSUnusedGlobalSymbols
 
 const FUND_XML_API = 'https://phi-demo-api.spartlet.net/fund-xml'
+const FUND_BRAND_API = 'https://phi-demo-api.spartlet.net/fund-brands'
 
 export type FundType = "Open" | "Restricted"
 export type FundWebSiteLinkTitleType = "NoGapDoctors" | "AgreementHospitals" | "PreferredProviders" | "Branches" | "Ambulance";
@@ -25,7 +26,7 @@ export type FundRestrictionsType = {
     details: string;
 }
 
-export type FundBrandType = {
+export type BrandType = {
     code: string;
     name: string;
     logo: string;
@@ -33,6 +34,12 @@ export type FundBrandType = {
     websiteLinks: FundWebSiteLinkType[];
 }
 
+export type FundBrandType = {
+    code: string;
+    name: string;
+    shortName: string;
+    type: string;
+}
 
 export type FundWebSiteLinkType = {
     title: FundWebSiteLinkTitleType,
@@ -103,11 +110,11 @@ export class Fund {
         return links;
     }
 
-    get brands() : FundBrandType[] {
-        let list: FundBrandType[] = [];
+    get brands() : BrandType[] {
+        let list: BrandType[] = [];
         for (const elem of this.element.querySelectorAll("RelatedBrandNames > Brand")) {
             const brandCode = elem.querySelector("BrandCode")?.textContent || "";
-            const b: FundBrandType = {
+            const b: BrandType = {
                 code: brandCode,
                 name: elem.querySelector("BrandName")?.textContent || "",
                 communication: {
@@ -204,6 +211,7 @@ export class FundManager {
 
     // Map collection of fund records keyed by fundCode.
     public static readonly fundMap = new Map<string, Fund>();
+    public static readonly fundBrandMap = new Map<string, FundBrandType>();
     public static readonly funds = FundManager.fundMap;
 
     /**
@@ -261,7 +269,7 @@ export class FundManager {
         }[] = [];
         [...FundManager.fundMap.values()].filter((fund: Fund) => fund.type === fundType).forEach((fund: Fund) => {
             funds.push({code: fund.code, name: fund.name});
-            fund.brands.forEach((brand: FundBrandType) => {
+            fund.brands.forEach((brand: BrandType) => {
                 funds.push({code: brand.code, name: brand.name + " (" + fund.code + ")"});
             })
         })
@@ -287,6 +295,16 @@ export class FundManager {
         }
         funds.sort((a, b) => a.code > b.code ? 1 : -1);
         funds.forEach((f: Fund) => {FundManager.fundMap.set(f.code, f)})
+    }
+
+    static async downloadFundBrands() {
+        const response = await fetch(FUND_BRAND_API);
+        if (!response.ok) {
+            alert(`Error fetching fund/brand data from server ${response.status}: ${response.statusText}`);
+            return;
+        }
+        const resultSet = await response.json();
+        resultSet.forEach((brand: FundBrandType) => {FundManager.fundBrandMap.set(brand.code, brand)})
     }
 
 }

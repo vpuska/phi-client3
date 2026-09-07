@@ -8,7 +8,8 @@
 import {LitElement, html, css, type TemplateResult} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
 import type {SlDropdown, SlInput} from "@shoelace-style/shoelace";
-import {Product, productKeywordSearch, type ProductKeywordSearchResult, ProductResultSet} from "../../api-models/products.ts";
+import {Product, type ProductKeywordSearchResult, ProductResultSet} from "../../api-models/products.ts";
+import {ProductSearchManager, SearchResultClass} from "../../api-models/search.ts";
 
 /**
  * The drop-down menu can be either a list of product keyword search results or a list of products.  This type
@@ -144,16 +145,17 @@ export class PhiKeywordSearch extends LitElement {
         if (input.length < 4)
             return;
 
-        let results: ProductKeywordSearchResult[];
+        let results: SearchResultClass[];
         if (!this.searchCombined && !this.searchHospital && !this.searchExtras)
-            results = await productKeywordSearch(keywords, true, true, true);
+            results = ProductSearchManager.search(true, true, true, keywords);
         else
-            results = await productKeywordSearch(keywords, this.searchCombined, this.searchHospital, this.searchExtras);
+            results = ProductSearchManager.search(this.searchCombined, this.searchHospital, this.searchExtras, keywords);
 
         this.dropDownItems = results.map(result => html`
-            <sl-menu-item .value=${{variant: "search", searchResult: result} as SearchMenuValue}>
-                <div style="display:inline-block; width:65%; overflow: hidden; text-overflow: ellipsis">${result.productName}</div>
-                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${result.fundShortName}</div>
+            <sl-menu-item .value=${result}>
+                <div style="display:inline-block; width:65%; overflow: hidden; text-overflow: ellipsis">${result.searchResult.productName}</div>
+                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${result.searchResult.brandShortName} ${result.searchResult.productCode}</div>
+                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${result.coverDescription}</div>
             </sl-menu-item>
         `)
         this.searchDropdown.open = this.dropDownItems.length > 0;
@@ -164,20 +166,15 @@ export class PhiKeywordSearch extends LitElement {
      * the product is selected and the drop-down menu is hidden.  The product openDetails are displayed in the product cover openDetails section.
      * @param e The `sl-menu` triggering event.
      */
-    handleMenuSelect(e: CustomEvent) {
-        const value = e.detail.item.value as SearchMenuValue;
-        if (value.variant === "search") {
-            this.selectSearchResult(value.searchResult, this.searchInput.value).then();
-            this.productCoverDetails.innerHTML = `${value.searchResult.fundShortName} - `;
-        } else {
-            this.value = value.product!;
-            this.searchInput.value = this.value.name;
-            const dependants = this.value.dependantTypesLongDescriptions.length ? ` - including: ${this.value.dependantTypesLongDescriptions.join(", ")}` : "";
-            this.productCoverDetails.innerHTML += `${this.value.state} - ${this.value.coverageDescription}${dependants}`;
-            this.searchDropdown.hide().then();
-            this.searchInput.focus();
-            this.dispatchChangeEvent();
-        }
+    async handleMenuSelect(e: CustomEvent) {
+        const value = e.detail.item.value as SearchResultClass;
+        this.value = await Product.find(value.searchResult.fundBrandCode.substring(0,3), value.searchResult.productCode);
+        this.searchInput.value = this.value!.name;
+        const dependants = this.value!.dependantTypesLongDescriptions.length ? ` - including: ${this.value!.dependantTypesLongDescriptions.join(", ")}` : "";
+        this.productCoverDetails.innerHTML += `${this.value!.state} - ${this.value!.coverageDescription}${dependants}`;
+        this.searchDropdown.hide().then();
+        this.searchInput.focus();
+        this.dispatchChangeEvent();
         e.stopPropagation();
     }
 

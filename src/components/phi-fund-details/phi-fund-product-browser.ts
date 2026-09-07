@@ -11,7 +11,7 @@ import {ref, createRef} from 'lit/directives/ref.js';
 
 import {SlCheckbox, SlDrawer, SlInput, SlSelect} from "@shoelace-style/shoelace";
 
-import {Product, ProductResultSet} from "../../api-models/products.ts";
+import {Product, ProductManager, ProductResultSet} from "../../api-models/products.ts";
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {matchAll, matchAny, matchExactly, matchOnly} from "../../modules/utilities.ts";
 import {Globals} from "../../modules/globals.ts";
@@ -104,6 +104,10 @@ export class PhiFundProductBrowser extends LitElement {
     @queryAll('sl-checkbox[data-phi-filter-field="excess"]:not([data-phi-filter-value="*"])') excessFilterCheckBoxes! : NodeListOf<SlCheckbox>;
     @queryAll('sl-checkbox[data-phi-filter-field="accommodation"]:not([data-phi-filter-value="*"])') accommodationFilterCheckBoxes! : NodeListOf<SlCheckbox>;
 
+    constructor() {
+        super();
+        this.loadProducts().then();
+    }
 
     protected updated(_changedProperties: PropertyValues) {
         super.updated(_changedProperties);
@@ -145,11 +149,9 @@ export class PhiFundProductBrowser extends LitElement {
      * Fetches the products from the database.  This procedure is called by the element's container when the user
      * first displays the product table.
      */
-    loadProducts() {
-        ProductResultSet.fetch(`fund/${this.fundCode}`).then(rslt => {
-            this.productResultSet = rslt;
-            this.savedResultSet = rslt;
-        });
+    async loadProducts() {
+        this.productResultSet = ProductManager.getFundProducts(this.fundCode);
+        this.savedResultSet = this.productResultSet;
     }
 
     /**
@@ -310,34 +312,31 @@ export class PhiFundProductBrowser extends LitElement {
 
     /**
      * Render the product result set in a `<table>`.
-     * @param resultSet
      */
-    render_product_table(resultSet: ProductResultSet) {
+    render_product_table() {
+        /*
         const currency = new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'AUD',
                 currencyDisplay: "narrowSymbol",
                 minimumFractionDigits: 2,
             })
+
+         */
         return html`
         <div>
             <table @click=${this.displayProduct}>
                 <thead>
                 <th></th>
-                <th>Code</th>
-                <th>Brands</th>
                 <th>Name</th>
-                <th>State</th>
+                <th>Brands</th>
                 <th>Tier</th>
                 <th>Accommodation</th>
-                <th>Excess</th>
                 <th>Type</th>
-                <th>Adults</th>
-                <th>Dependants</th>
                 <th>Corporate</th>
-                <th>Premium</th>
+                <th>Variants</th>
                 </thead>
-                ${resultSet.rows.map((row, index) => html`
+                ${ProductManager.getFundProductGroups(this.fundCode).map((row, index) => html`
                     <tr>
                         <td>
                             <sl-icon-button
@@ -346,18 +345,13 @@ export class PhiFundProductBrowser extends LitElement {
                                 label="Display product details"
                             ></sl-icon-button>
                         </td>
-                        <td>${row.code}</td>
-                        <td>${row.brandCodes}</td>
                         <td>${row.name}</td>
-                        <td>${row.state}</td>
+                        <td>${row.brands}</td>
                         <td>${row.hospitalTier}</td>
                         <td>${row.accommodationType}</td>
-                        <td>${row.excess ? row.excess : ""}</td>
                         <td>${row.type}</td>
-                        <td>${row.adultsCovered}</td>
-                        <td>${row.dependantTypesShortDescription}</td>
                         <td>${row.isCorporate}</td>
-                        <td style="text-align: right">${currency.format(row.premium)}</td>
+                        <td>${row.variants.length}</td>
                     </tr>
                 `)}
             </table>
@@ -383,7 +377,7 @@ export class PhiFundProductBrowser extends LitElement {
                 </div>
 
                 <div id ="table">
-                    ${this.productResultSet === undefined ? html `<sl-spinner></sl-spinner>` : this.render_product_table(this.productResultSet!)}
+                    ${this.productResultSet === undefined ? html `<sl-spinner></sl-spinner>` : this.render_product_table()}
                 </div>
             </div>
         `

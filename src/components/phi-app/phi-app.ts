@@ -10,14 +10,16 @@ import {LitElement, html, css} from 'lit'
 import {state, property, customElement} from 'lit/decorators.js'
 import {Task} from "@lit/task";
 
-import {FundManager} from "../../api-models/funds.ts";
 import {Theming} from "../../modules/theming.ts";
+import {FundManager} from "../../api-models/funds.ts";
 import {ServiceManager} from "../../api-models/services.ts";
+import {AUS_STATES} from "phi-common";
 
 import "./phi-app-splash.ts";
 import "./phi-app-main.ts";
 import "./phi-app-pager.ts";
 import "./phi-app-header.ts";
+import {ProductManager} from "../../api-models/products.ts";
 
 /**
  * Top-level PHI application element used in `index.html`.  Displays a splash-screen during startup
@@ -43,6 +45,7 @@ export class PhiApp extends LitElement {
 
     constructor() {
         super();
+        console.log(AUS_STATES);
         Theming.init();
     }
 
@@ -72,8 +75,10 @@ export class PhiApp extends LitElement {
 
     private async startupFundsTask() {
         const p1 = FundManager.downloadFundXml();
-        const p2 = ServiceManager.fetchServices()
-        await Promise.all([p1, p2]);
+        const p2 = ServiceManager.fetchServices();
+        const p3 = ProductManager.loadDataSet();
+        const p4 = FundManager.downloadFundBrands()
+        await Promise.all([p1, p2, p3, p4]);
         this.tickCount += 4;
     }
 

@@ -33,7 +33,8 @@ export class PhiNAResults extends MobxLitElement {
     static styles = css`
         :host {
             display: flex;
-            flex-flow: column nowrap;
+            flex-flow: row nowrap;
+            width: 100%;
         }
         img {
             max-width: 80%;
@@ -42,8 +43,18 @@ export class PhiNAResults extends MobxLitElement {
             width: auto;
             height: auto;
         }
+        sl-button.navigation {
+            flex: 0 0 auto;
+            margin: 0;
+            position: relative;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
         table {
             border-spacing: 8px;
+            flex: 1 0 auto;
+            width: 80%;
         }
         td, th {
             padding: 12px;
@@ -82,6 +93,17 @@ export class PhiNAResults extends MobxLitElement {
         tr.service[data-class=match] {
             visibility: collapse;
         }
+        
+        /* tests */
+        div.table-containerxxxx {
+            flex: 1 0 0;
+            overflow-x: clip;
+        }
+        
+        div.inner-tablexxxx {
+            width: 100%;
+            overflow-x: clip;
+        }
     `
 
     // Needs analysis context.
@@ -97,6 +119,8 @@ export class PhiNAResults extends MobxLitElement {
     @state() showSilverServices : ServiceDisplayType = "variations";
     @state() showGoldServices : ServiceDisplayType = "variations";
     @state() showGeneralServices : ServiceDisplayType = "variations";
+
+    @state() tableColumns: number = 1;
 
     @query("table#results") resultsTable!: HTMLTableElement;
     @queryAll("sl-details.service") serviceSlDetails!: NodeListOf<SlDetails>;
@@ -123,6 +147,20 @@ export class PhiNAResults extends MobxLitElement {
             }
         })
         return root;
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        window.addEventListener('resize', this.handleResize);
+    }
+    disconnectedCallback() {
+        window.removeEventListener('resize', this.handleResize);
+        super.disconnectedCallback();
+    }
+
+    handleResize = () => {
+        this.tableColumns = Math.floor((this.offsetWidth - 300) / 300);
+        this.requestUpdate();
     }
 
     /**
@@ -343,9 +381,9 @@ export class PhiNAResults extends MobxLitElement {
      * will call the attribute's render function which returns a single table cell.
      */
     render() {
-        this.resultSet = this.context!.comparisonResults;
+        this.resultSet = this.context!.comparisonResults.slice(0, 50);
         return html`
-            <table id="results" class="show-variations">
+            <table id="results" class="show-variationsxxx">
                 
                 <!-- fund logo -->
                 ${this.render_row(this.render_logo)}
@@ -387,9 +425,9 @@ export class PhiNAResults extends MobxLitElement {
                 <!-- general service differences -->
                 ${this.render_row_if(this.context!.needsGeneralHealthServices, this.render_service_tier, "General Health", ServiceManager.generalServices)}
                 ${ServiceManager.generalServices.services.map((service) => this.render_service_row(this.context!.needsGeneralHealthServices, service))}
- 
             </table>
     `}
+
 }
 
 declare global {
