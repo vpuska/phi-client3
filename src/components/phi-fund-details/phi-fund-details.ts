@@ -1,5 +1,5 @@
-/**
- * components/phi-fundCode-details.ts
+/*
+ * components/phi-fund-details.ts
  * --
  * @author VJP
  * @written 11-Nov-2025
@@ -48,17 +48,17 @@ export class PhiFundDetails extends LitElement {
     @query("#details") detailsPage! : HTMLElement;
     @query("#brands") brandsPage! : HTMLElement;
     @query("#xml") xmlPage! : HTMLElement;
-    @query("#products") productsPage! : PhiFundProductBrowser;
+    @query("#products") groupsPage! : PhiFundProductBrowser;
 
 
     setPage(page: string) {
         this.detailsPage.style.display = page === "details" ? "flex" : "none";
         this.brandsPage.style.display = page === "brands" ? "flex" : "none";
         this.xmlPage.style.display = page === "xml" ? "flex" : "none";
-        this.productsPage.style.display = page === "products" ? "flex" : "none";
+        this.groupsPage.style.display = page === "products" ? "flex" : "none";
 
         if (page === "products")
-            this.productsPage.loadProducts();
+            this.groupsPage.loadProducts();
     }
 
     protected firstUpdated(_changedProperties: PropertyValues) {
@@ -232,7 +232,7 @@ export class PhiFundDetails extends LitElement {
                 </sl-textarea>
             </phi-page-details>
             
-            <phi-fund-product-browser id="products" class="details" fund="${fund.code}"></phi-fund-product-browser>
+            <phi-fund-product-group-browser id="products" class="details" fund="${fund.code}"></phi-fund-product-group-browser>
         `
     }
 }

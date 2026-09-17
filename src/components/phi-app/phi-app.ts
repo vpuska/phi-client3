@@ -1,6 +1,6 @@
-/**
- * components/application/application.component.ts
- * --
+/*
+ * components/phi-app/phi-app.ts
+ * -----------------------------
  * Top-Level application element.
  * @author VJP
  * @written 28-Sep-2025
@@ -13,7 +13,6 @@ import {Task} from "@lit/task";
 import {Theming} from "../../modules/theming.ts";
 import {FundManager} from "../../api-models/funds.ts";
 import {ServiceManager} from "../../api-models/services.ts";
-import {AUS_STATES} from "phi-common";
 
 import "./phi-app-splash.ts";
 import "./phi-app-main.ts";
@@ -45,7 +44,6 @@ export class PhiApp extends LitElement {
 
     constructor() {
         super();
-        console.log(AUS_STATES);
         Theming.init();
     }
 
