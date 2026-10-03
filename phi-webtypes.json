@@ -105,7 +105,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 8px;\\r\\n            width: 100%;\\r\\n            margin: 0;\\r\\n            padding: 8px;\\r\\n            background-color: var(--sl-color-primary-50)\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 8px;\\r\\n            width: 100%;\\r\\n            margin: 0;\\r\\n            padding: 8px;\\r\\n            overflow-x: hidden;\\r\\n            background-color: var(--sl-color-primary-50)\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-app/phi-app-main.ts",
@@ -432,7 +432,7 @@
                                 }
                             },
                             {
-                                "name": "productsPage",
+                                "name": "groupsPage",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
@@ -441,14 +441,14 @@
                                 },
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-details.ts",
-                                    "symbol": "PhiFundDetails.productsPage"
+                                    "symbol": "PhiFundDetails.groupsPage"
                                 }
                             }
                         ]
                     }
                 },
                 {
-                    "name": "phi-fund-product-browser",
+                    "name": "phi-fund-product-group-browser",
                     "description": "Fund product browser page..",
                     "source": {
                         "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
@@ -478,7 +478,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            flex-flow: column nowrap;\\r\\n            padding: 0;\\r\\n        }\\r\\n        div#content-area {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            align-content: start;\\r\\n            flex-flow: row nowrap;\\r\\n            position: relative;\\r\\n        }\\r\\n        div#toolbar {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            align-items: center;\\r\\n            width: 48px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n        div#table {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n        }\\r\\n        div#table > div {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n            overflow-y: scroll;\\r\\n        }\\r\\n        table {\\r\\n            margin: 0;\\r\\n            font-size: var(--sl-font-size-x-small);\\r\\n        }\\r\\n        thead th {\\r\\n            position: sticky;\\r\\n            top: 0;\\r\\n            background-color: gray;\\r\\n            z-index: 1;\\r\\n        }\\r\\n        sl-spinner {\\r\\n            position: absolute;\\r\\n            top:  50%;\\r\\n            left: 50%;\\r\\n            transform: translate(-50%,-50%);\\r\\n            font-size: 64px; \\r\\n            --track-width: 12px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            flex-flow: column nowrap;\\r\\n            padding: 0;\\r\\n        }\\r\\n        div#content-area {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            align-content: start;\\r\\n            flex-flow: row nowrap;\\r\\n            position: relative;\\r\\n        }\\r\\n        div#toolbar {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            align-items: center;\\r\\n            width: 48px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        table {\\r\\n            margin: 0;\\r\\n            font-size: var(--sl-font-size-x-small);\\r\\n        }\\r\\n\\r\\n        /* Group table container and sub-container */\\r\\n        div#groups {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n        }\\r\\n        div#groups > div {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n            overflow-y: scroll;\\r\\n        }\\r\\n        \\r\\n        /* Group table formatting */\\r\\n        table#group-table > thead th {\\r\\n            position: sticky;\\r\\n            top: 0;\\r\\n            background-color: gray;\\r\\n            z-index: 1;\\r\\n        }\\r\\n        \\r\\n        /* Variant table and row styles */\\r\\n        div.variants {\\r\\n            display: flex;\\r\\n            margin-left: 2em;\\r\\n            margin-right: 2em;\\r\\n            flex-flow: column wrap;\\r\\n            align-content: center;\\r\\n            justify-content: center;\\r\\n            background-color: var(--sl-color-primary-100);\\r\\n        }\\r\\n        div.variants > table {\\r\\n            width: fit-content;\\r\\n            border-collapse: separate;\\r\\n            border-spacing: 4em 2px;\\r\\n        }\\r\\n        \\r\\n        td.dependant-cover {\\r\\n            text-align: center;\\r\\n        }\\r\\n        \\r\\n        /* Spinner style */\\r\\n        sl-spinner {\\r\\n            position: absolute;\\r\\n            top:  50%;\\r\\n            left: 50%;\\r\\n            transform: translate(-50%,-50%);\\r\\n            font-size: 64px; \\r\\n            --track-width: 12px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
@@ -499,35 +499,73 @@
                                 }
                             },
                             {
-                                "name": "productResultSet",
+                                "name": "productGroups",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": [
-                                        "ProductResultSet",
-                                        "undefined"
-                                    ],
-                                    "required": true
+                                    "type": "ProductGroup[]",
+                                    "required": true,
+                                    "default": "[]"
                                 },
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.productResultSet"
+                                    "symbol": "PhiFundProductBrowser.productGroups"
                                 }
                             },
                             {
-                                "name": "savedResultSet",
+                                "name": "filteredGroups",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": [
-                                        "ProductResultSet",
-                                        "undefined"
-                                    ],
-                                    "required": true
+                                    "type": "ProductGroup[]",
+                                    "required": true,
+                                    "default": "[]"
                                 },
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.savedResultSet"
+                                    "symbol": "PhiFundProductBrowser.filteredGroups"
+                                }
+                            },
+                            {
+                                "name": "excessCodes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessCodes"
+                                }
+                            },
+                            {
+                                "name": "coverCombinations",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.coverCombinations"
+                                }
+                            },
+                            {
+                                "name": "expandedGroups",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "Set<ProductGroup>",
+                                    "required": true,
+                                    "default": "\"new Set()\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.expandedGroups"
                                 }
                             },
                             {
@@ -541,19 +579,6 @@
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
                                     "symbol": "PhiFundProductBrowser.drawer"
-                                }
-                            },
-                            {
-                                "name": "dependantFilterOption",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlSelect",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.dependantFilterOption"
                                 }
                             },
                             {
@@ -583,32 +608,6 @@
                                 }
                             },
                             {
-                                "name": "stateSelectAllCheckBox",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlCheckbox",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.stateSelectAllCheckBox"
-                                }
-                            },
-                            {
-                                "name": "dependantSelectAllCheckBox",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlCheckbox",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.dependantSelectAllCheckBox"
-                                }
-                            },
-                            {
                                 "name": "tierSelectAllCheckBox",
                                 "required": false,
                                 "priority": "normal",
@@ -619,19 +618,6 @@
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
                                     "symbol": "PhiFundProductBrowser.tierSelectAllCheckBox"
-                                }
-                            },
-                            {
-                                "name": "excessSelectAllCheckBox",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "SlCheckbox",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.excessSelectAllCheckBox"
                                 }
                             },
                             {
@@ -658,6 +644,84 @@
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
                                     "symbol": "PhiFundProductBrowser.brandFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "tierFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.tierFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "typeFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.typeFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "accommodationFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.accommodationFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "stateSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.stateSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "dependantSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.dependantSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "excessSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessSelectAllCheckBox"
                                 }
                             },
                             {
@@ -700,6 +764,221 @@
                                 }
                             },
                             {
+                                "name": "excessFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessFilterCheckBoxes"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-fund-product-browser",
+                    "description": "Fund product browser page..",
+                    "source": {
+                        "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                        "symbol": "PhiFundProductBrowser"
+                    },
+                    "attributes": [
+                        {
+                            "name": "fund",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "source": {
+                                "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                "symbol": "PhiFundProductBrowser.fundCode"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            flex-flow: column nowrap;\\r\\n            padding: 0;\\r\\n        }\\r\\n        div#content-area {\\r\\n            display: flex;\\r\\n            flex: 1 1 0;\\r\\n            align-content: start;\\r\\n            flex-flow: row nowrap;\\r\\n            position: relative;\\r\\n        }\\r\\n        div#toolbar {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            align-items: center;\\r\\n            width: 48px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n\\r\\n        table {\\r\\n            margin: 0;\\r\\n            font-size: var(--sl-font-size-x-small);\\r\\n        }\\r\\n\\r\\n        /* Group table container and sub-container */\\r\\n        div#groups {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n        }\\r\\n        div#groups > div {\\r\\n            display: flex;\\r\\n            flex-flow: column nowrap;\\r\\n            flex: 1 1 0;\\r\\n            overflow-y: scroll;\\r\\n        }\\r\\n        \\r\\n        /* Group table formatting */\\r\\n        table#group-table > thead th {\\r\\n            position: sticky;\\r\\n            top: 0;\\r\\n            background-color: gray;\\r\\n            z-index: 1;\\r\\n        }\\r\\n        \\r\\n        /* Variant table and row styles */\\r\\n        div.variants {\\r\\n            display: flex;\\r\\n            margin-left: 2em;\\r\\n            margin-right: 2em;\\r\\n            flex-flow: column wrap;\\r\\n            align-content: center;\\r\\n            justify-content: center;\\r\\n            background-color: var(--sl-color-primary-100);\\r\\n        }\\r\\n        div.variants > table {\\r\\n            width: fit-content;\\r\\n            border-collapse: separate;\\r\\n            border-spacing: 4em 2px;\\r\\n        }\\r\\n        \\r\\n        td.dependant-cover {\\r\\n            text-align: center;\\r\\n        }\\r\\n        \\r\\n        /* Spinner style */\\r\\n        sl-spinner {\\r\\n            position: absolute;\\r\\n            top:  50%;\\r\\n            left: 50%;\\r\\n            transform: translate(-50%,-50%);\\r\\n            font-size: 64px; \\r\\n            --track-width: 12px;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.styles"
+                                }
+                            },
+                            {
+                                "name": "fundCode",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.fundCode"
+                                }
+                            },
+                            {
+                                "name": "productGroups",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ProductGroup[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.productGroups"
+                                }
+                            },
+                            {
+                                "name": "filteredGroups",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ProductGroup[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.filteredGroups"
+                                }
+                            },
+                            {
+                                "name": "excessCodes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessCodes"
+                                }
+                            },
+                            {
+                                "name": "coverCombinations",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.coverCombinations"
+                                }
+                            },
+                            {
+                                "name": "expandedGroups",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "Set<ProductGroup>",
+                                    "required": true,
+                                    "default": "\"new Set()\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.expandedGroups"
+                                }
+                            },
+                            {
+                                "name": "drawer",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlDrawer",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.drawer"
+                                }
+                            },
+                            {
+                                "name": "textFilter",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlInput",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.textFilter"
+                                }
+                            },
+                            {
+                                "name": "brandSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.brandSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "tierSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.tierSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "accommodationSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.accommodationSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "brandFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.brandFilterCheckBoxes"
+                                }
+                            },
+                            {
                                 "name": "tierFilterCheckBoxes",
                                 "required": false,
                                 "priority": "normal",
@@ -726,19 +1005,6 @@
                                 }
                             },
                             {
-                                "name": "excessFilterCheckBoxes",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "NodeListOf<SlCheckbox>",
-                                    "required": true
-                                },
-                                "source": {
-                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
-                                    "symbol": "PhiFundProductBrowser.excessFilterCheckBoxes"
-                                }
-                            },
-                            {
                                 "name": "accommodationFilterCheckBoxes",
                                 "required": false,
                                 "priority": "normal",
@@ -749,6 +1015,97 @@
                                 "source": {
                                     "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
                                     "symbol": "PhiFundProductBrowser.accommodationFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "stateSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.stateSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "dependantSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.dependantSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "excessSelectAllCheckBox",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlCheckbox",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessSelectAllCheckBox"
+                                }
+                            },
+                            {
+                                "name": "stateFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.stateFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "adultsFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.adultsFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "dependantsFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.dependantsFilterCheckBoxes"
+                                }
+                            },
+                            {
+                                "name": "excessFilterCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlCheckbox>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-fund-details/phi-fund-product-browser.ts",
+                                    "symbol": "PhiFundProductBrowser.excessFilterCheckBoxes"
                                 }
                             }
                         ]
@@ -893,7 +1250,7 @@
                                 "priority": "normal",
                                 "value": {
                                     "type": [
-                                        "BaseStateType",
+                                        "AusState",
                                         "\"ALL\"",
                                         "\"\""
                                     ],
@@ -923,7 +1280,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 2em;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 2em;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-na/phi-na-details-20.ts",
@@ -966,7 +1323,7 @@
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "SlRadioGroup",
+                                    "type": "PhiRgCoverType",
                                     "required": true
                                 },
                                 "source": {
@@ -979,7 +1336,7 @@
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "SlRadioGroup",
+                                    "type": "PhiRgState",
                                     "required": true
                                 },
                                 "source": {
@@ -992,7 +1349,7 @@
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "SlRadioGroup",
+                                    "type": "PhiRgFamilyType",
                                     "required": true
                                 },
                                 "source": {
@@ -1035,7 +1392,7 @@
                                 "value": {
                                     "type": "Task<readonly [string, string], void>",
                                     "required": true,
-                                    "default": "\"new Task(this, {\\r\\n        task: async ([state, familyType]) => {\\r\\n            if (state !== \\\"\\\" && familyType !== \\\"\\\") {\\r\\n                const result = await ProductResultSet.fetch(`segment/${state}/${familyType}`)\\r\\n                this.context?.change({productRS: result})\\r\\n            }},\\r\\n        args: () => [ this.queriedState, this.queriedFamily ]\\r\\n    })\""
+                                    "default": "\"new Task(this, {\\r\\n        task: async ([state, familyType]) => {\\r\\n            if (state !== \\\"\\\" && familyType !== \\\"\\\") {\\r\\n                const adults = +familyType[0];\\r\\n                const dependants = familyType.length === 2;\\r\\n                const result = ProductManager.getSegment(state, adults, dependants)\\r\\n                this.context?.change({productRS: result})\\r\\n            }},\\r\\n        args: () => [ this.queriedState, this.queriedFamily ]\\r\\n    })\""
                                 },
                                 "description": "Fetches product data from the database based on the selected state and family type.  Run automatically\r\nwhen state or family type changes.",
                                 "source": {
@@ -1238,6 +1595,75 @@
                     }
                 },
                 {
+                    "name": "phi-na-details-35",
+                    "description": "Health insurance needs analysis - hospital accommodation and excess.",
+                    "source": {
+                        "module": "./src/components/phi-na/phi-na-details-35.ts",
+                        "symbol": "PhiNADetails35"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 3em;\\r\\n        }\\r\\n        sl-checkbox {\\r\\n            display: block;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details-35.ts",
+                                    "symbol": "PhiNADetails35.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details-35.ts",
+                                    "symbol": "PhiNADetails35.context"
+                                }
+                            },
+                            {
+                                "name": "excessSelect",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "SlSelect",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details-35.ts",
+                                    "symbol": "PhiNADetails35.excessSelect"
+                                }
+                            },
+                            {
+                                "name": "accommodationCheckBoxes",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<HTMLInputElement>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details-35.ts",
+                                    "symbol": "PhiNADetails35.accommodationCheckBoxes"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-na-details-40-selections",
                     "description": "Health insurance needs analysis component to hospital and general health services selections.  Renders a\r\nlist of checkboxes for a single service type or service type/hospital tier combination.",
                     "source": {
@@ -1265,7 +1691,7 @@
                             "required": false,
                             "priority": "normal",
                             "value": {
-                                "type": "HospitalTier",
+                                "type": "HospitalTierType",
                                 "required": true,
                                 "default": "\"None\""
                             },
@@ -1344,7 +1770,7 @@
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "HospitalTier",
+                                    "type": "HospitalTierType",
                                     "required": true,
                                     "default": "\"None\""
                                 },
@@ -1594,7 +2020,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 1em;\\r\\n        }\\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            gap: 1em;\\r\\n        }\\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        td:first-child {\\r\\n            width: 20em;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-na/phi-na-details-60.ts",
@@ -1636,8 +2062,510 @@
                     }
                 },
                 {
+                    "name": "phi-na-details",
+                    "description": "Wrapper between `sl-details` and `phi-na-details-xx` elements, with:\r\n- additional styling for the PHI application.\r\n- a \"continue\" button",
+                    "source": {
+                        "module": "./src/components/phi-na/phi-na-details.ts",
+                        "symbol": "PhiNADetails"
+                    },
+                    "attributes": [
+                        {
+                            "name": "button-label",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"Continue\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-details.ts",
+                                "symbol": "PhiNADetails.buttonLabel"
+                            }
+                        },
+                        {
+                            "name": "`button-label`",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true
+                            },
+                            "description": "label for the \"continue\" button. Defaults to \"Continue\".",
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-details.ts",
+                                "symbol": "PhiNADetails.undefined"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            justify-content: space-between;\\r\\n            gap: 8px;\\r\\n            height: calc(100% - 4em);\\r\\n            padding: 2em 1.5em;\\r\\n        }\\r\\n        \\r\\n        div#continue {\\r\\n            display: flex;\\r\\n            justify-content: flex-end;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details.ts",
+                                    "symbol": "PhiNADetails.styles"
+                                }
+                            },
+                            {
+                                "name": "buttonLabel",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"Continue\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-details.ts",
+                                    "symbol": "PhiNADetails.buttonLabel"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-na-continue",
+                                "description": "fired when the \"continue\" button is clicked."
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-results-svc-head",
+                    "description": "xxxx",
+                    "source": {
+                        "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                        "symbol": "PhiNaResultsSvcHead"
+                    },
+                    "attributes": [
+                        {
+                            "name": "label",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "string",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.label"
+                            }
+                        },
+                        {
+                            "name": "tier",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "\"gold\" | \"silver\" | \"bronze\" | \"basic\" | \"general\" | \"none\"",
+                                "required": true,
+                                "default": "\"none\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.tier"
+                            }
+                        },
+                        {
+                            "name": "covered",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "number",
+                                "required": true,
+                                "default": "0"
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.covered"
+                            }
+                        },
+                        {
+                            "name": "restricted",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "number",
+                                "required": true,
+                                "default": "0"
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.restricted"
+                            }
+                        },
+                        {
+                            "name": "not-covered",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": "number",
+                                "required": true,
+                                "default": "0"
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.notCovered"
+                            }
+                        },
+                        {
+                            "name": "mode",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "\"varying\" | \"matching\" | \"no-cover\"",
+                                "required": true,
+                                "default": "\"varying\""
+                            },
+                            "source": {
+                                "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                "symbol": "PhiNaResultsSvcHead.mode"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n        }\\r\\n        sl-button.service-heading::part(label) {\\r\\n            display: flex;\\r\\n            justify-content: space-between;\\r\\n            align-items: center;\\r\\n            flex: 1;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.styles"
+                                }
+                            },
+                            {
+                                "name": "label",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.label"
+                                }
+                            },
+                            {
+                                "name": "tier",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "kind": "plain",
+                                    "type": "\"gold\" | \"silver\" | \"bronze\" | \"basic\" | \"general\" | \"none\"",
+                                    "required": true,
+                                    "default": "\"none\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.tier"
+                                }
+                            },
+                            {
+                                "name": "covered",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "0"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.covered"
+                                }
+                            },
+                            {
+                                "name": "restricted",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "0"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.restricted"
+                                }
+                            },
+                            {
+                                "name": "notCovered",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "0"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.notCovered"
+                                }
+                            },
+                            {
+                                "name": "mode",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "kind": "plain",
+                                    "type": "\"varying\" | \"matching\" | \"no-cover\"",
+                                    "required": true,
+                                    "default": "\"varying\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.mode"
+                                }
+                            },
+                            {
+                                "name": "menuItems",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlMenuItem>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results-svc-head.ts",
+                                    "symbol": "PhiNaResultsSvcHead.menuItems"
+                                }
+                            }
+                        ],
+                        "events": [
+                            {
+                                "name": "phi-service-event"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-na-results",
+                    "description": "Render the results page of the needs analysis in a html table.  Each column represents a product pair (hospital and general health) and each\r\nrow is a product attribute.",
+                    "source": {
+                        "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                        "symbol": "PhiNAResults"
+                    },
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-flow: row nowrap;\\r\\n            width: 100%;\\r\\n        }\\r\\n        img {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n        sl-button.navigation {\\r\\n            flex: 0 0 auto;\\r\\n            margin: 0;\\r\\n            position: relative;\\r\\n            top: 50%;\\r\\n            -ms-transform: translateY(-50%);\\r\\n            transform: translateY(-50%);\\r\\n        }\\r\\n        table {\\r\\n            border-spacing: 8px;\\r\\n            flex: 1 0 auto;\\r\\n            width: 80%;\\r\\n        }\\r\\n        td, th {\\r\\n            padding: 12px;\\r\\n            border-radius: 8px;\\r\\n            text-align: left;\\r\\n            min-width: 300px;\\r\\n            max-width: 300px;\\r\\n        }\\r\\n        td.dark {\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        td.logo {\\r\\n            background-color: lightgray;\\r\\n        }\\r\\n        td.service {\\r\\n            font-size: x-small;\\r\\n            padding: 0;\\r\\n        }\\r\\n        td.service div {\\r\\n            margin: 0 4em;\\r\\n            padding: 1px 1em;\\r\\n            border-radius: 4px;\\r\\n        }\\r\\n        td.covered div {\\r\\n            background-color: var(--sl-color-success-200);\\r\\n        }\\r\\n        td.not-covered div {\\r\\n            background-color: var(--sl-color-danger-200);\\r\\n        }\\r\\n        td.restricted div {\\r\\n            background-color: var(--sl-color-warning-200);\\r\\n        }\\r\\n        sl-details::part(content) {\\r\\n            display: none;\\r\\n        }\\r\\n        tr.service[data-class=match] {\\r\\n            visibility: collapse;\\r\\n        }\\r\\n        \\r\\n        /* tests */\\r\\n        div.table-containerxxxx {\\r\\n            flex: 1 0 0;\\r\\n            overflow-x: clip;\\r\\n        }\\r\\n        \\r\\n        div.inner-tablexxxx {\\r\\n            width: 100%;\\r\\n            overflow-x: clip;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.styles"
+                                }
+                            },
+                            {
+                                "name": "context",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "NeedsAnalysisContext",
+                                        "null"
+                                    ],
+                                    "required": true,
+                                    "default": "null"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.context"
+                                }
+                            },
+                            {
+                                "name": "resultSet",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "ProductPair[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.resultSet"
+                                }
+                            },
+                            {
+                                "name": "showBasicServices",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ServiceDisplayType",
+                                    "required": true,
+                                    "default": "\"variations\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.showBasicServices"
+                                }
+                            },
+                            {
+                                "name": "showBronzeServices",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ServiceDisplayType",
+                                    "required": true,
+                                    "default": "\"variations\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.showBronzeServices"
+                                }
+                            },
+                            {
+                                "name": "showSilverServices",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ServiceDisplayType",
+                                    "required": true,
+                                    "default": "\"variations\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.showSilverServices"
+                                }
+                            },
+                            {
+                                "name": "showGoldServices",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ServiceDisplayType",
+                                    "required": true,
+                                    "default": "\"variations\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.showGoldServices"
+                                }
+                            },
+                            {
+                                "name": "showGeneralServices",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "ServiceDisplayType",
+                                    "required": true,
+                                    "default": "\"variations\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.showGeneralServices"
+                                }
+                            },
+                            {
+                                "name": "tableColumns",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "number",
+                                    "required": true,
+                                    "default": "1"
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.tableColumns"
+                                }
+                            },
+                            {
+                                "name": "resultsTable",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "HTMLTableElement",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.resultsTable"
+                                }
+                            },
+                            {
+                                "name": "serviceSlDetails",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<SlDetails>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.serviceSlDetails"
+                                }
+                            },
+                            {
+                                "name": "serviceCells",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<HTMLTableCellElement>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.serviceCells"
+                                }
+                            },
+                            {
+                                "name": "serviceHeads",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "NodeListOf<PhiNaResultsSvcHead>",
+                                    "required": true
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.serviceHeads"
+                                }
+                            },
+                            {
+                                "name": "handleResize",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "() => void",
+                                    "required": true,
+                                    "default": "\"() => {\\r\\n        this.tableColumns = Math.floor((this.offsetWidth - 300) / 300);\\r\\n        this.requestUpdate();\\r\\n    }\""
+                                },
+                                "source": {
+                                    "module": "./src/components/phi-na/phi-na-results/phi-na-results.ts",
+                                    "symbol": "PhiNAResults.handleResize"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
                     "name": "phi-needs-analysis",
-                    "description": "Health insurance needs analysis component.  This renders all the subcomponents in a tabbed interface and manages navigation between them.\r\nThe subcomponents are:\r\n- phi-na-details-10 (existing policy)\r\n- phi-na-details-20 (coverage)\r\n- phi-na-details-30 (dependants)\r\n- phi-na-details-40 (hospital services)\r\n- phi-na-details-50 (general services)\r\n- phi-na-details-60 (summary)\r\n- phi-na-details-70 (results)",
+                    "description": "[object Object],[object Object],[object Object]",
                     "source": {
                         "module": "./src/components/phi-na/phi-na.ts",
                         "symbol": "PhiNeedsAnalysis"
@@ -1651,7 +2579,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 1 0;\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n        sl-tab-group {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(nav) {\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        sl-tab-group::part(body) {\\r\\n            padding: 1.5rem 3em;\\r\\n        }\\r\\n        sl-tab-panel {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-panel::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        \\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 1 0;\\r\\n            padding: 0;\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n            border-radius: 8px;\\r\\n        }\\r\\n        sl-tab-group {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-group::part(nav) {\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n        sl-tab-group::part(body) {\\r\\n            /*padding: 1.5rem 3em;*/\\r\\n        }\\r\\n        sl-tab-panel {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-tab-panel::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-na/phi-na.ts",
@@ -1719,7 +2647,7 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;    // take up available space in our container (phi-page-manager)\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n\\r\\n        phi-card::part(body) {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n        }\\r\\n        \\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        \\r\\n        small > *:first-child {\\r\\n            margin-top: 2px;\\r\\n        }\\r\\n        \\r\\n        table.mini-table tr th {\\r\\n            padding-right: 16px;\\r\\n            text-align: left;\\r\\n            font-weight: normal;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex: 1 0 0;    // take up available space in our container (phi-page-manager)\\r\\n            background-color: var(--sl-color-gray-100);\\r\\n        }\\r\\n\\r\\n        phi-card::part(body) {\\r\\n            display: flex;\\r\\n            align-items: center;\\r\\n        }\\r\\n        \\r\\n        h4 {\\r\\n            margin-bottom: 0;\\r\\n        }\\r\\n        \\r\\n        small > *:first-child {\\r\\n            margin-top: 2px;\\r\\n        }\\r\\n        \\r\\n        table.mini-table tr th {\\r\\n            padding-right: 16px;\\r\\n            text-align: left;\\r\\n            font-weight: normal;\\r\\n        }\\r\\n        \\r\\n        table.services td:nth-child(1) {\\r\\n            width: 32px;\\r\\n        }\\r\\n        \\r\\n        \\r\\n    `\""
                                 },
                                 "source": {
                                     "module": "./src/components/phi-product-details/phi-product-details.ts",
@@ -1859,7 +2787,7 @@
                     "name": "phi-card",
                     "description": "Wrapper for sl-card including styling to make cards equal height regardless of content.",
                     "source": {
-                        "module": "./src/shared-components/phi-card.ts",
+                        "module": "./src/components/shared/phi-card.ts",
                         "symbol": "PhiCard"
                     },
                     "attributes": [
@@ -1874,7 +2802,7 @@
                             },
                             "description": "Enable the display of the header.",
                             "source": {
-                                "module": "./src/shared-components/phi-card.ts",
+                                "module": "./src/components/shared/phi-card.ts",
                                 "symbol": "PhiCard.header"
                             }
                         },
@@ -1889,7 +2817,7 @@
                             },
                             "description": "Enable the display of the footer.",
                             "source": {
-                                "module": "./src/shared-components/phi-card.ts",
+                                "module": "./src/components/shared/phi-card.ts",
                                 "symbol": "PhiCard.footer"
                             }
                         }
@@ -1903,10 +2831,10 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n        sl-card {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(base) {\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n        sl-card::part(body) {\\r\\n            flex: 1 0 0;\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(footer) {\\r\\n            padding: 4px 12px;\\r\\n        }\\r\\n        sl-tooltip {\\r\\n            --show-delay: 1s;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n        sl-card {\\r\\n            height: 100%;\\r\\n            width: 100%;\\r\\n        }\\r\\n        sl-card::part(base) {\\r\\n            width: 100%;\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(header) {\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n        }\\r\\n        sl-card::part(body) {\\r\\n            flex: 1 0 0;\\r\\n            height: 100%;\\r\\n        }\\r\\n        sl-card::part(footer) {\\r\\n            padding: 4px 12px;\\r\\n        }\\r\\n        sl-tooltip {\\r\\n            --show-delay: 1s;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-card.ts",
+                                    "module": "./src/components/shared/phi-card.ts",
                                     "symbol": "PhiCard.styles"
                                 }
                             },
@@ -1921,7 +2849,7 @@
                                 },
                                 "description": "Enable the display of the header.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-card.ts",
+                                    "module": "./src/components/shared/phi-card.ts",
                                     "symbol": "PhiCard.header"
                                 }
                             },
@@ -1936,7 +2864,7 @@
                                 },
                                 "description": "Enable the display of the footer.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-card.ts",
+                                    "module": "./src/components/shared/phi-card.ts",
                                     "symbol": "PhiCard.footer"
                                 }
                             }
@@ -1947,7 +2875,7 @@
                     "name": "phi-headline",
                     "description": "Displays a \"headline\" banner across the page, useful for displaying key information.",
                     "source": {
-                        "module": "./src/shared-components/phi-headline.ts",
+                        "module": "./src/components/shared/phi-headline.ts",
                         "symbol": "PhiHeadline"
                     },
                     "js": {
@@ -1962,7 +2890,7 @@
                                     "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: stretch;\\r\\n            justify-content: space-between;\\r\\n            font-size: x-large;\\r\\n            font-weight: bold;\\r\\n            line-height: 24px;\\r\\n        }\\r\\n\\r\\n        div {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: stretch;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-headline.ts",
+                                    "module": "./src/components/shared/phi-headline.ts",
                                     "symbol": "PhiHeadline.styles"
                                 }
                             }
@@ -1973,7 +2901,7 @@
                     "name": "phi-keyword-search",
                     "description": "Combo-box style input for searching products.  Input is in the form of search keywords.  Eg. `hospital gold nsw family`\r\n\r\nThe component supports two modes of operation:\r\n1. Keyword search - Entering keywords will perform a keyword search and display the results in a drop-down menu.  Selecting a result will populate the input with\r\nthe product name and display a menu of product variants (state and cover types) for the second mode of operation.\r\n2. Product selection - Entering a product name will display a list of available variants for that product.  Selecting a variant will populate the input\r\nwith the product name and hide the drop-down menu.  The product openDetails are displayed in the product cover openDetails section.",
                     "source": {
-                        "module": "./src/shared-components/phi-keyword-search.ts",
+                        "module": "./src/components/shared/phi-keyword-search.ts",
                         "symbol": "PhiKeywordSearch"
                     },
                     "attributes": [
@@ -1988,53 +2916,23 @@
                             },
                             "description": "Label text used to indicate a prompt for selecting a product.",
                             "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "module": "./src/components/shared/phi-keyword-search.ts",
                                 "symbol": "PhiKeywordSearch.label"
                             }
                         },
                         {
-                            "name": "search-combined",
+                            "name": "search-options",
                             "required": false,
                             "priority": "normal",
                             "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
+                                "type": "Partial<ProductSearchOptions>",
+                                "required": true,
+                                "default": "{\"type\":[\"Combined\",\"Hospital\",\"GeneralHealth\"]}"
                             },
-                            "description": "Include combined products in the search results.",
+                            "description": "[object Object],[object Object],[object Object]",
                             "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
-                                "symbol": "PhiKeywordSearch.searchCombined"
-                            }
-                        },
-                        {
-                            "name": "search-hospital",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
-                            },
-                            "description": "Include hospital products in the search results.",
-                            "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
-                                "symbol": "PhiKeywordSearch.searchHospital"
-                            }
-                        },
-                        {
-                            "name": "search-extras",
-                            "required": false,
-                            "priority": "normal",
-                            "value": {
-                                "type": "boolean",
-                                "required": false,
-                                "default": "false"
-                            },
-                            "description": "Include extras (general health) products in the search results.",
-                            "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
-                                "symbol": "PhiKeywordSearch.searchExtras"
+                                "module": "./src/components/shared/phi-keyword-search.ts",
+                                "symbol": "PhiKeywordSearch.searchOptions"
                             }
                         },
                         {
@@ -2048,7 +2946,7 @@
                             },
                             "description": "Disable the component.",
                             "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "module": "./src/components/shared/phi-keyword-search.ts",
                                 "symbol": "PhiKeywordSearch.disabled"
                             }
                         },
@@ -2063,7 +2961,7 @@
                             },
                             "description": "Set the placeholder text for the input.",
                             "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "module": "./src/components/shared/phi-keyword-search.ts",
                                 "symbol": "PhiKeywordSearch.placeholder"
                             }
                         },
@@ -2078,7 +2976,7 @@
                             },
                             "description": "Keywords to be automatically added to the keywords entered by the user when performing the search.  Useful\r\nto constrain return values to a particular state or family type.",
                             "source": {
-                                "module": "./src/shared-components/phi-keyword-search.ts",
+                                "module": "./src/components/shared/phi-keyword-search.ts",
                                 "symbol": "PhiKeywordSearch.autoKeywords"
                             }
                         }
@@ -2095,7 +2993,7 @@
                                     "default": "\"css`\\r\\n        :host {\\r\\n            display: block;\\r\\n        }\\r\\n        sl-dropdown {\\r\\n            width: 100%;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.styles"
                                 }
                             },
@@ -2110,53 +3008,23 @@
                                 },
                                 "description": "Label text used to indicate a prompt for selecting a product.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.label"
                                 }
                             },
                             {
-                                "name": "searchCombined",
+                                "name": "searchOptions",
                                 "required": false,
                                 "priority": "normal",
                                 "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
+                                    "type": "Partial<ProductSearchOptions>",
+                                    "required": true,
+                                    "default": "{\"type\":[\"Combined\",\"Hospital\",\"GeneralHealth\"]}"
                                 },
-                                "description": "Include combined products in the search results.",
+                                "description": "[object Object],[object Object],[object Object]",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
-                                    "symbol": "PhiKeywordSearch.searchCombined"
-                                }
-                            },
-                            {
-                                "name": "searchHospital",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "description": "Include hospital products in the search results.",
-                                "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
-                                    "symbol": "PhiKeywordSearch.searchHospital"
-                                }
-                            },
-                            {
-                                "name": "searchExtras",
-                                "required": false,
-                                "priority": "normal",
-                                "value": {
-                                    "type": "boolean",
-                                    "required": false,
-                                    "default": "false"
-                                },
-                                "description": "Include extras (general health) products in the search results.",
-                                "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
-                                    "symbol": "PhiKeywordSearch.searchExtras"
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchOptions"
                                 }
                             },
                             {
@@ -2170,7 +3038,7 @@
                                 },
                                 "description": "Disable the component.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.disabled"
                                 }
                             },
@@ -2185,7 +3053,7 @@
                                 },
                                 "description": "Set the placeholder text for the input.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.placeholder"
                                 }
                             },
@@ -2200,7 +3068,7 @@
                                 },
                                 "description": "Keywords to be automatically added to the keywords entered by the user when performing the search.  Useful\r\nto constrain return values to a particular state or family type.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.autoKeywords"
                                 }
                             },
@@ -2215,8 +3083,22 @@
                                 },
                                 "description": "Represents an array of items to be displayed in a dropdown menu.\r\nEach item is a TemplateResult, built from either a search result or a product depending\r\non the type of result.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.dropDownItems"
+                                }
+                            },
+                            {
+                                "name": "searchTerms",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "string[]",
+                                    "required": true,
+                                    "default": "[]"
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchTerms"
                                 }
                             },
                             {
@@ -2228,7 +3110,7 @@
                                     "required": true
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.searchDropdown"
                                 }
                             },
@@ -2241,7 +3123,7 @@
                                     "required": true
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.searchInput"
                                 }
                             },
@@ -2254,7 +3136,7 @@
                                     "required": true
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.productCoverDetails"
                                 }
                             },
@@ -2272,8 +3154,22 @@
                                 },
                                 "description": "Represents the currently selected product, if any.  This value is the output of the component.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-keyword-search.ts",
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
                                     "symbol": "PhiKeywordSearch.value"
+                                }
+                            },
+                            {
+                                "name": "searchTask",
+                                "required": false,
+                                "priority": "lowest",
+                                "value": {
+                                    "type": "Task<readonly [string[], Partial<ProductSearchOptions>], Product[]>",
+                                    "required": true,
+                                    "default": "\"new Task(this, {\\r\\n        task: async ([terms, options], {signal}) => {\\r\\n            (options as ProductSearchOptions).keyWords = terms as string[]\\r\\n            const groups = await ProductManager.search(options, 100, signal)\\r\\n            const products: Product[] = [];\\r\\n            for (const group of groups) {\\r\\n                for (const variant of group) {\\r\\n                    products.push(new Product(group, variant));\\r\\n                }\\r\\n            }\\r\\n            return products;\\r\\n        },\\r\\n        args: () => [this.searchTerms, this.searchOptions]\\r\\n    })\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-keyword-search.ts",
+                                    "symbol": "PhiKeywordSearch.searchTask"
                                 }
                             }
                         ],
@@ -2287,7 +3183,7 @@
                 {
                     "name": "phi-logo",
                     "source": {
-                        "module": "./src/shared-components/phi-logo.ts",
+                        "module": "./src/components/shared/phi-logo.ts",
                         "symbol": "PhiLogo"
                     },
                     "attributes": [
@@ -2302,7 +3198,7 @@
                             },
                             "description": "This image URL.",
                             "source": {
-                                "module": "./src/shared-components/phi-logo.ts",
+                                "module": "./src/components/shared/phi-logo.ts",
                                 "symbol": "PhiLogo.src"
                             }
                         },
@@ -2317,7 +3213,7 @@
                             },
                             "description": "This image alt text.",
                             "source": {
-                                "module": "./src/shared-components/phi-logo.ts",
+                                "module": "./src/components/shared/phi-logo.ts",
                                 "symbol": "PhiLogo.alt"
                             }
                         }
@@ -2334,7 +3230,7 @@
                                     "default": "\"css`\\r\\n        img {\\r\\n            max-width: 80%;\\r\\n            max-height: 48px;\\r\\n            min-height: 48px;\\r\\n            width: auto;\\r\\n            height: auto;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-logo.ts",
+                                    "module": "./src/components/shared/phi-logo.ts",
                                     "symbol": "PhiLogo.styles"
                                 }
                             },
@@ -2349,7 +3245,7 @@
                                 },
                                 "description": "This image URL.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-logo.ts",
+                                    "module": "./src/components/shared/phi-logo.ts",
                                     "symbol": "PhiLogo.src"
                                 }
                             },
@@ -2364,7 +3260,7 @@
                                 },
                                 "description": "This image alt text.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-logo.ts",
+                                    "module": "./src/components/shared/phi-logo.ts",
                                     "symbol": "PhiLogo.alt"
                                 }
                             }
@@ -2375,7 +3271,7 @@
                     "name": "phi-option-set",
                     "description": "[object Object],[object Object],[object Object]",
                     "source": {
-                        "module": "./src/shared-components/phi-option-set.ts",
+                        "module": "./src/components/shared/phi-option-set.ts",
                         "symbol": "PhiOptionSet"
                     },
                     "attributes": [
@@ -2392,7 +3288,7 @@
                             },
                             "description": "Refer `sl-radio-group` label.",
                             "source": {
-                                "module": "./src/shared-components/phi-option-set.ts",
+                                "module": "./src/components/shared/phi-option-set.ts",
                                 "symbol": "PhiOptionSet.label"
                             }
                         },
@@ -2409,7 +3305,7 @@
                             },
                             "description": "Refer `sl-radio-group` helpText.  (Attribute name:`help-text`).",
                             "source": {
-                                "module": "./src/shared-components/phi-option-set.ts",
+                                "module": "./src/components/shared/phi-option-set.ts",
                                 "symbol": "PhiOptionSet.helpText"
                             }
                         },
@@ -2427,7 +3323,7 @@
                             },
                             "description": "The key value of the currently selected `OptionEntryType` in the collection.",
                             "source": {
-                                "module": "./src/shared-components/phi-option-set.ts",
+                                "module": "./src/components/shared/phi-option-set.ts",
                                 "symbol": "PhiOptionSet.value"
                             }
                         },
@@ -2445,7 +3341,7 @@
                             },
                             "description": "Disable control.",
                             "source": {
-                                "module": "./src/shared-components/phi-option-set.ts",
+                                "module": "./src/components/shared/phi-option-set.ts",
                                 "symbol": "PhiOptionSet.disabled"
                             }
                         },
@@ -2462,7 +3358,7 @@
                             },
                             "description": "The option set collection",
                             "source": {
-                                "module": "./src/shared-components/phi-option-set.ts",
+                                "module": "./src/components/shared/phi-option-set.ts",
                                 "symbol": "PhiOptionSet.options"
                             }
                         }
@@ -2481,7 +3377,7 @@
                                     "required": true
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.slRadioGroup"
                                 }
                             },
@@ -2497,7 +3393,7 @@
                                     "required": true
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.selectedOption"
                                 }
                             },
@@ -2514,7 +3410,7 @@
                                 },
                                 "description": "Refer `sl-radio-group` label.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.label"
                                 }
                             },
@@ -2531,7 +3427,7 @@
                                 },
                                 "description": "Refer `sl-radio-group` helpText.  (Attribute name:`help-text`).",
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.helpText"
                                 }
                             },
@@ -2549,7 +3445,7 @@
                                 },
                                 "description": "The key value of the currently selected `OptionEntryType` in the collection.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.value"
                                 }
                             },
@@ -2567,7 +3463,7 @@
                                 },
                                 "description": "Disable control.",
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.disabled"
                                 }
                             },
@@ -2584,7 +3480,7 @@
                                 },
                                 "description": "The option set collection",
                                 "source": {
-                                    "module": "./src/shared-components/phi-option-set.ts",
+                                    "module": "./src/components/shared/phi-option-set.ts",
                                     "symbol": "PhiOptionSet.options"
                                 }
                             }
@@ -2599,9 +3495,9 @@
                 },
                 {
                     "name": "phi-page-details",
-                    "description": "Container for page openDetails..",
+                    "description": "Container for page details..",
                     "source": {
-                        "module": "./src/shared-components/phi-page-details.ts",
+                        "module": "./src/components/shared/phi-page-details.ts",
                         "symbol": "PhiPageDetails"
                     },
                     "js": {
@@ -2613,10 +3509,10 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex-wrap: nowrap;\\r\\n            flex: 1 0 0;\\r\\n            background-color: var(--sl-color-gray-200);\\r\\n            border-radius: 0 0 8px 8px;\\r\\n            overflow-y: auto;\\r\\n            padding: 12px;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: column;\\r\\n            flex-wrap: nowrap;\\r\\n            flex: 1 0 0;\\r\\n            background-color: var(--sl-color-gray-200);\\r\\n            border-radius: 0 0 8px 8px;\\r\\n            overflow-y: auto;\\r\\n            padding: 16px;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-page-details.ts",
+                                    "module": "./src/components/shared/phi-page-details.ts",
                                     "symbol": "PhiPageDetails.styles"
                                 }
                             }
@@ -2627,7 +3523,7 @@
                     "name": "phi-page-header",
                     "description": "Common summary information for a page showing:\r\n- logo\r\n- summary\r\n- menu\r\n- close button.",
                     "source": {
-                        "module": "./src/shared-components/phi-page-header.ts",
+                        "module": "./src/components/shared/phi-page-header.ts",
                         "symbol": "PhiPageHeader"
                     },
                     "attributes": [
@@ -2641,7 +3537,7 @@
                                 "default": "\"\""
                             },
                             "source": {
-                                "module": "./src/shared-components/phi-page-header.ts",
+                                "module": "./src/components/shared/phi-page-header.ts",
                                 "symbol": "PhiPageHeader.logo"
                             }
                         },
@@ -2655,7 +3551,7 @@
                                 "default": "\"\""
                             },
                             "source": {
-                                "module": "./src/shared-components/phi-page-header.ts",
+                                "module": "./src/components/shared/phi-page-header.ts",
                                 "symbol": "PhiPageHeader.heading"
                             }
                         }
@@ -2669,10 +3565,10 @@
                                 "value": {
                                     "type": "CSSResult",
                                     "required": true,
-                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n\\r\\n        /* header block */\\r\\n        div.header {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            height: 32px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n            border-radius: 8px 8px 0 0;\\r\\n            border-bottom: 1px solid var(--sl-color-gray-800);\\r\\n            gap: 24px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        /* header block - name */\\r\\n        div.header > h4 {\\r\\n            flex: 1 0 0;\\r\\n            margin: 0;\\r\\n        }\\r\\n    `\""
+                                    "default": "\"css`\\r\\n\\r\\n        :host {\\r\\n            display: flex;\\r\\n            flex-direction: row;\\r\\n            align-items: center;\\r\\n            height: 32px;\\r\\n            background-color: var(--sl-color-gray-400);\\r\\n            border-radius: 8px 8px 0 0;\\r\\n            border-bottom: 1px solid var(--sl-color-gray-800);\\r\\n            gap: 24px;\\r\\n            padding: 16px;\\r\\n        }\\r\\n\\r\\n        /* title/name - take up available space in row */\\r\\n        h4 {\\r\\n            flex: 1 0 0;\\r\\n            margin: 0;\\r\\n        }\\r\\n    `\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-page-header.ts",
+                                    "module": "./src/components/shared/phi-page-header.ts",
                                     "symbol": "PhiPageHeader.styles"
                                 }
                             },
@@ -2686,7 +3582,7 @@
                                     "default": "\"\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-page-header.ts",
+                                    "module": "./src/components/shared/phi-page-header.ts",
                                     "symbol": "PhiPageHeader.logo"
                                 }
                             },
@@ -2700,8 +3596,186 @@
                                     "default": "\"\""
                                 },
                                 "source": {
-                                    "module": "./src/shared-components/phi-page-header.ts",
+                                    "module": "./src/components/shared/phi-page-header.ts",
                                     "symbol": "PhiPageHeader.heading"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-rg-cover-type",
+                    "description": "Cover type selection widget (Combined, Hospital, Extras).  Raises `sl-change` event when cover type is changed.",
+                    "source": {
+                        "module": "./src/components/shared/phi-rg-cover-type.ts",
+                        "symbol": "PhiRgCoverType"
+                    },
+                    "attributes": [
+                        {
+                            "name": "value",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/shared/phi-rg-cover-type.ts",
+                                "symbol": "PhiRgCoverType.value"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-cover-type.ts",
+                                    "symbol": "PhiRgCoverType.styles"
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "kind": "plain",
+                                    "type": "",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-cover-type.ts",
+                                    "symbol": "PhiRgCoverType.value"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-rg-family-type",
+                    "description": "Family type selection widget (Single, couple, etc...).  Raises `sl-change` event when type is changed.\r\nValue is a string representing the number of adults and a trailing \"D\" for dependants.",
+                    "source": {
+                        "module": "./src/components/shared/phi-rg-family-type.ts",
+                        "symbol": "PhiRgFamilyType"
+                    },
+                    "attributes": [
+                        {
+                            "name": "value",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "type": [
+                                    "\"\"",
+                                    "FamilyType"
+                                ],
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/shared/phi-rg-family-type.ts",
+                                "symbol": "PhiRgFamilyType.value"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-family-type.ts",
+                                    "symbol": "PhiRgFamilyType.styles"
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": [
+                                        "\"\"",
+                                        "FamilyType"
+                                    ],
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-family-type.ts",
+                                    "symbol": "PhiRgFamilyType.value"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "phi-rg-state",
+                    "description": "State selection widget (NSW, VIC, ...).  Raises `sl-change` event when state is changed.",
+                    "source": {
+                        "module": "./src/components/shared/phi-rg-state.ts",
+                        "symbol": "PhiRgState"
+                    },
+                    "attributes": [
+                        {
+                            "name": "value",
+                            "required": false,
+                            "priority": "normal",
+                            "value": {
+                                "kind": "plain",
+                                "type": "",
+                                "required": true,
+                                "default": "\"\""
+                            },
+                            "source": {
+                                "module": "./src/components/shared/phi-rg-state.ts",
+                                "symbol": "PhiRgState.value"
+                            }
+                        }
+                    ],
+                    "js": {
+                        "properties": [
+                            {
+                                "name": "styles",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "type": "CSSResult",
+                                    "required": true,
+                                    "default": "\"css`\\r\\n        :host {\\r\\n            padding: 0;\\r\\n        }\\r\\n        sl-icon-button, sl-icon {\\r\\n            font-size: 2rem;\\r\\n        }\\r\\n    `\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-state.ts",
+                                    "symbol": "PhiRgState.styles"
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "required": false,
+                                "priority": "normal",
+                                "value": {
+                                    "kind": "plain",
+                                    "type": "",
+                                    "required": true,
+                                    "default": "\"\""
+                                },
+                                "source": {
+                                    "module": "./src/components/shared/phi-rg-state.ts",
+                                    "symbol": "PhiRgState.value"
                                 }
                             }
                         ]

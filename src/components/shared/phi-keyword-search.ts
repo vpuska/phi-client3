@@ -5,19 +5,11 @@
  * @written 22-Jan-2026
  */
 
-import {LitElement, html, css, type TemplateResult} from 'lit'
+import {LitElement, html, css} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
 import type {SlDropdown, SlInput} from "@shoelace-style/shoelace";
-import {Product, type ProductKeywordSearchResult, ProductResultSet} from "../../api-models/products.ts";
-import {ProductSearchManager, SearchResultClass} from "../../api-models/search.ts";
-
-/**
- * The drop-down menu can be either a list of product keyword search results or a list of products.  This type
- * is used to distinguish between the two.  The value of the menu item is either a search result or a product.
- */
-type SearchMenuValue =
-    | { variant: "search"; searchResult: ProductKeywordSearchResult }
-    | { variant: "product"; product: Product }
+import {Product, type ProductSearchOptions, ProductManager} from "../../api-models/products.ts";
+import {Task} from "@lit/task";
 
 
 /**
@@ -51,18 +43,13 @@ export class PhiKeywordSearch extends LitElement {
      * Label text used to indicate a prompt for selecting a product.
      */
     @property() label = "Select product:";
+
     /**
-     * Include combined products in the search results.
+     * Search options.  See {@link ProductSearchOptions}.
      */
-    @property({ attribute:'search-combined', type: Boolean}) searchCombined: boolean = false;
-    /**
-     * Include hospital products in the search results.
-     */
-    @property({ attribute:'search-hospital', type: Boolean}) searchHospital: boolean = false;
-    /**
-     * Include extras (general health) products in the search results.
-     */
-    @property({ attribute:'search-extras', type: Boolean}) searchExtras: boolean = false;
+    @property({attribute: 'search-options'}) searchOptions: Partial<ProductSearchOptions> = {
+        type: [ "Combined", "Hospital", "GeneralHealth" ]
+    };
     /**
      * Disable the component.
      */
@@ -71,18 +58,8 @@ export class PhiKeywordSearch extends LitElement {
      * Set the placeholder text for the input.
      */
     @property() placeholder = "Product search keywords...";
-    /**
-     * Keywords to be automatically added to the keywords entered by the user when performing the search.  Useful
-     * to constrain return values to a particular state or family type.
-     */
-    @property({attribute: 'auto-keywords'}) autoKeywords: string = "";
 
-    /**
-     * Represents an array of items to be displayed in a dropdown menu.
-     * Each item is a TemplateResult, built from either a search result or a product depending
-     * on the type of result.
-     */
-    @state() dropDownItems: TemplateResult[] = [];
+    @state() searchTerms: string[] = [];
 
     @query('#search-dropdown') searchDropdown!: SlDropdown;
     @query('#search-input') searchInput!: SlInput;
@@ -97,68 +74,42 @@ export class PhiKeywordSearch extends LitElement {
         this.dispatchEvent(new Event('phi-keyword-search-change', {composed: true, bubbles: true}));
     }
 
-    /**
-     * Called when a keyword search result is selected from the dropdown.  This will populate the search input with the selected product name (replacing the
-     * keywords).  The drop-down menu will be replaced with a list of the available cover variants for this product title.
-     * @param searchResult
-     * @param keyWords
-     */
-    async selectSearchResult(searchResult: ProductKeywordSearchResult, keyWords: string) {
-        keyWords = keyWords.concat(" ", this.autoKeywords).trim();
-        const params = `name=${encodeURIComponent(searchResult.productName)}&fund=${searchResult.fund}&keywords=${keyWords}&count=100`;
-        const results = await ProductResultSet.fetch(`product-search/by-keyword2?${params}`);
-        this.searchInput.value = searchResult.productName;
-        this.value = null;
-        this.dispatchChangeEvent();
-
-        results.rows.sort((a, b) => {
-            let result = a.state.localeCompare(b.state);
-            if (result !== 0) return result;
-            result = a.adultsCovered - b.adultsCovered;
-            if (result !== 0) return result;
-            result = (a.dependantCover ? 1 : 0) - (b.dependantCover ? 1 : 0);
-            return result;
-        })
-
-        this.dropDownItems = results.rows.map(row => {
-            return html`
-                <sl-menu-item .value=${{variant: "product", product: row} as SearchMenuValue}>
-                    <div style="display:inline-block; width:7em; overflow: hidden; text-overflow: ellipsis">${row.state}</div>
-                    <div style="display:inline-block; width:15em; overflow: hidden; text-overflow: ellipsis">${row.coverageDescription}</div>
-                    <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis">${row.dependantTypesLongDescriptions.join(", ")}</div>
-                </sl-menu-item>
-            `})
-        this.searchDropdown.open = this.dropDownItems.length > 0;
-    }
+    private searchTask = new Task(this, {
+        task: async ([terms, options], {signal}) => {
+            (options as ProductSearchOptions).keyWords = terms as string[]
+            const groups = await ProductManager.search(options, 100, signal)
+            const products: Product[] = [];
+            for (const group of groups) {
+                for (const variant of group) {
+                    products.push(new Product(group, variant));
+                }
+            }
+            return products;
+        },
+        args: () => [this.searchTerms, this.searchOptions]
+    });
 
     /**
      * Called when the user types into the search input.  If the input length is greater than 3 characters, a keyword search is performed.  The results are displayed in the
      * drop-down menu.  If the input length is less than 4 characters, the drop-down menu is cleared.
      * @param e The `sl-input` triggering event.
      */
-    async handleInputChange(e: Event) {
+    handleInputChange(e: Event) {
+        // clear any previous selection
         this.value = null;
-        const input = (e.target as SlInput).value;
-        const keywords = input.concat(" ", this.autoKeywords).trim();
+        const input = (e.target as SlInput).value.trim();
         this.productCoverDetails.innerHTML = "";
 
         if (input.length < 4)
             return;
 
-        let results: SearchResultClass[];
-        if (!this.searchCombined && !this.searchHospital && !this.searchExtras)
-            results = ProductSearchManager.search(true, true, true, keywords);
-        else
-            results = ProductSearchManager.search(this.searchCombined, this.searchHospital, this.searchExtras, keywords);
+        const searchTerms = input.toUpperCase().split(" ").filter(word => word.length > 0);
+        if (searchTerms.length !== this.searchTerms.length)
+            this.searchTerms = searchTerms;
+        if (searchTerms.some((term, index) => term !== this.searchTerms[index]))
+            this.searchTerms = searchTerms;
 
-        this.dropDownItems = results.map(result => html`
-            <sl-menu-item .value=${result}>
-                <div style="display:inline-block; width:65%; overflow: hidden; text-overflow: ellipsis">${result.searchResult.productName}</div>
-                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${result.searchResult.brandShortName} ${result.searchResult.productCode}</div>
-                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${result.coverDescription}</div>
-            </sl-menu-item>
-        `)
-        this.searchDropdown.open = this.dropDownItems.length > 0;
+        this.searchDropdown.show().then();
     }
 
     /**
@@ -167,13 +118,13 @@ export class PhiKeywordSearch extends LitElement {
      * @param e The `sl-menu` triggering event.
      */
     async handleMenuSelect(e: CustomEvent) {
-        const value = e.detail.item.value as SearchResultClass;
-        this.value = await Product.find(value.searchResult.fundBrandCode.substring(0,3), value.searchResult.productCode);
-        this.searchInput.value = this.value!.name;
-        const dependants = this.value!.dependantTypesLongDescriptions.length ? ` - including: ${this.value!.dependantTypesLongDescriptions.join(", ")}` : "";
-        this.productCoverDetails.innerHTML += `${this.value!.state} - ${this.value!.coverageDescription}${dependants}`;
+        const product = e.detail.item.value as Product;
+        this.searchInput.value = product!.name;
+        const dependants = product!.dependantTypesLongDescriptions.length ? ` - including: ${product!.dependantTypesLongDescriptions.join(", ")}` : "";
+        this.productCoverDetails.innerHTML = `${product!.state} - ${product!.coverageDescription}${dependants}`;
         this.searchDropdown.hide().then();
         this.searchInput.focus();
+        this.value = product;
         this.dispatchChangeEvent();
         e.stopPropagation();
     }
@@ -197,10 +148,23 @@ export class PhiKeywordSearch extends LitElement {
                             placeholder=${this.placeholder}
                             @sl-input=${this.handleInputChange.bind(this)}
                             @keydown=${(e: KeyboardEvent) => {if (e.key === ' ') {e.stopPropagation();} } }
-                    ></sl-input>
+                    >
+                        <sl-icon name="search" slot="suffix"></sl-icon>
+                    </sl-input>
                     <div id="product-details" style="display: none; margin-left: 4em"></div>
                 </div>
-                <sl-menu @sl-select=${this.handleMenuSelect.bind(this)}>${this.dropDownItems}</sl-menu>
+                <sl-menu @sl-select=${this.handleMenuSelect.bind(this)}>
+                    ${this.searchTask.render({
+                        pending: () => html`<sl-menu-item disabled>Searching...</sl-menu-item>`,
+                        complete: (products) => products!.map(product => html`
+                            <sl-menu-item .value=${product}>
+                                <div style="display:inline-block; width:65%; overflow: hidden; text-overflow: ellipsis">${product.name}</div>
+                                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${product.fundBrand.code}/${product.code} ${product.state}</div>
+                                <div style="display:inline-block; overflow: hidden; text-overflow: ellipsis"">${product.coverageDescription}</div>
+                            </sl-menu-item>
+                        `)
+                    })}
+                </sl-menu>
             </sl-dropdown>
         `
     }

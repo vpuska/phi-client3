@@ -11,10 +11,10 @@ import {customElement, property, query, queryAll, state} from 'lit/decorators.js
 import {SlCheckbox, SlDrawer, SlInput} from "@shoelace-style/shoelace";
 
 import {ProductGroup, ProductVariant} from 'phi-common'
+import type {ProductType, HospitalTier, AccommodationType, AusState, DependantCoverFlags} from 'phi-common'
 
 import {Product, ProductManager} from "../../api-models/products.ts";
 import {Fund, FundManager} from "../../api-models/funds.ts";
-import {matchAll} from "../../modules/utilities.ts";
 import {Globals} from "../../modules/globals.ts";
 
 
@@ -110,7 +110,7 @@ export class PhiFundProductBrowser extends LitElement {
     @state() productGroups: ProductGroup[] = [];
     @state() filteredGroups: ProductGroup[] = [];
     @state() excessCodes: number[] = [];
-    @state() coverCombinations: string[] = [];
+    @state() coverCombinations: number[] = [];
     @state() expandedGroups: Set<ProductGroup> = new Set();
 
     @query("sl-drawer") drawer!: SlDrawer;
@@ -118,6 +118,7 @@ export class PhiFundProductBrowser extends LitElement {
     /* ------ Groups filters checkboxes ------ */
 
     @query('sl-input#text-search') textFilter!: SlInput;
+    @query('sl-input#code-search') codeFilter!: SlInput;
 
     @query('sl-checkbox[data-phi-filter-field="brand"][data-phi-filter-value="*"]') brandSelectAllCheckBox! : SlCheckbox;
     @query('sl-checkbox[data-phi-filter-field="tier"][data-phi-filter-value="*"]') tierSelectAllCheckBox! : SlCheckbox;
@@ -145,7 +146,6 @@ export class PhiFundProductBrowser extends LitElement {
      * @protected
      */
     protected updated(_changedProperties: PropertyValues) {
-        const filterChanged = this.filterChanged.bind(this);
         const setupHandlers = function(filterCheckBoxes: NodeListOf<SlCheckbox>, selectAllCheckBox: SlCheckbox | null) {
             if (selectAllCheckBox) {
                 // don't display "Select all" if less than 3 options
@@ -153,7 +153,6 @@ export class PhiFundProductBrowser extends LitElement {
                 // select/unselect all filters...
                 selectAllCheckBox.addEventListener('sl-change', () => {
                     filterCheckBoxes.forEach(checkBox => { checkBox.checked = selectAllCheckBox.checked });
-                    filterChanged();
                 })
             }
             // update "Select all" value when individual filter value changes
@@ -163,7 +162,6 @@ export class PhiFundProductBrowser extends LitElement {
                     // Are they all checked?
                     if (selectAllCheckBox)
                         selectAllCheckBox.checked = filterArray.filter(checkBox => !checkBox.checked).length === 0;
-                    filterChanged();
                 })
             })
         }
@@ -178,86 +176,49 @@ export class PhiFundProductBrowser extends LitElement {
     }
 
     /**
-     * Returns a string representing the cover combinations for a product variant.
-     * @param variant
-     */
-    coverCombination(variant: ProductVariant) {
-        return (
-            (variant.childCover ? "Y" : "N") +
-            (variant.studentCover ? "Y" : "N") +
-            (variant.nonStudentCover ? "Y" : "N") +
-            (variant.conditionalNonStudentCover ? "Y" : "N") +
-            (variant.nonClassifiedCover ? "Y" : "N") +
-            (variant.disabilityCover ? "Y" : "N")
-        );
-    }
-
-    /**
      * Load the products for the fund.  Called by the parent component.
      */
     loadProducts() {
-        this.productGroups = ProductManager.getFundProductGroups(this.fundCode);
-        this.filteredGroups = this.productGroups;
-
-        const excessCodes = new Set<number>();
-        const dependants = new Set<string>();
-
-        for (const group of this.productGroups) {
-            for (const variant of group) {
-                excessCodes.add(variant.excess);
-                dependants.add(this.coverCombination(variant));
+        ProductManager.search({funds: [this.fundCode]}).then(groups => {
+            this.productGroups = groups;
+            this.filteredGroups = groups;
+            const excessCodes = new Set<number>();
+            const dependants = new Set<number>();
+            for (const group of this.productGroups) {
+                for (const variant of group) {
+                    excessCodes.add(variant.excess);
+                    dependants.add(variant.dependantCoverFlags);
+                }
             }
-        }
-        this.excessCodes = [...excessCodes.values()].sort();
-        this.coverCombinations = [...dependants.values()].sort();
-        console.log("loadProducts")
+            this.excessCodes = [...excessCodes.values()].sort();
+            this.coverCombinations = [...dependants.values()].sort();
+        });
     }
 
     /**
      * Filter change event handler.
      */
     filterChanged() {
-        // helper function to extract filter values into a string.
+        // helper function to extract filter values into a string array.
         const extractFilter = function (checkBoxes: NodeListOf<SlCheckbox>) {
             return Array.from(checkBoxes).filter(cb => cb.checked).map(cb => cb.getAttribute('data-phi-filter-value'))
         }
-        const fund = FundManager.get(this.fundCode)!;
 
-        // group filters
-        const textFilter = this.textFilter.value.toUpperCase().split(' ')
-        const tierFilter = extractFilter(this.tierFilterCheckBoxes);
-        const typeFilter = extractFilter(this.typeFilterCheckBoxes);
-        const brandsFilter = extractFilter(this.brandFilterCheckBoxes);
-        const accommodationFilter = extractFilter(this.accommodationFilterCheckBoxes);
-        // variant filters
-        const stateFilter = extractFilter(this.stateFilterCheckBoxes);
-        const adultsFilter = extractFilter(this.adultsFilterCheckBoxes);
-        const dependantsFilter = extractFilter(this.dependantsFilterCheckBoxes);
-        const excessFilter = extractFilter(this.excessFilterCheckBoxes);
-
-        this.filteredGroups = [];
-
-        for (const group of this.productGroups) {
-            const brands = (group.brands ? group.brands : fund.code) + ";";
-            if (tierFilter.includes(group.hospitalTier) &&
-                typeFilter.includes(group.type) &&
-                accommodationFilter.includes(group.accommodationType) &&
-                brandsFilter.map(filter => brands.includes(filter!+";")).includes(true)
-            ) {
-                const filteredGroup = group.clone();
-                for (const variant of group) {
-                    const searchableText = (group.name).toUpperCase() + " " + variant.code;
-                    if (stateFilter.includes(variant.state) &&
-                        adultsFilter.includes(variant.adultsCovered.toString()) &&
-                        excessFilter.includes(variant.excess.toString()) &&
-                        dependantsFilter.includes(this.coverCombination(variant)) &&
-                        matchAll(textFilter, searchableText)
-                    )
-                        filteredGroup.addVariant(variant);
-                }
-                this.filteredGroups.push(filteredGroup);
-            }
-        }
+        ProductManager.search({
+            keyWords:           this.textFilter.value.split(' ').filter((word) => word.length > 0),
+            code:               [this.codeFilter.value].filter((word) => word.length > 0),
+            funds:              [this.fundCode],
+            brands:             extractFilter(this.brandFilterCheckBoxes) as string[],
+            type:               extractFilter(this.typeFilterCheckBoxes) as ProductType[],
+            accommodationType:  extractFilter(this.accommodationFilterCheckBoxes) as AccommodationType[],
+            hospitalTier:       extractFilter(this.tierFilterCheckBoxes) as HospitalTier[],
+            state:              extractFilter(this.stateFilterCheckBoxes) as AusState[],
+            adults:             extractFilter(this.adultsFilterCheckBoxes).map((filter) => parseInt(filter!)) as number[],
+            excess:             extractFilter(this.excessFilterCheckBoxes).map((filter) => parseInt(filter!)) as number[],
+            dependantCoverFlags: extractFilter(this.dependantsFilterCheckBoxes).map((filter) => parseInt(filter!)) as number[],
+        }).then(groups => {
+            this.filteredGroups = groups;
+        });
     }
 
     /**
@@ -265,6 +226,15 @@ export class PhiFundProductBrowser extends LitElement {
      * @param fund
      */
     render_filter(fund: Fund) {
+        // map of cover flags to desired description
+        const coverMap:  Record<keyof DependantCoverFlags, string> = {
+            childCover: "Child",
+            studentCover: "Student",
+            nonStudentCover: "Non-St",
+            conditionalNonStudentCover: "Non-St(cond)",
+            nonClassifiedCover: "Non-Class",
+            disabilityCover: "Disabled"
+        }
         // helper function to render a checkbox
         const render_checkbox = function (dataAttribute: ProductFilterFieldType, dataValue: string, label: string) {
            return html`
@@ -274,23 +244,27 @@ export class PhiFundProductBrowser extends LitElement {
                 </sl-checkbox>
             </sl-tree-item>
         `}
-        const _coverComboDescription = function(cover:string) {
-            if (cover === "NNNNNN")
+        // helper function to render the dependent cover
+        const _coverComboDescription = function(cover:number) {
+            if (cover === 0)
                 return "No dependants";
-            const text = [ "Child", "Student", "Non-St", "Non-St (cond)", "Non-Class", "Disabled" ];
-            return Array.from(cover).map((c, i) => c === "Y" ? text[i] : "").filter(c => c !== "").join(", ");
+            const coverFlags = ProductVariant.unpackDependantCoverFlags(cover);
+            return Array.from(Object.getOwnPropertyNames(coverMap))
+                .filter((prop) => coverFlags[prop as keyof DependantCoverFlags])
+                .map((prop) => coverMap[prop as keyof DependantCoverFlags])
+                .join(",")
         }
-
-        // render..
+        // main filter render..
         return html`
-            <sl-tree>
+            <sl-tree @sl-change=${() => this.filterChanged()}>
                 <sl-tree-item>Text search
                     <sl-tree-item>
-                        <sl-input 
-                            id="text-search"
-                            @sl-change=${() => this.filterChanged()}
-                        >
-                        </sl-input>
+                        <sl-input id="text-search"></sl-input>
+                    </sl-tree-item>
+                </sl-tree-item>
+                <sl-tree-item>Product code search
+                    <sl-tree-item>
+                        <sl-input id="code-search"></sl-input>
                     </sl-tree-item>
                 </sl-tree-item>
                 <sl-tree-item>Brands
@@ -334,7 +308,7 @@ export class PhiFundProductBrowser extends LitElement {
                 <sl-tree-item>Dependants
                     ${render_checkbox("dependants", "*", "Select all")}
                     ${this.coverCombinations.map((coverCombination) => 
-                         render_checkbox("dependants", coverCombination, _coverComboDescription(coverCombination))
+                         render_checkbox("dependants", coverCombination.toString(), _coverComboDescription(coverCombination))
                     )}
                 </sl-tree-item>
                 <sl-tree-item>State
@@ -399,7 +373,7 @@ export class PhiFundProductBrowser extends LitElement {
         const render_cover = function(covered: boolean) {
             return covered ? html `<sl-icon name="check" label="Covered"></sl-icon>` : nothing;
         }
-        // click handler to drill-down into an individula product variant
+        // click handler to drill-down into an individual product variant
         const display_product = (variant: ProductVariant) => {
             const element = document.createElement("phi-product-details");
             element.setAttribute("fund-code", this.fundCode);

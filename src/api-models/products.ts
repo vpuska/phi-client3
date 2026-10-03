@@ -1,44 +1,11 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {ProductGroup, ProductVariant} from "phi-common"
-import type {SerializedProductGroup, AccommodationType, AusState, ProductType, ProductPairingType, HospitalTier} from "phi-common"
+import {ProductGroup, ProductVariant, AUS_STATES} from "phi-common"
+import type {SerializedProductGroup, ProductStatus, AccommodationType, AusState, ProductType, ProductPairingType, HospitalTier} from "phi-common"
 
 const PRODUCT_API = 'https://phi-demo-api.spartlet.net'
 
 import {Fund, FundManager} from "./funds.ts";
-
-/**
- * JSON structure returned by the phi-api product list/search endpoints.
- */
-export type ProductJsonType = {
-    code: string;
-    fundCode: string;
-    name: string;
-    type: ProductType;
-    state: AusState | "ALL",
-    adultsCovered: 0 | 1 | 2,
-    isCorporate: boolean,
-    brands: string | null,
-    onlyAvailableWith: ProductPairingType,
-    onlyAvailableWithProducts: string | null,
-    dependantCover: boolean,
-    childCover: boolean,
-    studentCover: boolean,
-    youngAdultCover: boolean,
-    nonClassifiedCover: boolean,
-    nonStudentCover: boolean,
-    conditionalNonStudentCover: boolean,
-    disabilityCover: boolean,
-    excess: number,
-    excessPerAdmission: number,
-    excessPerPerson: number,
-    excessPerPolicy: number,
-    premium: number,
-    hospitalComponent: number,
-    hospitalTier: HospitalTier,
-    accommodationType: AccommodationType,
-    services: string,
-}
 
 export type ProductStatisticsType = {
     combinedCount: number;
@@ -54,8 +21,30 @@ export type ProductKeywordSearchResult = {
 };
 
 
+export type ProductSearchOptions = {
+    code: string[],
+    keyWords: string[],
+    type: ProductType[],
+    status: ProductStatus[],
+    funds: string[],
+    brands: string[],
+    isCorporate: boolean[],
+    hospitalTier: HospitalTier[],
+    accommodationType: AccommodationType[],
+    state: (AusState | "ALL")[],
+    excess: number[],
+    adults: number[],
+    dependantCoverFlags: number[],
+    childCover: boolean[],
+    studentCover: boolean[],
+    nonStudentCover: boolean[],
+    nonClassifiedCover: boolean[],
+    conditionalNonStudentCover: boolean[],
+    disabilityCover: boolean[],
+}
+
 /**
- * Class encapsulating the product JSON for a single product ({@link ProductJsonType}).
+ * Class encapsulating the product combining the {@Link ProductGroup} and {@Link ProductVariant}.
  */
 export class Product {
     fund: Fund;
@@ -103,6 +92,15 @@ export class Product {
     get accommodationType() { return (this.group.accommodationType || "") as AccommodationType; }
     get services() { return this.group.services; }
     get excess() { return this.variant.excess }
+
+
+    get fundBrand() {
+        //TODO: In theory, there could be more than one brand code, but no such case appears in PHIO data
+        if (this.brandCodes && this.brandCodes.length > 0)
+            return FundManager.fundBrandMap.get(this.brandCodes)!;
+        else
+            return FundManager.fundBrandMap.get(this.fundCode)!;
+    }
 
     get isHospital() {
         return this.type === "Hospital" || this.type === "Combined";
@@ -158,6 +156,25 @@ export class Product {
         if (this.disabilityCover)
             types.push("Disability Dependants")
         return types;
+    }
+
+    get searchableKeys() : string[] {
+        let keys = this.name.toUpperCase().split(" ").filter(term => term.length > 0);
+        keys.push(this.code);
+        keys = keys.concat(this.fundBrand.shortName.toUpperCase().split(" ").filter(term => term.length > 0));
+        if (this.state === "ALL")
+            keys.concat(AUS_STATES)
+        else
+            keys.push(this.state);
+        if (this.adultsCovered === 1)
+            keys = keys.concat(this.dependantCover ? ["SOLE", "PARENT"] : ["SINGLE"]);
+        if (this.adultsCovered === 2)
+            keys.push(this.dependantCover ? "FAMILY" : "COUPLE");
+        if (this.adultsCovered === 0)
+            keys = keys.concat(["DEPENDANTS", "ONLY"])
+        if (this.disabilityCover)
+            keys.push("DISABILITY");
+        return keys;
     }
 
     canPackageWith(product: Product) : boolean {
@@ -219,20 +236,6 @@ export class Product {
         }
         return "";
     }
-
-    // TODO: Remove this method as it is not used
-    // @ts-ignore
-    static async find(fundCode: string, productCode: string) : Promise<Product | null> {
-        /*
-        const response = await fetch(`${PRODUCT_API}/products/find/${fundCode}/${productCode}`);
-        if (response.ok) {
-            const productJson: ProductJsonType = await response.json();
-            return new Product(productJson);
-        }
-
-         */
-        return null;
-    }
 }
 
 /**
@@ -256,16 +259,6 @@ export class ProductResultSet {
      */
     get rows() {
         return this.resultSet;
-    }
-
-    /**
-     * Factory method to call the nominated endpoint and return a {@link Product} result set.
-     * @param productApiEndpoint
-     */
-    // TODO: Remove this method as it is not used.
-    // @ts-ignore
-    static async fetch(productApiEndpoint: string): Promise<ProductResultSet> {
-        return new ProductResultSet([]);
     }
 
     /**
@@ -306,36 +299,28 @@ export class ProductResultSet {
     }
 }
 
+
 /**
- * Calls the `product-search/by-keyword` API endpoint to search for products by keyword.
- * @param keywords Keyword string. Eg `hospital gold nsw family`
- * @param combined Include products with combined cover. Default `true`.
- * @param hospital Include products with hospital cover. Default `true`.
- * @param extras Include products with extras cover. Default `true`.
- * @param count Maximum number of results to return. Default `50`.
- * @param timeout Maximum time to wait for response in milliseconds. Default `1500`.
+ * The ProductManager class is responsible for managing product groups and providing
+ * functionalities to load product data sets and perform searches based on various criteria.
  */
-export async function productKeywordSearch(
-    keywords: string,
-    combined: boolean = true,
-    hospital: boolean = true,
-    extras: boolean = true,
-    count: number = 50,
-    timeout: number = 1500) : Promise<ProductKeywordSearchResult[]> {
-
-    const params = `keywords=${encodeURIComponent(keywords)}&count=${count}&combined=${combined}&hospital=${hospital}&extras=${extras}&timeout=${timeout}`;
-    const response = await fetch(`${PRODUCT_API}/product-search/by-keyword?${params}`);
-    if (response.ok)
-        return await response.json();
-    else
-        return [];
-}
-
 
 export class ProductManager {
 
+    /**
+     * The product groups managed by the ProductManager.  These are loaded by {@link ProductManager.loadDataSet}.
+     * @private
+     */
     private static productGroups: ProductGroup[] = [];
 
+    /**
+     * Asynchronously loads a dataset of product groups by fetching data from the specified API endpoint.
+     * The retrieved dataset is processed and stored in the `productGroups` property as instances of `ProductGroup`.
+     * This method clears any existing data in `productGroups` before populating it with the fetched data.
+     * This method only needs to be called once to initialize the product groups.
+     *
+     * @return {Promise<void>} A promise that resolves once the dataset has been successfully fetched and processed.
+     */
     public static async loadDataSet() {
         this.productGroups = [];
         const response = await fetch(`${PRODUCT_API}/products/dataset`);
@@ -346,35 +331,90 @@ export class ProductManager {
         }
     }
 
-    public static getFundProductGroups(fundCode: string) {
-        const groups: ProductGroup[] = [];
-        for (const group of this.productGroups) {
-            if (group.fundCode === fundCode)
-                groups.push(group);
+    /**
+     * Product search method.  This method searches the product groups managed by the ProductManager for products that match the specified search options.
+     * @param options
+     * @param limit
+     * @param signal
+     */
+    public static async search(options: Partial<ProductSearchOptions>, limit: number = 0, signal?: AbortSignal) {
+
+        // helper function to check if a value is not found in the product search options
+        const not_includes = function <K extends keyof ProductSearchOptions>(key: K, value: ProductSearchOptions[K][number]) : boolean {
+            if (key in options) {
+                const filter = options[key] as any;
+                return !filter.includes(value);
+            } else
+                return false;
         }
-        return groups;
-    }
 
-    public static getFundProducts(fundCode: string) {
-        const products: Product[] = [];
-
-        for (const group of this.productGroups) {
-            if (group.fundCode === fundCode) {
-                for (const variant of group)
-                    products.push(new Product(group, variant));
-            }
+        // helper function to check if all search keys can be found in an array of tokens (target)
+        const all_search_keys_found = function(target: string, searchKeys: string[]) {
+            return searchKeys.every(key => target.includes(key));
         }
-        return new ProductResultSet(products);
-    }
 
-    public static getSegment(state: string, numAdults: number, dependants: boolean) {
-        const products: Product[] = [];
+        const results: ProductGroup[] = [];
+
+        let iterations = 0;
+        let count = 0;
+
+        const variantKeyWords = [ ...AUS_STATES, "FAMILY", "COUPLE", "SINGLE", "SOLE", "PARENT", "DEPENDANTS", "ONLY", "DISABILITY" ];
+        const optionsKeyWords = ("keyWords" in options && options["keyWords"] !== undefined) ? options["keyWords"].map(word => word.toUpperCase()) : [];
+        const codeKeyWords = ("code" in options && options["code"] !== undefined) ? options["code"].map(word => word.toUpperCase()) : [];
+        const keywordsThatMustMatchTitle = optionsKeyWords.filter(keyWord => !variantKeyWords.some(key => key.includes(keyWord)));
+
         for (const group of this.productGroups) {
+            const brands = group.brands ? group.brands : group.fundCode;
+
+            if (not_includes("type", group.type)) continue;
+            if (not_includes("status", group.status)) continue;
+            if (not_includes("isCorporate", group.isCorporate)) continue;
+            if (not_includes("hospitalTier", group.hospitalTier)) continue;
+            if (not_includes("funds", group.fundCode)) continue;
+            if (not_includes("brands", brands)) continue;
+            if (not_includes("accommodationType", group.accommodationType)) continue;
+
+            // Filter out groups that don't contain all the keywords in the title.
+            const extendedGroupTitle = `${group.name} ${FundManager.fundBrandMap.get(brands)!.shortName}`.toUpperCase();
+            if (!all_search_keys_found(extendedGroupTitle, keywordsThatMustMatchTitle))
+                continue;
+
+            const filteredGroup = group.clone();
+
             for (const variant of group) {
-                if (variant.state === state && variant.adultsCovered === numAdults && variant.dependantCover === dependants)
-                    products.push(new Product(group, variant));
+                if (iterations++ % 12500 === 0) {
+                    await new Promise((resolve) => setTimeout(resolve,0));
+                    signal?.throwIfAborted();
+                }
+
+                if (variant.state !== "ALL")
+                    if (not_includes("state", variant.state)) continue;
+                if (not_includes("adults", variant.adultsCovered)) continue;
+                if (not_includes("dependantCoverFlags", variant.dependantCoverFlags)) continue;
+                if (not_includes("childCover", variant.childCover)) continue;
+                if (not_includes("studentCover", variant.studentCover)) continue;
+                if (not_includes("nonStudentCover", variant.nonStudentCover)) continue;
+                if (not_includes("nonClassifiedCover", variant.nonClassifiedCover)) continue;
+                if (not_includes("conditionalNonStudentCover", variant.conditionalNonStudentCover)) continue;
+                if (not_includes("disabilityCover", variant.disabilityCover)) continue;
+                if (not_includes("excess", variant.excess)) continue;
+
+                if (!all_search_keys_found(variant.code, codeKeyWords))
+                    continue;
+
+                const productKeys = (new Product(group, variant)).searchableKeys.join(" ").toUpperCase();
+                if (!all_search_keys_found(productKeys, optionsKeyWords))
+                    continue;
+
+                filteredGroup.addVariant(variant)
+                count++;
+                if (count >= limit && limit > 0) break;
             }
+
+            if (filteredGroup.variants.length > 0)
+                results.push(filteredGroup);
+            if (count >= limit && limit > 0) break;
         }
-        return new ProductResultSet(products);
+        return results;
     }
 }

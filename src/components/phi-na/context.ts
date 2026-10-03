@@ -241,7 +241,17 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
                             });
             }
         }
-        return pairs.sort((a, b) => a.premium - b.premium).slice(0,50)
+        let sortedPairs = pairs.sort((a, b) => a.premium - b.premium).slice(0,50);
+        if (this.product1)
+            sortedPairs = [{
+                hospital: this.product1,
+                generalHealth: this.product2,
+                premium: this.product1.premium + (this.product2 ? this.product2.premium : 0),
+                fund: this.product1.fund,
+                brand: this.product1.brandCodes,
+                services: new ServiceCoverCollection(this.product1.services + ";" + this.product2?.services)
+            } as ProductPair].concat(sortedPairs)
+        return sortedPairs;
     }
 
     get coveredServices() : ServiceCoverCollection {

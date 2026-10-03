@@ -9,8 +9,10 @@ import {html, css} from 'lit'
 import {customElement, query, state} from 'lit/decorators.js'
 import type {PhiKeywordSearch} from "../shared/phi-keyword-search.ts";
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
+import {type AusState} from "phi-common";
 import {consume} from "@lit/context";
 import {MobxLitElement} from "@adobe/lit-mobx";
+import {Product, type ProductSearchOptions} from "../../api-models/products.ts";
 
 /**
  * Health insurance needs analysis - Prior cover details
@@ -102,20 +104,23 @@ export class PhiNADetails10 extends MobxLitElement {
         }
         this.product2Input.disabled = false;
         this.product2Input.placeholder = "Select extras insurance product";
+    }
 
-        let autoKeywords: string = this.product1Input.value.state;
-        switch (this.product1Input.value.coverageDescription) {
-            case "Single Parent Family":
-                autoKeywords = autoKeywords.concat(" Sole Parent");
-                break;
-            case "Dependants Only":
-                autoKeywords = autoKeywords.concat(" Dependent");
-                break;
-            default:
-                autoKeywords = autoKeywords.concat(" ", this.product1Input.value.coverageDescription);
+    product2Options(product1: Product | null) : Partial<ProductSearchOptions> {
+        console.log("product1", product1);
+        if (!product1)
+            return { type: ["GeneralHealth"] }
+        return {
+            type: ["GeneralHealth"],
+            state: [ product1.state as AusState, "ALL" ],
+            funds: [ product1.fundCode as string ],
+            adults: [ product1.adultsCovered as number ],
+            childCover: [ product1.childCover as boolean ],
+            studentCover: [ product1.studentCover as boolean ],
+            nonStudentCover: [ product1.nonStudentCover as boolean ],
+            nonClassifiedCover: [ product1.nonClassifiedCover as boolean ],
+            disabilityCover: [ product1.disabilityCover as boolean ],
         }
-
-        this.product2Input.autoKeywords = autoKeywords;
     }
 
     /**
@@ -135,18 +140,13 @@ export class PhiNADetails10 extends MobxLitElement {
             </p>
 
             <div style="margin: 24px 0; padding:24px 24px 48px; border: 1px solid var(--sl-color-gray-400); border-radius: 6px;">
-                <phi-rg-state></phi-rg-state>
-                <phi-rg-family-type></phi-rg-family-type>
-            </div>
-            
-            <div style="margin: 24px 0; padding:24px 24px 48px; border: 1px solid var(--sl-color-gray-400); border-radius: 6px;">
                 <phi-keyword-search id="product-1"
                                     label="Select combined, hospital or extras insurance product"
                                     style="width: 100%; margin-bottom: 1rem;"
                                     @phi-keyword-search-change=${this.updateProducts.bind(this)}>
                 </phi-keyword-search>
 
-                <phi-keyword-search id="product-2" search-extras disabled
+                <phi-keyword-search id="product-2" .searchOptions=${this.product2Options(this.product1Input?.value)} disabled
                                     label="Select extras insurance product"
                                     style="width: 100%"
                                     @phi-keyword-search-change=${this.updateProducts.bind(this)}>

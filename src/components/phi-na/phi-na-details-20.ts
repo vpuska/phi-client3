@@ -8,10 +8,8 @@
 import {html, css, nothing} from 'lit'
 import {customElement, query, state} from 'lit/decorators.js'
 import {consume} from "@lit/context";
-import {Task} from "@lit/task";
 import {MobxLitElement} from "@adobe/lit-mobx";
 import {context as phiNAContext, NeedsAnalysisContext} from "./context.ts";
-import {ProductManager} from "../../api-models/products.ts";
 
 import type {PhiRgCoverType} from "../shared/phi-rg-cover-type.ts";
 import type {PhiRgState} from "../shared/phi-rg-state.ts";
@@ -54,20 +52,7 @@ export class PhiNADetails20 extends MobxLitElement {
             })
         })
     }
-    /**
-     * Fetches product data from the database based on the selected state and family type.  Run automatically
-     * when state or family type changes.
-     */
-    fetchTask = new Task(this, {
-        task: async ([state, familyType]) => {
-            if (state !== "" && familyType !== "") {
-                const adults = +familyType[0];
-                const dependants = familyType.length === 2;
-                const result = ProductManager.getSegment(state, adults, dependants)
-                this.context?.change({productRS: result})
-            }},
-        args: () => [ this.queriedState, this.queriedFamily ]
-    })
+
 
     /**
      * Validates the user input for completeness.  Returns true if valid, false otherwise.

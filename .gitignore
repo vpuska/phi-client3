@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+/.junie/memory/errors.md
+/.junie/memory/feedback.md
+/.junie/memory/language.json
+/.junie/memory/memory.version
+/.junie/memory/tasks.md
