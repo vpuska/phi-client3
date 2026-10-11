@@ -63,6 +63,9 @@ export class PhiNAResults extends MobxLitElement {
             min-width: 300px;
             max-width: 300px;
         }
+        td:first-child {
+            background-color: var(--sl-color-gray-200);
+        }
         td.dark {
             background-color: var(--sl-color-gray-100);
         }
@@ -92,17 +95,6 @@ export class PhiNAResults extends MobxLitElement {
         }
         tr.service[data-class=match] {
             visibility: collapse;
-        }
-        
-        /* tests */
-        div.table-containerxxxx {
-            flex: 1 0 0;
-            overflow-x: clip;
-        }
-        
-        div.inner-tablexxxx {
-            width: 100%;
-            overflow-x: clip;
         }
     `
 
@@ -348,6 +340,7 @@ export class PhiNAResults extends MobxLitElement {
      * @param args Optional arguments to pass to the renderer.  Arguments depend on the renderer function.
      */
     render_row_if(condition: boolean, renderer: (productPair: ProductPair, ...args: any) => TemplateResult, ...args: any) {
+        //return nothing;
         return condition ? this.render_row(renderer, ...args) : nothing
     }
 
@@ -360,6 +353,7 @@ export class PhiNAResults extends MobxLitElement {
     render_service_row(condition: boolean, service: Service) {
         if (!condition)
             return nothing;
+
         const tier = service.isGeneralHealth ? "general" : service.hospitalTier.toLowerCase();
 
         let clss = "no-cover";
@@ -381,9 +375,9 @@ export class PhiNAResults extends MobxLitElement {
      * will call the attribute's render function which returns a single table cell.
      */
     render() {
-        this.resultSet = this.context!.comparisonResults.slice(0, 50);
+        this.resultSet = this.context!.comparisonResults;
         return html`
-            <table id="results" class="show-variationsxxx">
+            <table id="results">
                 
                 <!-- fund logo -->
                 ${this.render_row(this.render_logo)}
@@ -395,16 +389,16 @@ export class PhiNAResults extends MobxLitElement {
                 ${this.render_row(this.render_product1)}
                 
                 <!-- product 2 -->
-                ${this.context?.coverType === "Combined" ? this.render_row(this.render_product2) : nothing}
+                ${this.render_row_if(this.context?.coverType === "Combined", this.render_product2)}
  
                 <!-- accommodation type -->
-                ${this.context?.coverType !== "GeneralHealth" ? this.render_row(this.render_accommodation) : nothing}
+                ${this.render_row_if(this.context?.coverType !== "GeneralHealth", this.render_accommodation)}
                 
                 <!-- phis code -->
                 ${this.render_row(this.render_phis_code)}
 
                 <!-- dependants -->
-                ${this.context?.hasDependants ? this.render_row(this.render_dependants) : nothing} 
+                ${this.render_row_if(this.context?.hasDependants === true, this.render_dependants)}
 
                 <!-- basic service differences -->
                 ${this.render_row_if(this.context!.needsHospitalServices, this.render_service_tier, "Basic Hospital", ServiceManager.basicServices)}

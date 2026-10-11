@@ -107,7 +107,6 @@ export class PhiNADetails10 extends MobxLitElement {
     }
 
     product2Options(product1: Product | null) : Partial<ProductSearchOptions> {
-        console.log("product1", product1);
         if (!product1)
             return { type: ["GeneralHealth"] }
         return {

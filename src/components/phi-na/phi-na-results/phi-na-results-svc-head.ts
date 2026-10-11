@@ -5,9 +5,9 @@
  * @written 04-Jan-2026
  */
 
-import {html, css, nothing} from 'lit'
-import {customElement, property, queryAll} from "lit/decorators.js";
-import {MobxLitElement} from "@adobe/lit-mobx";
+import {html, css, nothing, LitElement, type TemplateResult} from 'lit'
+import {customElement, property, queryAll, state} from "lit/decorators.js";
+//import {MobxLitElement} from "@adobe/lit-mobx";
 import {SlMenuItem, type SlSelectEvent} from "@shoelace-style/shoelace";
 
 const VALID_MODES = ["varying", "matching"];
@@ -16,7 +16,7 @@ const VALID_MODES = ["varying", "matching"];
  * xxxx
  */
 @customElement('phi-na-results-svc-head')
-export class PhiNaResultsSvcHead extends MobxLitElement {
+export class PhiNaResultsSvcHead extends LitElement {
 
     // noinspection CssUnusedSymbol
     static styles = css`
@@ -36,6 +36,7 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
     @property() restricted = 0;
     @property({attribute: "not-covered"}) notCovered = 0;
     @property() mode: "varying" | "matching" | "no-cover" = "varying";
+    @state() menu: TemplateResult | typeof nothing = nothing;
 
     @queryAll("sl-menu-item") menuItems!: NodeListOf<SlMenuItem>;
 
@@ -43,7 +44,39 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
         const elem = event.detail.item as SlMenuItem;
         this.mode = elem.value as "varying" | "matching";
         this.dispatchEvent(new CustomEvent("phi-service-event", {bubbles: true, composed: true}));
+        this.menu = nothing;
     }
+
+    click() {
+        switch(this.mode) {
+            case "varying":
+                this.mode = "matching";
+                break;
+            case "matching":
+                this.mode = "no-cover";
+                break;
+            case "no-cover":
+                this.mode = "varying";
+                break;
+        }
+        this.dispatchEvent(new CustomEvent("phi-service-event", {bubbles: true, composed: true}));
+    }
+
+    set_menu() {
+        this.menu = html`
+            <sl-menu-item type="checkbox" value="varying" ?checked=${this.mode === 'varying'}>
+                <sl-icon name="cover_varying" library="app-icons"></sl-icon>
+                Service Variations
+            </sl-menu-item>
+            <sl-menu-item type="checkbox" value="matching" ?checked=${this.mode === 'matching'}>
+                <sl-icon name="cover_matching" library="app-icons"></sl-icon>
+                Matching coverage
+            </sl-menu-item>
+            <sl-menu-item type="checkbox" value="no-cover" ?checked=${this.mode === 'no-cover'}>
+                <sl-icon name="cover_none" library="app-icons"></sl-icon>
+                No cover
+            </sl-menu-item>
+    `}
 
     /**
      * Main render routine.
@@ -52,8 +85,8 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
         let icon = VALID_MODES.includes(this.mode) ? "cover_" + this.mode : "cover_none";
 
         return html`
-            <sl-dropdown style="width: 100%">
-                <sl-button class="service-heading" slot="trigger" style="width: 100%; caret">
+            <sl-dropdown style="width: 100%" @sl-show=${this.set_menu.bind(this)}>
+                <sl-button slot="trigger" class="service-heading" style="width: 100%; caret" @sl-click=${this.selectOption.bind(this)}>
                     <div>${this.label}</div>
                     <div>
                         ${this.covered > 0 ? html`<sl-badge variant="success" pill>${this.covered}</sl-badge>` : nothing}
@@ -64,19 +97,8 @@ export class PhiNaResultsSvcHead extends MobxLitElement {
                         <sl-icon name="${icon}" library="app-icons"></sl-icon>
                     </div>
                 </sl-button>
-                <sl-menu @sl-select=${this.selectOption.bind(this)}>
-                    <sl-menu-item type="checkbox" value="varying" ?checked=${this.mode === 'varying'}>
-                        <sl-icon name="cover_varying" library="app-icons"></sl-icon>
-                        Service Variations
-                    </sl-menu-item>
-                    <sl-menu-item type="checkbox" value="matching" ?checked=${this.mode === 'matching'}>
-                        <sl-icon name="cover_matching" library="app-icons"></sl-icon>
-                        Matching coverage
-                    </sl-menu-item>
-                    <sl-menu-item type="checkbox" value="no-cover" ?checked=${this.mode === 'no-cover'}>
-                        <sl-icon name="cover_none" library="app-icons"></sl-icon>
-                        No cover
-                    </sl-menu-item>
+                <sl-menu @sl-select=${(e:SlSelectEvent)=>this.selectOption(e)}>
+                    ${this.menu}
                 </sl-menu>
             </sl-dropdown>
         `

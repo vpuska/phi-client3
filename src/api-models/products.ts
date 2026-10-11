@@ -35,6 +35,7 @@ export type ProductSearchOptions = {
     excess: number[],
     adults: number[],
     dependantCoverFlags: number[],
+    dependantCover: boolean[],
     childCover: boolean[],
     studentCover: boolean[],
     nonStudentCover: boolean[],
@@ -108,6 +109,10 @@ export class Product {
 
     get isGeneralHealth() {
         return this.type === "GeneralHealth" || this.type === "Combined";
+    }
+
+    get segmentKey() {
+        return `${this.state}/${this.adultsCovered}${this.dependantCover?"D":""}`;
     }
 
     get coverageDescription() {
@@ -238,80 +243,43 @@ export class Product {
     }
 }
 
+
 /**
- * The products returned from the product dataset.
+ * Encapsulates a set of products that share the same state, adults covered and dependant cover.
+ * The products returned exclude closed or corporate products.
  */
-export class ProductResultSet {
+export class ProductSegment implements Iterable<Product> {
+    private readonly state: AusState;
+    private readonly adultsCovered: number;
+    private readonly dependantCover: boolean;
 
-    private readonly resultSet: Array<Product>;
-    sortOrder: Array<string|null> = [ null, null, null ];
-
-    /**
-     * @param resultSet The array of {@link Product}s returned by the api.
-     */
-    constructor(resultSet: Array<Product>) {
-        this.resultSet = resultSet;
-        this.sort('type', 'state', 'name');
+    constructor(state: AusState, adultsCovered: number, dependantCover: boolean) {
+        this.state = state;
+        this.adultsCovered = adultsCovered;
+        this.dependantCover = dependantCover;
     }
 
-    /**
-     * Accesses the {@link Product} array returned by the api.
-     */
-    get rows() {
-        return this.resultSet;
-    }
-
-    /**
-     * Sorts the result set on the nominated field.  The sort function uses the last 2
-     * fields as secondary sort keys.
-     * @param fields
-     */
-    sort(...fields: string[]) {
-        for (const field of fields.reverse()) {
-            this.sortOrder[2] = this.sortOrder[1];
-            this.sortOrder[1] = this.sortOrder[0];
-            this.sortOrder[0] = field;
+    *[Symbol.iterator](): Iterator<Product> {
+        for (const group of ProductManager.groups) {
+            if (group.status === "Open" && !group.isCorporate)
+                for (const variant of group)
+                    if (variant.state === this.state && variant.adultsCovered === this.adultsCovered && variant.dependantCover === this.dependantCover)
+                        yield new Product(group, variant);
         }
-        this.resultSet.sort(this._compare.bind(this));
-    }
-
-    private _compare(a : Product, b : Product) : number {
-        for (const field of this.sortOrder) {
-            if (field == null)
-                return 0;
-            if (a.getField(field) < b.getField(field))
-                return -1;
-            if (a.getField(field) > b.getField(field))
-                return 1;
-        }
-        return 0;
-    }
-
-    /**
-     * Returns the distinct excess values in the result set.
-     * Eg. [0, 250, 500, 750]
-     */
-    distinctExcessValues() : number[] {
-        const values = new Set<number>();
-        for(const row of this.rows)
-            values.add(row.excess)
-        return Array.from(values).sort((a,b)=>a-b);
     }
 }
-
 
 /**
  * The ProductManager class is responsible for managing product groups and providing
  * functionalities to load product data sets and perform searches based on various criteria.
  */
-
 export class ProductManager {
-
     /**
      * The product groups managed by the ProductManager.  These are loaded by {@link ProductManager.loadDataSet}.
      * @private
      */
     private static productGroups: ProductGroup[] = [];
+    private static productSegments: Map<string, Product[]> = new Map();
 
     /**
      * Asynchronously loads a dataset of product groups by fetching data from the specified API endpoint.
@@ -321,14 +289,55 @@ export class ProductManager {
      *
      * @return {Promise<void>} A promise that resolves once the dataset has been successfully fetched and processed.
      */
-    public static async loadDataSet() {
+    public static async loadDataSet(): Promise<void> {
+        // initialize the product segments
+        for (const state of [ "ALL", ...AUS_STATES ])
+            for (const segment of ["1", "2", "1D", "2D", "0D"])
+                this.productSegments.set(`${state}/${segment}`, []);
+
         this.productGroups = [];
         const response = await fetch(`${PRODUCT_API}/products/dataset`);
         if (response.ok) {
             const groups: SerializedProductGroup[] = await response.json();
-            for (const group of groups)
-                this.productGroups.push(new ProductGroup(group));
+            for (const serializedGroup of groups) {
+                const group = new ProductGroup(serializedGroup);
+                this.productGroups.push(group);
+                if (group.status === "Open") {
+                    for (const variant of group) {
+                        const product = new Product(group, variant);
+                        const segment = this.productSegments.get(product.segmentKey);
+                        if (segment)
+                            segment.push(product);
+                    }
+                }
+            }
         }
+
+        //this.productSegments.forEach((segment, key) =>
+        //    console.log(`ProductManager ${key}: ${segment.length} open products loaded`)
+        //)
+    }
+
+    /**
+     * Returns an array of all product groups managed by the ProductManager.
+     * @returns {ProductGroup[]} An array of product groups.
+     */
+    public static get groups(): ProductGroup[] {
+        return ProductManager.productGroups;
+    }
+
+    /**
+     * Returns an array of products from the specified segment.
+     * @param state The state of the products.
+     * @param familyKey The family key of the products.
+     * @returns {Product[]} An array of products.
+     */
+    public static getSegment(state: string, familyKey: "1" | "2" | "0D" | "1D" | "2D") {
+        const segment1 = ProductManager.productSegments.get(`${state}/${familyKey}`)
+        if (!segment1)
+            return [];
+        const segment2 = ProductManager.productSegments.get(`ALL/${familyKey}`)
+        return segment2 ? segment1.concat(segment2) : segment1;
     }
 
     /**
@@ -391,6 +400,7 @@ export class ProductManager {
                     if (not_includes("state", variant.state)) continue;
                 if (not_includes("adults", variant.adultsCovered)) continue;
                 if (not_includes("dependantCoverFlags", variant.dependantCoverFlags)) continue;
+                if (not_includes("dependantCover", variant.dependantCover)) continue;
                 if (not_includes("childCover", variant.childCover)) continue;
                 if (not_includes("studentCover", variant.studentCover)) continue;
                 if (not_includes("nonStudentCover", variant.nonStudentCover)) continue;

@@ -134,7 +134,7 @@ export class PhiNeedsAnalysis extends MobxLitElement {
                     
                     <!-- Display in nav panel total rows extracted -->
                     <div slot="nav" style="color:var(--sl-color-neutral-600); padding-top: 40px; padding-left: 20px; font-size: x-small">
-                        ${this.context.productRS ? html`Rows extracted: ${this.context.productRS.rows.length}` : nothing}
+                        ${this.context.filteredProducts ? html`Rows extracted: ${this.context.filteredProducts.length}` : nothing}
                     </div>
 
                     <!-- Existing policy details -->

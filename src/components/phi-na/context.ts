@@ -6,7 +6,8 @@
  */
 
 import {createContext} from '@lit/context'
-import {Product, ProductResultSet} from "../../api-models/products.ts";
+import {type AusState} from "phi-common";
+import {Product, ProductManager} from "../../api-models/products.ts";
 import {action, computed, makeObservable, observable} from "mobx";
 import {Fund, FundManager} from "../../api-models/funds.ts";
 import {ServiceCoverCollection, ServiceManager} from "../../api-models/services.ts";
@@ -42,7 +43,6 @@ export class NeedsAnalysisObservables {
     excess: number = 99999;
     accommodation: string = "PrivateOrPublic;PrivateSharedPublic;PrivateSharedPublicShared;PrivatePublicShared";
     funds: string = FundManager.fundList("Open").map(fund => fund.code).join(";");
-    productRS: ProductResultSet | null = null;
 
     /* dependant details */
 
@@ -123,21 +123,15 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
      * @returns Matching product records.
      */
     get filteredProducts() {
-        if (this.productRS === null)
-            return [];
-
         const results: Product[] = [];
         const hospitalServices = ServiceManager.getAll("H").filter(s => this.services.includes(s.key)).map(s => s.key);
         const generalServices = ServiceManager.getAll("G").filter(s => this.services.includes(s.key)).map(s => s.key);
         const funds = this.funds.split(";");
         const accommodation = this.accommodation.split(';');
 
-        outerLoop: for (const product of this.productRS!.rows) {
+        outerLoop: for (const product of ProductManager.getSegment(this.state as AusState, this.familyType as "1" | "2" | "0D" | "1D" | "2D")) {
             // filter for cover type (Hospital, GeneralHealth, Combined)
             if (product.type !== this.coverType && this.coverType !== "Combined")
-                continue;
-            // exclude corporate products
-            if (product.isCorporate)
                 continue;
             // filter excess
             if (product.excess > this.excess && product.type !== "GeneralHealth")
@@ -149,7 +143,7 @@ export class NeedsAnalysisContext extends NeedsAnalysisObservables{
             if (product.type === "GeneralHealth" && product.services ==='')
                 continue;
             // filter for dependants
-            if (["0D", "1D", "2D"].includes(this.familyType)) {
+            if (this.hasDependants) {
                 if (this.children && !product.childCover)
                     continue;
                 if (this.students && ((!product.studentCover) || this.maxStudentAge > product.maxStudentAge))

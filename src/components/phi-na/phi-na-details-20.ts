@@ -60,7 +60,7 @@ export class PhiNADetails20 extends MobxLitElement {
     validate() {
         this.queriedState = this.context?.state || "";
         this.queriedFamily = this.context?.familyType || "";
-        this.requestUpdate(); // forces run of fetchTask if state or familyType changes
+        //this.requestUpdate(); // forces run of fetchTask if state or familyType changes
 
         if (this.context?.coverType === "" || this.context?.state === "" || this.context?.familyType === "") {
             this.error = "Please select all options";

@@ -148,7 +148,7 @@ export class PhiNADetails60 extends MobxLitElement {
             
             ${this.render_block("Statistics", html`
                 <table>
-                    <tr><td>Records returned by API</td><td>${this.context?.productRS?.rows.length}</td></tr>
+                    <tr><td>Records returned by API</td><td>${this.context?.filteredProducts.length}</td></tr>
                     <tr><td>Combined products selected</td><td>${combinedProducts}</td></tr>
                     <tr><td>Hospital products selected</td><td>${hospitalProducts}</td></tr>
                     <tr><td>General health products</td><td>${generalProducts}</td></tr>

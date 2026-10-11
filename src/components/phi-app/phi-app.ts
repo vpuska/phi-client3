@@ -74,9 +74,10 @@ export class PhiApp extends LitElement {
     private async startupFundsTask() {
         const p1 = FundManager.downloadFundXml();
         const p2 = ServiceManager.fetchServices();
-        const p3 = ProductManager.loadDataSet();
+        //const p3 = ProductManager.loadDataSet();
         const p4 = FundManager.downloadFundBrands()
-        await Promise.all([p1, p2, p3, p4]);
+        await Promise.all([p1, p2, p4]);
+        await ProductManager.loadDataSet();
         this.tickCount += 4;
     }
 
@@ -93,7 +94,6 @@ export class PhiApp extends LitElement {
 
     render() {
         return this.startupTasks.render({
-            initial: () => this.render_splash_screen(),
             pending: () => this.render_splash_screen(),
             complete: () => this.render_main_screen(),
             error: () => html`Error`,
