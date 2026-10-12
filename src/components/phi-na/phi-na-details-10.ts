@@ -104,9 +104,11 @@ export class PhiNADetails10 extends MobxLitElement {
         }
         this.product2Input.disabled = false;
         this.product2Input.placeholder = "Select extras insurance product";
+        this.product2Input.searchOptions = this.product2Options(this.product1Input.value);
     }
 
     product2Options(product1: Product | null) : Partial<ProductSearchOptions> {
+        console.log("product2Options", product1);
         if (!product1)
             return { type: ["GeneralHealth"] }
         return {

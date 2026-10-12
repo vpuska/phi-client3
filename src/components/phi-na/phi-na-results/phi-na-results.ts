@@ -63,9 +63,6 @@ export class PhiNAResults extends MobxLitElement {
             min-width: 300px;
             max-width: 300px;
         }
-        td:first-child {
-            background-color: var(--sl-color-gray-200);
-        }
         td.dark {
             background-color: var(--sl-color-gray-100);
         }
@@ -193,17 +190,28 @@ export class PhiNAResults extends MobxLitElement {
         const curr = function(amt: number) {
             return html`<sl-format-number type="currency" currency="AUD" value="${amt}" lang="en-AU"></sl-format-number>`
         }
+        let icon: TemplateResult | typeof nothing = nothing;
+        if (productPair.hospital === this.context?.product1 ||
+            productPair.generalHealth === this.context?.product1 ||
+            productPair.generalHealth === this.context?.product2 )
+            icon = html`<sl-icon library="app-icons" name="current_policy" style="font-size:4rem"></sl-icon>`
+
         return html`
             <td>
-                <span style="font-size: var(--sl-font-size-x-large); font-weight: bold">
-                    ${curr(productPair?.premium)}
-                </span>
-                <span style="font-size: var(--sl-font-size-medium)">
-                    ${(productPair.hospital?.excess || 0 > 0 
-                        ? html`<br>${curr(productPair.hospital!.excess)} excess`
-                        : nothing    
-                    )}
-                </span>
+                <div style="display: flex; flex-flow: row nowrap; align-items: center;">
+                    <div>
+                        <span style="font-size: var(--sl-font-size-x-large); font-weight: bold">
+                            ${curr(productPair?.premium)}
+                        </span>
+                        <span style="font-size: var(--sl-font-size-medium)">
+                            ${(productPair.hospital?.excess || 0 > 0
+                                            ? html`<br>${curr(productPair.hospital!.excess)} excess`
+                                            : nothing
+                            )}
+                        </span>
+                    </div>
+                    ${icon}
+                </div>
             </td>
         `
     }
